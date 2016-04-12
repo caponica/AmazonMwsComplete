@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetLowestPricedOffersForSKUResponse xmlns="http://mws.amazonservices.com/schema/Products/2011-10-01">
+   <GetLowestPricedOffersForSKUResult MarketplaceID="String" SKU="String" ItemCondition="String" status="String">
+    
+        <Identifier>
+            <MarketplaceId>String</MarketplaceId>
+            <SellerSKU>String</SellerSKU>
+            <ItemCondition>String</ItemCondition>
+            <TimeOfOfferChange>1969-07-21T02:56:03Z</TimeOfOfferChange>
+        </Identifier>
+        <Summary>
+            <TotalOfferCount>1</TotalOfferCount>
+            <NumberOfOffers>
+                <OfferCount condition="String" fulfillmentChannel="String">
+                
+                    1
+                </OfferCount>
+            </NumberOfOffers>
+            <LowestPrices>
+                <LowestPrice condition="String" fulfillmentChannel="String">
+                
+                    <LandedPrice>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </LandedPrice>
+                    <ListingPrice>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </ListingPrice>
+                    <Shipping>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </Shipping>
+                    <Points>
+                        <PointsNumber>1</PointsNumber>
+                        <PointsMonetaryValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </PointsMonetaryValue>
+                    </Points>
+                </LowestPrice>
+            </LowestPrices>
+            <BuyBoxPrices>
+                <BuyBoxPrice condition="String">
+                
+                    <LandedPrice>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </LandedPrice>
+                    <ListingPrice>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </ListingPrice>
+                    <Shipping>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </Shipping>
+                    <Points>
+                        <PointsNumber>1</PointsNumber>
+                        <PointsMonetaryValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </PointsMonetaryValue>
+                    </Points>
+                </BuyBoxPrice>
+            </BuyBoxPrices>
+            <ListPrice>
+                <CurrencyCode>String</CurrencyCode>
+                <Amount>100</Amount>
+            </ListPrice>
+            <SuggestedLowerPricePlusShipping>
+                <CurrencyCode>String</CurrencyCode>
+                <Amount>100</Amount>
+            </SuggestedLowerPricePlusShipping>
+            <BuyBoxEligibleOffers>
+                <OfferCount condition="String" fulfillmentChannel="String">
+                
+                    1
+                </OfferCount>
+            </BuyBoxEligibleOffers>
+        </Summary>
+        <Offers>
+            <Offer>
+                <MyOffer>true</MyOffer>
+                <SubCondition>String</SubCondition>
+                <SellerFeedbackRating>
+                    <SellerPositiveFeedbackRating>1.0</SellerPositiveFeedbackRating>
+                    <FeedbackCount>1</FeedbackCount>
+                </SellerFeedbackRating>
+                <ShippingTime minimumHours="1" maximumHours="1" availableDate="1969-07-21T02:56:03Z" availabilityType="String">
+                
+                </ShippingTime>
+                <ListingPrice>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>100</Amount>
+                </ListingPrice>
+                <Points>
+                    <PointsNumber>1</PointsNumber>
+                    <PointsMonetaryValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                    </PointsMonetaryValue>
+                </Points>
+                <Shipping>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>100</Amount>
+                </Shipping>
+                <ShipsFrom>
+                    <State>String</State>
+                    <Country>String</Country>
+                </ShipsFrom>
+                <IsFulfilledByAmazon>true</IsFulfilledByAmazon>
+                <IsBuyBoxWinner>true</IsBuyBoxWinner>
+                <IsFeaturedMerchant>true</IsFeaturedMerchant>
+            </Offer>
+        </Offers>
+    </GetLowestPricedOffersForSKUResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetLowestPricedOffersForSKUResponse>

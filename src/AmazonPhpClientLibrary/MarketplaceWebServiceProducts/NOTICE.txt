@@ -1,0 +1,5 @@
+Marketplace Web Service Products PHP Library
+Copyright 2016 Amazon Technologies, Inc
+
+This product includes software developed by
+Amazon Technologies, Inc (http://www.amazon.com/).

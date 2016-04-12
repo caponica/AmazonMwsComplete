@@ -1,0 +1,286 @@
+<?php
+/*******************************************************************************
+ * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * PHP Version 5
+ * @category Amazon
+ * @package  Marketplace Web Service Products
+ * @version  2011-10-01
+ * Library Version: 2015-09-01
+ * Generated: Thu Mar 10 07:30:00 PST 2016
+ */
+
+/**
+ *  @see MarketplaceWebServiceProducts_Model
+ */
+
+require_once (dirname(__FILE__) . '/../Model.php');
+
+
+/**
+ * MarketplaceWebServiceProducts_Model_BuyBoxPriceType
+ * 
+ * Properties:
+ * <ul>
+ * 
+ * <li>condition: string</li>
+ * <li>LandedPrice: MarketplaceWebServiceProducts_Model_MoneyType</li>
+ * <li>ListingPrice: MarketplaceWebServiceProducts_Model_MoneyType</li>
+ * <li>Shipping: MarketplaceWebServiceProducts_Model_MoneyType</li>
+ * <li>Points: MarketplaceWebServiceProducts_Model_Points</li>
+ *
+ * </ul>
+ */
+
+ class MarketplaceWebServiceProducts_Model_BuyBoxPriceType extends MarketplaceWebServiceProducts_Model {
+
+    public function __construct($data = null)
+    {
+    $this->_fields = array (
+    'condition' => array('FieldValue' => null, 'FieldType' => '@string'),
+    'LandedPrice' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_MoneyType'),
+    'ListingPrice' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_MoneyType'),
+    'Shipping' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_MoneyType'),
+    'Points' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_Points'),
+    );
+    parent::__construct($data);
+    }
+
+    /**
+     * Get the value of the condition property.
+     *
+     * @return String condition.
+     */
+    public function getcondition()
+    {
+        return $this->_fields['condition']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the condition property.
+     *
+     * @param string condition
+     * @return this instance
+     */
+    public function setcondition($value)
+    {
+        $this->_fields['condition']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if condition is set.
+     *
+     * @return true if condition is set.
+     */
+    public function isSetcondition()
+    {
+                return !is_null($this->_fields['condition']['FieldValue']);
+            }
+
+    /**
+     * Set the value of condition, return this.
+     *
+     * @param condition
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withcondition($value)
+    {
+        $this->setcondition($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the LandedPrice property.
+     *
+     * @return MoneyType LandedPrice.
+     */
+    public function getLandedPrice()
+    {
+        return $this->_fields['LandedPrice']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the LandedPrice property.
+     *
+     * @param MarketplaceWebServiceProducts_Model_MoneyType landedPrice
+     * @return this instance
+     */
+    public function setLandedPrice($value)
+    {
+        $this->_fields['LandedPrice']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if LandedPrice is set.
+     *
+     * @return true if LandedPrice is set.
+     */
+    public function isSetLandedPrice()
+    {
+                return !is_null($this->_fields['LandedPrice']['FieldValue']);
+            }
+
+    /**
+     * Set the value of LandedPrice, return this.
+     *
+     * @param landedPrice
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withLandedPrice($value)
+    {
+        $this->setLandedPrice($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ListingPrice property.
+     *
+     * @return MoneyType ListingPrice.
+     */
+    public function getListingPrice()
+    {
+        return $this->_fields['ListingPrice']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ListingPrice property.
+     *
+     * @param MarketplaceWebServiceProducts_Model_MoneyType listingPrice
+     * @return this instance
+     */
+    public function setListingPrice($value)
+    {
+        $this->_fields['ListingPrice']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ListingPrice is set.
+     *
+     * @return true if ListingPrice is set.
+     */
+    public function isSetListingPrice()
+    {
+                return !is_null($this->_fields['ListingPrice']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ListingPrice, return this.
+     *
+     * @param listingPrice
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withListingPrice($value)
+    {
+        $this->setListingPrice($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the Shipping property.
+     *
+     * @return MoneyType Shipping.
+     */
+    public function getShipping()
+    {
+        return $this->_fields['Shipping']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the Shipping property.
+     *
+     * @param MarketplaceWebServiceProducts_Model_MoneyType shipping
+     * @return this instance
+     */
+    public function setShipping($value)
+    {
+        $this->_fields['Shipping']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if Shipping is set.
+     *
+     * @return true if Shipping is set.
+     */
+    public function isSetShipping()
+    {
+                return !is_null($this->_fields['Shipping']['FieldValue']);
+            }
+
+    /**
+     * Set the value of Shipping, return this.
+     *
+     * @param shipping
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withShipping($value)
+    {
+        $this->setShipping($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the Points property.
+     *
+     * @return Points Points.
+     */
+    public function getPoints()
+    {
+        return $this->_fields['Points']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the Points property.
+     *
+     * @param MarketplaceWebServiceProducts_Model_Points points
+     * @return this instance
+     */
+    public function setPoints($value)
+    {
+        $this->_fields['Points']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if Points is set.
+     *
+     * @return true if Points is set.
+     */
+    public function isSetPoints()
+    {
+                return !is_null($this->_fields['Points']['FieldValue']);
+            }
+
+    /**
+     * Set the value of Points, return this.
+     *
+     * @param points
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withPoints($value)
+    {
+        $this->setPoints($value);
+        return $this;
+    }
+
+}
