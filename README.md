@@ -15,7 +15,7 @@ Add the reference into your composer.json :
 
 Use in controller :
 
-     $client = new \MwsSearchClient(/* args */);
+     $client = new \MwsProductClient(/* args */);
 
 Client library versions
 =======================
@@ -35,5 +35,6 @@ Client library versions
 |MWSRecommendationsSectionService   |2013-04-01 |2015-06-18     |
 |MWSSubscriptionsService            |2013-07-01 |2015-06-18     |
 
-The [Off-Amazon Payments API](https://developer.amazonservices.co.uk/doc/offamazonpayments/offamazonpayments/v20130101/php.html) is not currently included.
-Link for convenience: [Technical Reference](https://payments.amazon.co.uk/developer/documentation)
+The [Off-Amazon Payments API](https://developer.amazonservices.co.uk/doc/offamazonpayments/offamazonpayments/v20130101/php.html)
+is not currently included, since it is not directly linked to MWS activity.
+[Off-Amazon Payments Technical Reference](https://payments.amazon.co.uk/developer/documentation)
