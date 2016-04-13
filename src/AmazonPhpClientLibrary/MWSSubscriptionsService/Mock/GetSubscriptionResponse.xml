@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetSubscriptionResponse xmlns="http://mws.amazonservices.com/schema/Subscriptions/2013-07-01">
+   <GetSubscriptionResult>
+        <Subscription>
+            <NotificationType>String</NotificationType>
+            <Destination>
+                <DeliveryChannel>String</DeliveryChannel>
+                <AttributeList>
+                    <member>
+                        <Key>String</Key>
+                        <Value>String</Value>
+                    </member>
+                </AttributeList>
+            </Destination>
+            <IsEnabled>true</IsEnabled>
+        </Subscription>
+    </GetSubscriptionResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetSubscriptionResponse>

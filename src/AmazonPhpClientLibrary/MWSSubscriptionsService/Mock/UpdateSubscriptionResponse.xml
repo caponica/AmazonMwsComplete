@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UpdateSubscriptionResponse xmlns="http://mws.amazonservices.com/schema/Subscriptions/2013-07-01">
+   <UpdateSubscriptionResult>
+    </UpdateSubscriptionResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</UpdateSubscriptionResponse>

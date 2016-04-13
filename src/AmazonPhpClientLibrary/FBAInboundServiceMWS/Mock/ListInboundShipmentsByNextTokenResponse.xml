@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListInboundShipmentsByNextTokenResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <ListInboundShipmentsByNextTokenResult>
+        <ShipmentData>
+            <member>
+                <ShipmentId>String</ShipmentId>
+                <ShipmentName>String</ShipmentName>
+                <ShipFromAddress>
+                    <Name>String</Name>
+                    <AddressLine1>String</AddressLine1>
+                    <AddressLine2>String</AddressLine2>
+                    <DistrictOrCounty>String</DistrictOrCounty>
+                    <City>String</City>
+                    <StateOrProvinceCode>String</StateOrProvinceCode>
+                    <CountryCode>String</CountryCode>
+                    <PostalCode>String</PostalCode>
+                </ShipFromAddress>
+                <DestinationFulfillmentCenterId>String</DestinationFulfillmentCenterId>
+                <ShipmentStatus>String</ShipmentStatus>
+                <LabelPrepType>String</LabelPrepType>
+                <AreCasesRequired>true</AreCasesRequired>
+                <ConfirmedNeedByDate>String</ConfirmedNeedByDate>
+            </member>
+        </ShipmentData>
+        <NextToken>String</NextToken>
+    </ListInboundShipmentsByNextTokenResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ListInboundShipmentsByNextTokenResponse>

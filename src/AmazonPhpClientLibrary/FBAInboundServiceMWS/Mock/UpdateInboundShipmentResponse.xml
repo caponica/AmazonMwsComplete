@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UpdateInboundShipmentResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <UpdateInboundShipmentResult>
+        <ShipmentId>String</ShipmentId>
+    </UpdateInboundShipmentResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</UpdateInboundShipmentResponse>

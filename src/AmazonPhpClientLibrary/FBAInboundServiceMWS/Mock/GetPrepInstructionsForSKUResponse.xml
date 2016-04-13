@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetPrepInstructionsForSKUResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <GetPrepInstructionsForSKUResult>
+        <SKUPrepInstructionsList>
+            <SKUPrepInstructions>
+                <SellerSKU>String</SellerSKU>
+                <ASIN>String</ASIN>
+                <BarcodeInstruction>String</BarcodeInstruction>
+                <PrepGuidance>String</PrepGuidance>
+                <PrepInstructionList>
+                    <PrepInstruction>String</PrepInstruction>
+                </PrepInstructionList>
+                <AmazonPrepFeesDetailsList>
+                    <AmazonPrepFeesDetails>
+                        <PrepInstruction>String</PrepInstruction>
+                        <FeePerUnit>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Value>100</Value>
+                        </FeePerUnit>
+                    </AmazonPrepFeesDetails>
+                </AmazonPrepFeesDetailsList>
+            </SKUPrepInstructions>
+        </SKUPrepInstructionsList>
+        <InvalidSKUList>
+            <InvalidSKU>
+                <SellerSKU>String</SellerSKU>
+                <ErrorReason>String</ErrorReason>
+            </InvalidSKU>
+        </InvalidSKUList>
+    </GetPrepInstructionsForSKUResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetPrepInstructionsForSKUResponse>

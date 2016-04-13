@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DeregisterDestinationResponse xmlns="http://mws.amazonservices.com/schema/Subscriptions/2013-07-01">
+   <DeregisterDestinationResult>
+    </DeregisterDestinationResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</DeregisterDestinationResponse>

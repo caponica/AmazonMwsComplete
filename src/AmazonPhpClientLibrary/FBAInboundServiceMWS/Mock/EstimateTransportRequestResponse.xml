@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EstimateTransportRequestResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <EstimateTransportRequestResult>
+        <TransportResult>
+            <TransportStatus>String</TransportStatus>
+            <ErrorCode>String</ErrorCode>
+            <ErrorDescription>String</ErrorDescription>
+        </TransportResult>
+    </EstimateTransportRequestResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</EstimateTransportRequestResponse>

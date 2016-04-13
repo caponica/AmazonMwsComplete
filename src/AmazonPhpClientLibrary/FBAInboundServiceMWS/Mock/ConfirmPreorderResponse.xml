@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfirmPreorderResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <ConfirmPreorderResult>
+        <ConfirmedNeedByDate>String</ConfirmedNeedByDate>
+        <ConfirmedFulfillableDate>String</ConfirmedFulfillableDate>
+    </ConfirmPreorderResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ConfirmPreorderResponse>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetLastUpdatedTimeForRecommendationsResponse xmlns="https://mws.amazonservices.com/Recommendations/2013-04-01">
+   <GetLastUpdatedTimeForRecommendationsResult>
+        <InventoryRecommendationsLastUpdated>1969-07-21T02:56:03Z</InventoryRecommendationsLastUpdated>
+        <SelectionRecommendationsLastUpdated>1969-07-21T02:56:03Z</SelectionRecommendationsLastUpdated>
+        <FulfillmentRecommendationsLastUpdated>1969-07-21T02:56:03Z</FulfillmentRecommendationsLastUpdated>
+        <PricingRecommendationsLastUpdated>1969-07-21T02:56:03Z</PricingRecommendationsLastUpdated>
+        <GlobalSellingRecommendationsLastUpdated>1969-07-21T02:56:03Z</GlobalSellingRecommendationsLastUpdated>
+        <AdvertisingRecommendationsLastUpdated>1969-07-21T02:56:03Z</AdvertisingRecommendationsLastUpdated>
+    </GetLastUpdatedTimeForRecommendationsResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetLastUpdatedTimeForRecommendationsResponse>

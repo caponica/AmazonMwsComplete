@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PutTransportContentResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <PutTransportContentResult>
+        <TransportResult>
+            <TransportStatus>String</TransportStatus>
+            <ErrorCode>String</ErrorCode>
+            <ErrorDescription>String</ErrorDescription>
+        </TransportResult>
+    </PutTransportContentResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</PutTransportContentResponse>

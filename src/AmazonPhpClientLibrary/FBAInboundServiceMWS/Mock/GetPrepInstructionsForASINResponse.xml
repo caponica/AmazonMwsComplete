@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetPrepInstructionsForASINResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <GetPrepInstructionsForASINResult>
+        <ASINPrepInstructionsList>
+            <ASINPrepInstructions>
+                <ASIN>String</ASIN>
+                <BarcodeInstruction>String</BarcodeInstruction>
+                <PrepGuidance>String</PrepGuidance>
+                <PrepInstructionList>
+                    <PrepInstruction>String</PrepInstruction>
+                </PrepInstructionList>
+            </ASINPrepInstructions>
+        </ASINPrepInstructionsList>
+        <InvalidASINList>
+            <InvalidASIN>
+                <ASIN>String</ASIN>
+                <ErrorReason>String</ErrorReason>
+            </InvalidASIN>
+        </InvalidASINList>
+    </GetPrepInstructionsForASINResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetPrepInstructionsForASINResponse>

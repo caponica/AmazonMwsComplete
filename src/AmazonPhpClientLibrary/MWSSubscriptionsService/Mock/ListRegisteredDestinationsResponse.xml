@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListRegisteredDestinationsResponse xmlns="http://mws.amazonservices.com/schema/Subscriptions/2013-07-01">
+   <ListRegisteredDestinationsResult>
+        <DestinationList>
+            <member>
+                <DeliveryChannel>String</DeliveryChannel>
+                <AttributeList>
+                    <member>
+                        <Key>String</Key>
+                        <Value>String</Value>
+                    </member>
+                </AttributeList>
+            </member>
+        </DestinationList>
+    </ListRegisteredDestinationsResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ListRegisteredDestinationsResponse>

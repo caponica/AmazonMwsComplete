@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfirmTransportRequestResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <ConfirmTransportRequestResult>
+        <TransportResult>
+            <TransportStatus>String</TransportStatus>
+            <ErrorCode>String</ErrorCode>
+            <ErrorDescription>String</ErrorDescription>
+        </TransportResult>
+    </ConfirmTransportRequestResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ConfirmTransportRequestResponse>

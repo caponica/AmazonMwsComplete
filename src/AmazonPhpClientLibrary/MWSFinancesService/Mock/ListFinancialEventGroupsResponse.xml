@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListFinancialEventGroupsResponse xmlns="http://mws.amazonservices.com/Finances/2015-05-01">
+   <ListFinancialEventGroupsResult>
+        <NextToken>String</NextToken>
+        <FinancialEventGroupList>
+            <FinancialEventGroup>
+                <FinancialEventGroupId>String</FinancialEventGroupId>
+                <ProcessingStatus>String</ProcessingStatus>
+                <FundTransferStatus>String</FundTransferStatus>
+                <OriginalTotal>
+                    <CurrencyCode>String</CurrencyCode>
+                    <CurrencyAmount>100</CurrencyAmount>
+                </OriginalTotal>
+                <ConvertedTotal>
+                    <CurrencyCode>String</CurrencyCode>
+                    <CurrencyAmount>100</CurrencyAmount>
+                </ConvertedTotal>
+                <FundTransferDate>1969-07-21T02:56:03Z</FundTransferDate>
+                <TraceId>String</TraceId>
+                <AccountTail>String</AccountTail>
+                <BeginningBalance>
+                    <CurrencyCode>String</CurrencyCode>
+                    <CurrencyAmount>100</CurrencyAmount>
+                </BeginningBalance>
+                <FinancialEventGroupStart>1969-07-21T02:56:03Z</FinancialEventGroupStart>
+                <FinancialEventGroupEnd>1969-07-21T02:56:03Z</FinancialEventGroupEnd>
+            </FinancialEventGroup>
+        </FinancialEventGroupList>
+    </ListFinancialEventGroupsResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ListFinancialEventGroupsResponse>

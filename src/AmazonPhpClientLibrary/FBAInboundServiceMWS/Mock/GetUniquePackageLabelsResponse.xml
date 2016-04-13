@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetUniquePackageLabelsResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <GetUniquePackageLabelsResult>
+        <TransportDocument>
+            <PdfDocument>String</PdfDocument>
+            <Checksum>String</Checksum>
+        </TransportDocument>
+    </GetUniquePackageLabelsResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</GetUniquePackageLabelsResponse>

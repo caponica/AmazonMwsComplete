@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CreateInboundShipmentResponse xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+   <CreateInboundShipmentResult>
+        <ShipmentId>String</ShipmentId>
+    </CreateInboundShipmentResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</CreateInboundShipmentResponse>
