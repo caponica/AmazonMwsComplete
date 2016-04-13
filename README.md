@@ -1,7 +1,7 @@
 Complete Amazon MWS API
 =======================
 
-This is an attempt to simplify access to the full range of MWS API calls from a single bundle.
+This is an attempt to simplify access to the full range of MWS API calls from a single package.
 
 Installation
 ============
