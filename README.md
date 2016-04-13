@@ -15,7 +15,7 @@ Add the reference into your composer.json :
 
 Use in controller :
 
-     $client = new \MwsSearchClient(/* args */);
+     $client = new \MwsProductClient(/* args */);
 
 Client library versions
 =======================
