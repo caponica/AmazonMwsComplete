@@ -17,6 +17,61 @@ Use in controller :
 
      $client = new \MwsProductClient(/* args */);
 
+Accessing the API
+=================
+
+You can access each API directly if you want to:
+
+    use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
+
+    $mwsProductClientUsa = new MwsProductClient(
+        'YOUR_ACCESS_KEY',
+        'YOUR_SECRET_KEY',
+        'YOUR_APP_NAME',
+        'YOUR_APP_VERSION',
+        [ 'ServiceURL' => 'https://mws.amazonservices.com/Products/2011-10-01' ]
+    );
+
+    $mwsResponse = $mwsProductClientUsa->getCompetitivePricingForASIN([
+        'SellerId'          => 'YOUR_SELLER_ID',
+        'MarketplaceId'     => 'MARKETPLACE_ID',
+        'ASINList'          => array('ASIN' => 'YOUR_ASIN_SEARCH'),
+    ]);
+    // ... do something with the response ...
+
+
+However, there is a better way! The MwsClientPool encapsulates all configuration shared between all different Amazon
+API services. So create that once (for each marketplace/seller combination you want to work with) and then retrieve
+'ClientPacks' from the pool. A ClientPack includes configuration for a single Seller and Marketplace and these can be
+pre-filled into API calls by using the callXyz() methods (e.g. callGetCompetitivePricingForASIN() to call the API's
+getCompetitivePricingForASIN() method. This makes your API calls much cleaner:
+
+    use CaponicaAmazonMwsComplete\ClientPool\MwsClientPool;
+    use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
+
+    $mwsClientPoolUsa = new MwsClientPool();
+    $mwsClientPoolUsa->setConfig([
+        'amazon_site'           => MwsClientPoolConfig::SITE_US
+        'access_key'            => 'YOUR_ACCESS_KEY'
+        'secret_key'            => 'YOUR_SECRET_KEY'
+        'application_name'      => 'YOUR_APP_NAME'
+        'application_version'   => 'YOUR_APP_VERSION'
+        'seller_id'             => 'YOUR_SELLER_ID'
+    ]);
+
+    $productClientPackUsa = $mwsClientPoolUsa->getProductClientPack();
+    $mwsResponse = $productClientPackUsa->callGetCompetitivePricingForASIN('YOUR_ASIN_SEARCH');
+
+There are also some helper methods that return objects (or arrays of objects) that are easier to work with than raw
+MWS responses:
+
+    /** @var MwsCompetitivePricing[] $compPricings */
+    $compPricings = $productClientPackUsa->retrieveCompetitivePricingForASIN('YOUR_ASIN_SEARCH');
+    foreach ($compPricings as $compPricing) {
+        echo $compPricing->asin;
+    }
+
+
 Client library versions
 =======================
 
