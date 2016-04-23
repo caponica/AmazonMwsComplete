@@ -38,6 +38,14 @@ require_once (dirname(__FILE__) . '/../Model.php');
  */
 
  class MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse extends MarketplaceWebServiceProducts_Model {
+     /* Caponica addition to retain raw XML from the HTTP response */
+     protected $rawXml;
+     public function getRawXml() {
+         return $this->rawXml;
+     }
+     public function setRawXml($rawXml) {
+         $this->rawXml = $rawXml;
+     }
 
     public function __construct($data = null)
     {
@@ -201,7 +209,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
         $xpath = new DOMXPath($dom);
         $response = $xpath->query("//*[local-name()='ListMatchingProductsResponse']");
         if ($response->length == 1) {
-            return new MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse(($response->item(0))); 
+            $listMatchingProductsResponse = new MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse(($response->item(0)));
+            $listMatchingProductsResponse->setRawXml($xml); // Caponica addition to save the raw XML in case you want to custom parse it later
+            return $listMatchingProductsResponse;
         } else {
             throw new Exception ("Unable to construct MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse from provided XML. 
                                   Make sure that ListMatchingProductsResponse is a root element");
