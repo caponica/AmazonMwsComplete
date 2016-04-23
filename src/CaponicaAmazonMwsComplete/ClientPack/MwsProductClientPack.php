@@ -27,6 +27,18 @@ class MwsProductClientPack extends MwsProductClient {
     const ITEM_CONDITION_TEXT_REFURBISHED       = 'Refurbished';
     const ITEM_CONDITION_TEXT_CLUB              = 'Club';
 
+    const PARAM_ASIN                            = 'ASIN';
+    const PARAM_ASIN_LIST                       = 'ASINList';
+    const PARAM_ID_LIST                         = 'IdList';
+    const PARAM_ID_TYPE                         = 'IdType';
+    const PARAM_ITEM_CONDITION                  = 'ItemCondition';
+    const PARAM_MARKETPLACE_ID                  = 'MarketplaceId';
+    const PARAM_QUERY                           = 'Query';
+    const PARAM_QUERY_CONTEXT_ID                = 'QueryContextId';
+    const PARAM_SELLER_ID                       = 'SellerId';
+    const PARAM_SELLER_SKU                      = 'SellerSKU';
+    const PARAM_SELLER_SKU_LIST                 = 'SellerSKUList';
+
     const QUERY_CONTEXT_ALL                     = 'All';
     const QUERY_CONTEXT_APPAREL                 = 'Apparel';
     const QUERY_CONTEXT_APPLIANCES              = 'Appliances';
@@ -112,9 +124,9 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetCompetitivePricingForASIN($asin) {
         return $this->getCompetitivePricingForASIN([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asin),
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN_LIST       => array('ASIN' => $asin),
         ]);
     }
     /**
@@ -123,9 +135,9 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetCompetitivePricingForSKU($skuList) {
         return $this->getCompetitivePricingForSKU([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'SellerSKUList'     => array('SellerSKU' => $skuList),
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
         ]);
     }
     /**
@@ -135,10 +147,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetLowestOfferListingsForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getLowestOfferListingsForASIN([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asinList),
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN_LIST          => array('ASIN' => $asinList),
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -148,10 +160,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetLowestOfferListingsForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getLowestOfferListingsForSKU([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'SellerSKUList'     => array('SellerSKU' => $skuList),
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -161,10 +173,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetLowestPricedOffersForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getLowestPricedOffersForASIN([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASIN'              => $asin,
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN            => $asin,
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -174,10 +186,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetLowestPricedOffersForSKU($sku, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getLowestPricedOffersForSKU([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'SellerSKU'         => $sku,
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_SKU      => $sku,
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -186,9 +198,9 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetMatchingProduct($asinList) {
         return $this->getMatchingProduct([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asinList),
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN_LIST          => array('ASIN' => $asinList),
         ]);
     }
     /**
@@ -198,10 +210,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetMatchingProductForId($idType, $idList) {
         return $this->getMatchingProductForId([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'IdType'            => $idType,
-            'IdList'            => array('Id' => $idList),
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ID_TYPE         => $idType,
+            self::PARAM_ID_LIST         => array('Id' => $idList),
         ]);
     }
     /**
@@ -211,10 +223,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetMyPriceForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getMyPriceForASIN([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asinList),
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -224,10 +236,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetMyPriceForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getMyPriceForSKU([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'SellerSKUList'     => array('SellerSKU' => $skuList),
-            'ItemCondition'     => $itemCondition,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
+            self::PARAM_ITEM_CONDITION  => $itemCondition,
         ]);
     }
     /**
@@ -236,9 +248,9 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetProductCategoriesForASIN($asin) {
         return $this->getProductCategoriesForASIN([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'ASIN'              => $asin,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ASIN            => $asin,
         ]);
     }
     /**
@@ -247,9 +259,9 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callGetProductCategoriesForSKU($sku) {
         return $this->getProductCategoriesForSKU([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'SellerSKU'         => $sku,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_SKU      => $sku,
         ]);
     }
 
@@ -260,10 +272,10 @@ class MwsProductClientPack extends MwsProductClient {
      */
     public function callListMatchingProducts($query, $queryContext = null) {
         return $this->listMatchingProducts([
-            'SellerId'          => $this->sellerId,
-            'MarketplaceId'     => $this->marketplaceId,
-            'Query'             => $query,
-            'QueryContextId'    => $queryContext,
+            self::PARAM_SELLER_ID       => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_QUERY           => $query,
+            self::PARAM_QUERY_CONTEXT_ID => $queryContext,
         ]);
     }
 
