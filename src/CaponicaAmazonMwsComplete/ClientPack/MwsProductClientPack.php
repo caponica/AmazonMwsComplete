@@ -4,8 +4,8 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
-use CaponicaAmazonMwsComplete\Response\Product\LowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
+use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
 
 class MwsProductClientPack extends MwsProductClient {
@@ -266,7 +266,7 @@ class MwsProductClientPack extends MwsProductClient {
      *
      * @param $asin
      * @param $itemCondition
-     * @return null|LowestOfferListing[]
+     * @return null|MwsLowestOfferListing[]
      */
     public function retrieveLowestOfferListingsForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         if (empty($asin)) {
@@ -301,7 +301,7 @@ class MwsProductClientPack extends MwsProductClient {
             /** @var \MarketplaceWebServiceProducts_Model_LowestOfferListingType[] $lol */
             $lolArray = $lolList->getLowestOfferListing();
             foreach ($lolArray as $lolType) {
-                $lolObjects[] = new LowestOfferListing($lolType);
+                $lolObjects[] = new MwsLowestOfferListing($lolType);
             }
         }
         return $lolObjects;

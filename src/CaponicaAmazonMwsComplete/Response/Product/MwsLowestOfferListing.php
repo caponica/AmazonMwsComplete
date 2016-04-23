@@ -37,9 +37,13 @@ namespace CaponicaAmazonMwsComplete\Response\Product;
  * 
  */
 
-class LowestOfferListing {
+class MwsLowestOfferListing {
     const CHANNEL_MERCHANT  = 'Merchant';
     const CHANNEL_AMAZON    = 'Amazon';
+
+    const OFFER_TYPE_AMAZON     = 'AMZ';    // Sold by Amazon
+    const OFFER_TYPE_FBA        = 'FBA';    // Fulfilled by Amazon
+    const OFFER_TYPE_MERCHANT   = 'MER';    // Fulfilled by Merchant
 
     const FEEDBACK_COUNT_AMAZON = 270000;
 
@@ -87,5 +91,18 @@ class LowestOfferListing {
             return 0;
         }
         throw new \InvalidArgumentException('Could not parse a feedback rating of "' . $this->sellerPositiveFeedbackRating . '"');
+    }
+
+    public function getOfferType() {
+        if (self::CHANNEL_MERCHANT === $this->fulfillmentChannel) {
+            return self::OFFER_TYPE_MERCHANT;
+        } elseif (self::CHANNEL_AMAZON === $this->fulfillmentChannel) {
+            if (self::FEEDBACK_COUNT_AMAZON < $this->sellerPositiveFeedbackCount) { // @todo - improve this "amazon" detector
+                return self::OFFER_TYPE_AMAZON;
+            } else {
+                return self::OFFER_TYPE_FBA;
+            }
+        }
+        return null;
     }
 }
