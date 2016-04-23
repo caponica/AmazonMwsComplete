@@ -12,7 +12,73 @@ class MwsProductClientPack extends MwsProductClient {
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
 
-    const ITEM_CONDITION_TEXT_NEW       = 'New';
+    const ID_TYPE_ASIN                          = 'ASIN';
+    const ID_TYPE_GCID                          = 'GCID';
+    const ID_TYPE_SELLER_SKU                    = 'SellerSKU';
+    const ID_TYPE_UPC                           = 'UPC';
+    const ID_TYPE_EAN                           = 'EAN';
+    const ID_TYPE_ISBN                          = 'ISBN';
+    const ID_TYPE_JAN                           = 'JAN';
+
+    const ITEM_CONDITION_TEXT_ANY               = 'Any';
+    const ITEM_CONDITION_TEXT_NEW               = 'New';
+    const ITEM_CONDITION_TEXT_USED              = 'Used';
+    const ITEM_CONDITION_TEXT_COLLECTIBLE       = 'Collectible';
+    const ITEM_CONDITION_TEXT_REFURBISHED       = 'Refurbished';
+    const ITEM_CONDITION_TEXT_CLUB              = 'Club';
+
+    const QUERY_CONTEXT_ALL                     = 'All';
+    const QUERY_CONTEXT_APPAREL                 = 'Apparel';
+    const QUERY_CONTEXT_APPLIANCES              = 'Appliances';
+    const QUERY_CONTEXT_ARTS_AND_CRAFTS         = 'ArtsAndCrafts';
+    const QUERY_CONTEXT_AUTOMOTIVE              = 'Automotive';
+    const QUERY_CONTEXT_BABY                    = 'Baby';
+    const QUERY_CONTEXT_BEAUTY                  = 'Beauty';
+    const QUERY_CONTEXT_BOOKS                   = 'Books';
+    const QUERY_CONTEXT_CLASSICAL               = 'Classical';
+    const QUERY_CONTEXT_DVD                     = 'DVD';
+    const QUERY_CONTEXT_DIGITAL_MUSIC           = 'DigitalMusic';
+    const QUERY_CONTEXT_ELECTRONICS             = 'Electronics';
+    const QUERY_CONTEXT_FOREIGN_BOOKS           = 'ForeignBooks';
+    const QUERY_CONTEXT_GARDEN                  = 'Garden';
+    const QUERY_CONTEXT_GROCERY                 = 'Grocery';
+    const QUERY_CONTEXT_HEALTH_PERSONAL_CARE    = 'HealthPersonalCare';
+    const QUERY_CONTEXT_HOBBIES                 = 'Hobbies';
+    const QUERY_CONTEXT_HOME                    = 'Home';
+    const QUERY_CONTEXT_HOME_GARDEN             = 'HomeGarden';
+    const QUERY_CONTEXT_HOME_IMPROVEMENT        = 'HomeImprovement';
+    const QUERY_CONTEXT_INDUSTRIAL              = 'Industrial';
+    const QUERY_CONTEXT_JEWELRY                 = 'Jewelry';
+    const QUERY_CONTEXT_KINDLE_STORE            = 'KindleStore';
+    const QUERY_CONTEXT_KITCHEN                 = 'Kitchen';
+    const QUERY_CONTEXT_LIGHTING                = 'Lighting';
+    const QUERY_CONTEXT_MP3_DOWNLOADS           = 'MP3Downloads';
+    const QUERY_CONTEXT_MAGAZINES               = 'Magazines';
+    const QUERY_CONTEXT_MISC                    = 'Misc';
+    const QUERY_CONTEXT_MISCELLANEOUS           = 'Miscellaneous';
+    const QUERY_CONTEXT_MOBILE_APPS             = 'MobileApps';
+    const QUERY_CONTEXT_MUSIC                   = 'Music';
+    const QUERY_CONTEXT_MUSIC_TRACKS            = 'MusicTracks';
+    const QUERY_CONTEXT_MUSICAL_INSTRUMENTS     = 'MusicalInstruments';
+    const QUERY_CONTEXT_OFFICE_PRODUCTS         = 'OfficeProducts';
+    const QUERY_CONTEXT_OUTDOOR_LIVING          = 'OutdoorLiving';
+    const QUERY_CONTEXT_OUTLET                  = 'Outlet';
+    const QUERY_CONTEXT_PC_HARDWARE             = 'PCHardware';
+    const QUERY_CONTEXT_PET_SUPPLIES            = 'PetSupplies';
+    const QUERY_CONTEXT_PHOTO                   = 'Photo';
+    const QUERY_CONTEXT_SHOES                   = 'Shoes';
+    const QUERY_CONTEXT_SOFTWARE                = 'Software';
+    const QUERY_CONTEXT_SOFTWARE_VIDEO_GAMES    = 'SoftwareVideoGames';
+    const QUERY_CONTEXT_SPORTING_GOODS          = 'SportingGoods';
+    const QUERY_CONTEXT_TOOLS                   = 'Tools';
+    const QUERY_CONTEXT_TOYS                    = 'Toys';
+    const QUERY_CONTEXT_UNBOX_VIDEO             = 'UnboxVideo';
+    const QUERY_CONTEXT_VHS                     = 'VHS';
+    const QUERY_CONTEXT_VIDEO                   = 'Video';
+    const QUERY_CONTEXT_VIDEO_GAMES             = 'VideoGames';
+    const QUERY_CONTEXT_WATCHES                 = 'Watches';
+    const QUERY_CONTEXT_WIRELESS                = 'Wireless';
+    const QUERY_CONTEXT_WIRELESS_ACCESSORIES    = 'WirelessAccessories';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -40,6 +106,10 @@ class MwsProductClientPack extends MwsProductClient {
     // ##################################################
     // #      basic wrappers for API calls go here      #
     // ##################################################
+    /**
+     * @param string|array $asin        One or more ASINs to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetCompetitivePricingForASINResponse
+     */
     public function callGetCompetitivePricingForASIN($asin) {
         return $this->getCompetitivePricingForASIN([
             'SellerId'          => $this->sellerId,
@@ -47,22 +117,147 @@ class MwsProductClientPack extends MwsProductClient {
             'ASINList'          => array('ASIN' => $asin),
         ]);
     }
-    public function callGetLowestOfferListingsForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+    /**
+     * @param string|array $skuList     One or more SKUs to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetCompetitivePricingForSKUResponse
+     */
+    public function callGetCompetitivePricingForSKU($skuList) {
+        return $this->getCompetitivePricingForSKU([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'SellerSKUList'     => array('SellerSKU' => $skuList),
+        ]);
+    }
+    /**
+     * @param string|array $asinList    One or more ASINs to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASINResponse
+     */
+    public function callGetLowestOfferListingsForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getLowestOfferListingsForASIN([
             'SellerId'          => $this->sellerId,
             'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asin),
+            'ASINList'          => array('ASIN' => $asinList),
             'ItemCondition'     => $itemCondition,
         ]);
     }
-    public function callGetMyPriceForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+    /**
+     * @param string|array $skuList     One or more SKUs to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForSKUResponse
+     */
+    public function callGetLowestOfferListingsForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+        return $this->getLowestOfferListingsForSKU([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'SellerSKUList'     => array('SellerSKU' => $skuList),
+            'ItemCondition'     => $itemCondition,
+        ]);
+    }
+    /**
+     * @param string $asin              A single ASIN to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetLowestPricedOffersForASINResponse
+     */
+    public function callGetLowestPricedOffersForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+        return $this->getLowestPricedOffersForASIN([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'ASIN'              => $asin,
+            'ItemCondition'     => $itemCondition,
+        ]);
+    }
+    /**
+     * @param string $sku               A single SKU to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetLowestPricedOffersForSKUResponse
+     */
+    public function callGetLowestPricedOffersForSKU($sku, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+        return $this->getLowestPricedOffersForSKU([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'SellerSKU'         => $sku,
+            'ItemCondition'     => $itemCondition,
+        ]);
+    }
+    /**
+     * @param string|array $asinList    One or more ASINs to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductResponse
+     */
+    public function callGetMatchingProduct($asinList) {
+        return $this->getMatchingProduct([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'ASINList'          => array('ASIN' => $asinList),
+        ]);
+    }
+    /**
+     * @param string $idType            The IdType of the IDs to look up, one of the ID_TYPE_XYZ values
+     * @param string|array $idList      One or more IDs to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse
+     */
+    public function callGetMatchingProductForId($idType, $idList) {
+        return $this->getMatchingProductForId([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'IdType'            => $idType,
+            'IdList'            => array('Id' => $idList),
+        ]);
+    }
+    /**
+     * @param string|array $asinList    One or more ASINs to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetMyPriceForASINResponse
+     */
+    public function callGetMyPriceForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         return $this->getMyPriceForASIN([
             'SellerId'          => $this->sellerId,
             'MarketplaceId'     => $this->marketplaceId,
-            'ASINList'          => array('ASIN' => $asin),
+            'ASINList'          => array('ASIN' => $asinList),
             'ItemCondition'     => $itemCondition,
         ]);
     }
+    /**
+     * @param string|array $skuList     One or more SKUs to lookup
+     * @param string $itemCondition     Defaults to ITEM_CONDITION_TEXT_NEW
+     * @return \MarketplaceWebServiceProducts_Model_GetMyPriceForSKUResponse
+     */
+    public function callGetMyPriceForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
+        return $this->getMyPriceForSKU([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'SellerSKUList'     => array('SellerSKU' => $skuList),
+            'ItemCondition'     => $itemCondition,
+        ]);
+    }
+    /**
+     * @param string $asin              A single ASIN to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetProductCategoriesForASINResponse
+     */
+    public function callGetProductCategoriesForASIN($asin) {
+        return $this->getProductCategoriesForASIN([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'ASIN'              => $asin,
+        ]);
+    }
+    /**
+     * @param string $sku               A single SKU to lookup
+     * @return \MarketplaceWebServiceProducts_Model_GetProductCategoriesForSKUResponse
+     */
+    public function callGetProductCategoriesForSKU($sku) {
+        return $this->getProductCategoriesForSKU([
+            'SellerId'          => $this->sellerId,
+            'MarketplaceId'     => $this->marketplaceId,
+            'SellerSKU'         => $sku,
+        ]);
+    }
+
+    /**
+     * @param string $query             The search string
+     * @param null $queryContext        Optional search context, one of the QUERY_CONTEXT_XYZ values
+     * @return \MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse
+     */
     public function callListMatchingProducts($query, $queryContext = null) {
         return $this->listMatchingProducts([
             'SellerId'          => $this->sellerId,
