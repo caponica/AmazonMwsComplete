@@ -9,12 +9,17 @@
 
 namespace CaponicaAmazonMwsComplete\ClientPool;
 
+use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
 
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
     protected $channelId;
 
+    /**
+     * @var MwsFeedAndReportClientPack
+     */
+    protected $feedAndReportClientPack;
     /**
      * @var MwsProductClientPack
      */
@@ -31,6 +36,13 @@ class MwsClientPool {
             $this->productClientPack = new MwsProductClientPack($this->config);
         }
         return $this->productClientPack;
+    }
+
+    public function getFeedAndReportClientPack() {
+        if(empty($this->feedAndReportClientPack)) {
+            $this->feedAndReportClientPack = new MwsFeedAndReportClientPack($this->config);
+        }
+        return $this->feedAndReportClientPack;
     }
 
     public function setChannelId($value) {
