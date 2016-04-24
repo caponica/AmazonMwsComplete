@@ -167,7 +167,7 @@ abstract class MarketplaceWebService_Model
                 if ($this->isComplexType($fieldType[0])) {
                     $elements = $xpath->query("./a:$fieldName", $dom);
                     if ($elements->length >= 1) {
-                        require_once (str_replace('_', DIRECTORY_SEPARATOR, $fieldType[0]) . ".php");
+                        require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $fieldType[0]) . ".php");
                         foreach ($elements as $element) {
                             $this->fields[$fieldName]['FieldValue'][] = new $fieldType[0]($element);
                         }
@@ -185,7 +185,7 @@ abstract class MarketplaceWebService_Model
                 if ($this->isComplexType($fieldType)) {
                     $elements = $xpath->query("./a:$fieldName", $dom);
                     if ($elements->length == 1) {
-                        require_once (str_replace('_', DIRECTORY_SEPARATOR, $fieldType) . ".php");
+                        require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $fieldType) . ".php");
                         $this->fields[$fieldName]['FieldValue'] = new $fieldType($elements->item(0));
                     }   
                 } else {
