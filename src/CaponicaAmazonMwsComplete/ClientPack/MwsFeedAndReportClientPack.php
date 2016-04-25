@@ -40,6 +40,7 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     const FEED_TYPE_FBA_FLAT_INBOUND_PLAN_UPDATE = '_POST_FLAT_FILE_FBA_UPDATE_INBOUND_PLAN_';
 
     const PARAM_FEED_CONTENT                    = 'FeedContent';
+    const PARAM_FEED_CONTENT_MD5                = 'ContentMd5';
     const PARAM_FEED_PROCESSING_STATUS_LIST     = 'FeedProcessingStatusList';
     const PARAM_FEED_SUBMISSION_ID              = 'FeedSubmissionId';
     const PARAM_FEED_SUBMISSION_ID_LIST         = 'FeedSubmissionIdList';
@@ -156,13 +157,24 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
             self::PARAM_MERCHANT            => $this->sellerId,
         ]);
     }
+
+    /**
+     * @param string $feedType              One of the FEED_TYPE_XYZ values
+     * @param resource $feedContent         A file handle (resource) pointing to the feed content
+     * @return \MarketplaceWebService_Model_SubmitFeedResponse
+     */
     public function callSubmitFeed($feedType, $feedContent) {
-        return $this->submitFeed([
+        $contentHash = base64_encode(md5(stream_get_contents($feedContent), true));
+        rewind($feedContent);
+
+        $parameters = [
             self::PARAM_FEED_CONTENT        => $feedContent,
+            self::PARAM_FEED_CONTENT_MD5    => $contentHash,
             self::PARAM_FEED_TYPE           => $feedType,
             self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
             self::PARAM_MERCHANT            => $this->sellerId,
             // self::PARAM_PURGE_AND_REPLACE   => $purge, // This is ignored for safety (uses the MWS API default of false)
-        ]);
+        ];
+        return $this->submitFeed($parameters);
     }
 }
