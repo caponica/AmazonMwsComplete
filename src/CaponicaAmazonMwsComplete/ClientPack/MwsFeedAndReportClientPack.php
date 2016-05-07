@@ -41,16 +41,28 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
 
     const PARAM_FEED_CONTENT                    = 'FeedContent';
     const PARAM_FEED_CONTENT_MD5                = 'ContentMd5';
+    const PARAM_END_DATE                        = 'EndDate';
     const PARAM_FEED_PROCESSING_STATUS_LIST     = 'FeedProcessingStatusList';
     const PARAM_FEED_SUBMISSION_ID              = 'FeedSubmissionId';
     const PARAM_FEED_SUBMISSION_ID_LIST         = 'FeedSubmissionIdList';
     const PARAM_FEED_TYPE                       = 'FeedType';
     const PARAM_FEED_TYPE_LIST                  = 'FeedTypeList';
+    const PARAM_MARKETPLACE                     = 'Marketplace';
     const PARAM_MARKETPLACE_ID_LIST             = 'MarketplaceIdList';
     const PARAM_MAX_COUNT                       = 'MaxCount';
     const PARAM_MERCHANT                        = 'Merchant';
     const PARAM_NEXT_TOKEN                      = 'NextToken';
     const PARAM_PURGE_AND_REPLACE               = 'PurgeAndReplace';
+    const PARAM_REPORT                          = 'Report';
+    const PARAM_REPORT_OPTIONS                  = 'ReportOptions';
+    const PARAM_REPORT_PROCESSING_STATUS_LIST   = 'ReportProcessingStatusList';
+    const PARAM_REPORT_REQUEST_ID_LIST          = 'ReportRequestIdList';
+    const PARAM_REPORT_ID                       = 'ReportId';
+    const PARAM_REPORT_TYPE                     = 'ReportType';
+    const PARAM_REPORT_TYPE_LIST                = 'ReportTypeList';
+    const PARAM_REQUESTED_FROM_DATE             = 'RequestedFromDate';
+    const PARAM_REQUESTED_TO_DATE               = 'RequestedToDate';
+    const PARAM_START_DATE                      = 'StartDate';
     const PARAM_SUBMITTED_DATE_FROM             = 'SubmittedFromDate';
     const PARAM_SUBMITTED_DATE_TO               = 'SubmittedToDate';
 
@@ -176,5 +188,45 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
             // self::PARAM_PURGE_AND_REPLACE   => $purge, // This is ignored for safety (uses the MWS API default of false)
         ];
         return $this->submitFeed($parameters);
+    }
+
+    /**
+     * @param string $reportType            A valid ReportType @todo - add class constants for various report types
+     * @todo - add startDate, endDate, reportOptions
+     * @return \MarketplaceWebService_Model_RequestReportResponse
+     */
+    public function callRequestReport($reportType) {
+        return $this->requestReport([
+            self::PARAM_MARKETPLACE         => $this->marketplaceId,
+            self::PARAM_MERCHANT            => $this->sellerId,
+            self::PARAM_REPORT_TYPE         => $reportType,
+            self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
+        ]);
+    }
+
+    /**
+     * @param string|array $reportRequestIds    One or more ReportRequestIds, as returned by requestReport()
+     * @todo - add ReportTypeList, ReportProcessingStatusList, MaxCount, RequestedFromDate, RequestedFromDate
+     * @return \MarketplaceWebService_Model_GetReportRequestListResponse
+     */
+    public function callGetReportRequestList($reportRequestIds) {
+        return $this->getReportRequestList([
+            self::PARAM_MARKETPLACE             => $this->marketplaceId,
+            self::PARAM_MERCHANT                => $this->sellerId,
+            self::PARAM_REPORT_REQUEST_ID_LIST  => array('Id' => $reportRequestIds),
+        ]);
+    }
+
+    /**
+     * @param string $reportId              The GeneratedReportId to download, as returned by getReportRequestList()
+     * @param resource $filename            A file handle (resource) where the report will be written to
+     * @return \MarketplaceWebService_Model_GetReportResponse
+     */
+    public function callGetReport($reportId, $filename) {
+        return $this->getReport([
+            self::PARAM_MERCHANT                => $this->sellerId,
+            self::PARAM_REPORT_ID               => $reportId,
+            self::PARAM_REPORT                  => $filename,
+        ]);
     }
 }
