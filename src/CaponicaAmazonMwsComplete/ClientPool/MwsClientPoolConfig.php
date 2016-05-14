@@ -37,6 +37,7 @@ class MwsClientPoolConfig {
     const CONFIG_KEY_PROXY_USERNAME         = 'ProxyUsername';
     const CONFIG_KEY_PROXY_PASSWORD         = 'ProxyPassword';
     const CONFIG_KEY_MAX_ERROR_RETRY        = 'MaxErrorRetry';
+    const CONFIG_KEY_HEADERS                = 'Headers';
 
     private $accessKey;
     private $secretKey;
@@ -194,6 +195,21 @@ class MwsClientPoolConfig {
             self::CONFIG_KEY_MAX_ERROR_RETRY,
         ];
     }
+
+    public function getConfigKeysForFinance() {
+        return [
+            self::CONFIG_KEY_SERVICE_URL,
+            self::CONFIG_KEY_USER_AGENT,
+            self::CONFIG_KEY_SIGNATURE_VERSION,
+            self::CONFIG_KEY_SIGNATURE_METHOD,
+            self::CONFIG_KEY_PROXY_HOST,
+            self::CONFIG_KEY_PROXY_PORT,
+            self::CONFIG_KEY_MAX_ERROR_RETRY,
+            self::CONFIG_KEY_PROXY_USERNAME,
+            self::CONFIG_KEY_PROXY_PASSWORD,
+            self::CONFIG_KEY_HEADERS,
+        ];
+    }
     /**
      * Builds the array of extra "config" values to pass through to MarketplaceWebServiceProducts_Client::__construct()
      *
@@ -219,6 +235,22 @@ class MwsClientPoolConfig {
     public function getConfigForFeedAndReport($serviceUrlSuffix) {
         $config = [];
         foreach ($this->getConfigKeysForFeedAndReport() as $key) {
+            if (!empty($this->extras[$key])) {
+                $config[$key] = $this->extras[$key];
+            }
+        }
+        $config [self::CONFIG_KEY_SERVICE_URL] = $this->getMwsEndpoint($this->amazonSite) . $serviceUrlSuffix;
+        return $config;
+    }
+    /**
+     * Builds the array of extra "config" values to pass through to MWSFinancesService_Client::__construct()
+     *
+     * @param $serviceUrlSuffix
+     * @return array
+     */
+    public function getConfigForFinance($serviceUrlSuffix) {
+        $config = [];
+        foreach ($this->getConfigKeysForFinance() as $key) {
             if (!empty($this->extras[$key])) {
                 $config[$key] = $this->extras[$key];
             }

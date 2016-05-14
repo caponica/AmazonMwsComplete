@@ -10,6 +10,7 @@
 namespace CaponicaAmazonMwsComplete\ClientPool;
 
 use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
 
 class MwsClientPool {
@@ -21,6 +22,10 @@ class MwsClientPool {
      */
     protected $feedAndReportClientPack;
     /**
+     * @var MwsFinanceClientPack
+     */
+    protected $financeClientPack;
+    /**
      * @var MwsProductClientPack
      */
     protected $productClientPack;
@@ -31,6 +36,19 @@ class MwsClientPool {
         $this->config = new MwsClientPoolConfig($config);
     }
 
+    /**
+     * @return MwsFinanceClientPack
+     */
+    public function getFinanceClientPack() {
+        if(empty($this->financeClientPack)) {
+            $this->financeClientPack = new MwsFinanceClientPack($this->config);
+        }
+        return $this->financeClientPack;
+    }
+
+    /**
+     * @return MwsProductClientPack
+     */
     public function getProductClientPack() {
         if(empty($this->productClientPack)) {
             $this->productClientPack = new MwsProductClientPack($this->config);
@@ -38,6 +56,9 @@ class MwsClientPool {
         return $this->productClientPack;
     }
 
+    /**
+     * @return MwsFeedAndReportClientPack
+     */
     public function getFeedAndReportClientPack() {
         if(empty($this->feedAndReportClientPack)) {
             $this->feedAndReportClientPack = new MwsFeedAndReportClientPack($this->config);
