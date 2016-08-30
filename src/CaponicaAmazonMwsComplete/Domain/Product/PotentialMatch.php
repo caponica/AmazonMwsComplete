@@ -141,6 +141,22 @@ final class PotentialMatch {
         $this->finalAttributeOffset = $attributeOffset;
     }
 
+    public function hasAllThreeDimensions() {
+        if (empty($this->dimensions)) {
+            return false;
+        }
+        if (empty($this->dimensions['W']) || empty($this->dimensions['L']) || empty($this->dimensions['H'])) {
+            return false;
+        }
+        return true;
+    }
+    public function getDimensionsAsArrayOfNumbers() {
+        return [
+            $this->dimensions['W'] * 1,
+            $this->dimensions['L'] * 1,
+            $this->dimensions['H'] * 1,
+        ];
+    }
 
     // ###################################################################
     // # Helper methods for extracting extra data from the API responses #
