@@ -152,9 +152,9 @@ final class PotentialMatch {
     }
     public function getDimensionsAsArrayOfNumbers() {
         return [
-            $this->dimensions['W'] * 1,
-            $this->dimensions['L'] * 1,
-            $this->dimensions['H'] * 1,
+            round((float)$this->dimensions['W'], 1),
+            round((float)$this->dimensions['L'], 1),
+            round((float)$this->dimensions['H'], 1),
         ];
     }
 
