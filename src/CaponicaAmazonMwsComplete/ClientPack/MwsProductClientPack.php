@@ -4,6 +4,7 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
+use CaponicaAmazonMwsComplete\Domain\Product\PotentialMatch;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
@@ -280,13 +281,13 @@ class MwsProductClientPack extends MwsProductClient {
     }
 
 
-    // ###################################################################################
-    // # more advanced methods, trying to retrieve more usefully formed data fro the API #
-    // ###################################################################################
+    // ####################################################################################
+    // # more advanced methods, trying to retrieve more usefully formed data from the API #
+    // ####################################################################################
     /**
      * @param $searchTerm
      * @param $searchContext
-     * @return array|null
+     * @return PotentialMatch[]|null
      */
     public function retrievePotentialMatchesOnAmazon($searchTerm, $searchContext=null) {
         if (empty($searchTerm)) {
@@ -327,107 +328,16 @@ class MwsProductClientPack extends MwsProductClient {
 
         $attributeOffset = 0;
         foreach ($productArray as $product) {
-            $potentialMatch = array();
-            /** @var \MarketplaceWebServiceProducts_Model_IdentifierType $idType */
-            $idType = $product->getIdentifiers();
-            if ($idType->isSetMarketplaceASIN()) {
-                /** @var \MarketplaceWebServiceProducts_Model_ASINIdentifier $asinId */
-                $asinId = $idType->getMarketplaceASIN();
-                $potentialMatch['asin'] = $asinId->getASIN();
-            } else {
-                continue;
-            }
-
-            /** @var \MarketplaceWebServiceProducts_Model_SalesRankList $salesRanks */
-            $salesRanks = $product->getSalesRankings();
-            if (!empty($salesRanks)) {
-                /** @var \MarketplaceWebServiceProducts_Model_SalesRankType $salesRank */
-                foreach ($salesRanks->getSalesRank() as $salesRank) {
-                    if (strpos($salesRank->getProductCategoryId(), '_display_on_website')) {
-                        $potentialMatch['rank'] = $salesRank->getRank();
-                        $potentialMatch['rankCat'] = $salesRank->getProductCategoryId();
-                    } else {
-                        echo "\n>>Found Secondary Rank: #" . $salesRank->getRank() . " in " . $salesRank->getProductCategoryId() . " for asin {$potentialMatch['asin']}";
-                    }
-                }
-            }
-
-            $attributes = null;
-            // Parser cannot calculate attribute sets, so do it manually:
-            $attributeOffset = strpos($searchResult->getRawXml(), self::ATTRIBUTE_SET_MARKER_START, $attributeOffset);
-            if (false !== $attributeOffset) {
-                $attributeOffsetEnd = strpos($searchResult->getRawXml(), self::ATTRIBUTE_SET_MARKER_END, $attributeOffset);
-                if (false !== $attributeOffset) {
-                    $processedXml = substr($searchResult->getRawXml(), $attributeOffset+strlen(self::ATTRIBUTE_SET_MARKER_START), $attributeOffsetEnd-$attributeOffset-strlen(self::ATTRIBUTE_SET_MARKER_START));
-                    $processedXml = str_replace('ns2:', '', $processedXml);
-                    $attributes = new \SimpleXMLElement($processedXml);
-
-                    $attributeOffset = $attributeOffsetEnd;
-                }
-            }
-            if (!empty($attributes)) {
-                if (!empty($attributes->ListPrice->Amount)) {
-                    $potentialMatch['listPrice'] = $attributes->ListPrice->Amount->__toString();
-                }
-                if (!empty($attributes->ListPrice->CurrencyCode)) {
-                    $potentialMatch['listPriceCurrency'] = $attributes->ListPrice->CurrencyCode->__toString();
-                }
-                $dimensionsField = null;
-                if (!empty($attributes->ItemDimensions)) {
-                    $dimensionsField        = 'ItemDimensions';
-                    $itemBasedDimensions    = $this->extractDimensionsFromAttributes($attributes->$dimensionsField);
-                    $itemBasedWeight        = $this->extractWeightFromAttributes($attributes->$dimensionsField);
-                } else {
-                    $itemBasedDimensions    = array();
-                    $itemBasedWeight        = 0;
-                }
-                if (!empty($attributes->PackageDimensions)) {
-                    $dimensionsField        = 'PackageDimensions';
-                    $packageBasedDimensions = $this->extractDimensionsFromAttributes($attributes->$dimensionsField);
-                    $packageBasedWeight     = $this->extractWeightFromAttributes($attributes->$dimensionsField);
-                } else {
-                    $packageBasedDimensions = array();
-                    $packageBasedWeight     = 0;
-                }
-                if (!empty($packageBasedDimensions)) {
-                    $potentialMatch['dimensions'] = $packageBasedDimensions;
-                } elseif (!empty($itemBasedDimensions)) {
-                    $potentialMatch['dimensions'] = $itemBasedDimensions;
-                }
-                if (!empty($packageBasedWeight)) {
-                    $potentialMatch['weightPounds'] = $packageBasedWeight;
-                } elseif (!empty($itemBasedWeight)) {
-                    $potentialMatch['weightPounds'] = $itemBasedWeight;
-                }
-                if (!empty($attributes->Model)) {
-                    $potentialMatch['model'] = $attributes->Model->__toString();
-                }
-                if (!empty($attributes->ItemPartNumber)) {
-                    $potentialMatch['itemPartNumber'] = $attributes->ItemPartNumber->__toString();
-                }
-                if (!empty($attributes->PartNumber)) {
-                    $potentialMatch['partNumber'] = $attributes->PartNumber->__toString();
-                }
-                if (!empty($attributes->Brand)) {
-                    $potentialMatch['brand'] = $attributes->Brand->__toString();
-                }
-                if (!empty($attributes->Label)) {
-                    $potentialMatch['label'] = $attributes->Label->__toString();
-                }
-                if (!empty($attributes->Manufacturer)) {
-                    $potentialMatch['manufacturer'] = $attributes->Manufacturer->__toString();
-                }
-                if (!empty($attributes->Publisher)) {
-                    $potentialMatch['publisher'] = $attributes->Publisher->__toString();
-                }
-                if (!empty($attributes->Title)) {
-                    $potentialMatch['title'] = $attributes->Title->__toString();
-                }
-            }
-            if (!empty($potentialMatch)) {
+            try {
+                $potentialMatch = new PotentialMatch($product, $searchResult->getRawXml(), $attributeOffset);
+                $attributeOffset = $potentialMatch->getFinalAttributeOffset();
                 $potentialMatches[] = $potentialMatch;
+            } catch (\InvalidArgumentException $e) {
+                print_r($e); // @todo - better way to debug an exception
+                return null;
             }
         }
+
         return $potentialMatches;
     }
 
@@ -550,38 +460,5 @@ class MwsProductClientPack extends MwsProductClient {
             $mpfaObjects[] = new MwsMyPriceForAsin($mpfaResult);
         }
         return $mpfaObjects;
-    }
-
-
-    // ###################################################################
-    // # Helper methods for extracting extra data from the API responses #
-    // ###################################################################
-    private function extractDimensionsFromAttributes($productAttributes) {
-        $dimensions = array();
-        if (!empty($productAttributes->Width) &&
-            !empty($productAttributes->Length) &&
-            !empty($productAttributes->Height)
-        ) {
-            $dimensionAttributes = $productAttributes->Width->attributes();
-            if (!empty($dimensionAttributes['Units'][0]) && 'inches'==$dimensionAttributes['Units'][0]) {
-                $dimensions = array(
-                    'W' => $productAttributes->Width->__toString(),
-                    'L' => $productAttributes->Length->__toString(),
-                    'H' => $productAttributes->Height->__toString(),
-                );
-            }
-        }
-        return $dimensions;
-    }
-    private function extractWeightFromAttributes($productAttributes) {
-        $weight = 0;
-        if (!empty($productAttributes->Weight)) {
-            $weightAmount = $productAttributes->Weight->__toString();
-            $weightAttributes = $productAttributes->Weight->attributes();
-            if (!empty($weightAttributes['Units'][0]) && 'pounds'==$weightAttributes['Units'][0]) {
-                $weight = $weightAmount * 1;
-            }
-        }
-        return $weight;
     }
 }
