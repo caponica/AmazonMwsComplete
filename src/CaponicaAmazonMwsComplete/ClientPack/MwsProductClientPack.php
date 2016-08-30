@@ -9,7 +9,7 @@ use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
 
-class MwsProductClientPack extends MwsProductClient {
+class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClientPackInterface {
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
 
@@ -92,6 +92,8 @@ class MwsProductClientPack extends MwsProductClient {
     const QUERY_CONTEXT_WATCHES                 = 'Watches';
     const QUERY_CONTEXT_WIRELESS                = 'Wireless';
     const QUERY_CONTEXT_WIRELESS_ACCESSORIES    = 'WirelessAccessories';
+
+    const METHOD_LIST_MATCHING_PRODUCTS         = 'listMatchingProducts';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -272,14 +274,20 @@ class MwsProductClientPack extends MwsProductClient {
      * @return \MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse
      */
     public function callListMatchingProducts($query, $queryContext = null) {
-        return $this->listMatchingProducts([
+        $options = [
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_QUERY           => $query,
             self::PARAM_QUERY_CONTEXT_ID => $queryContext,
-        ]);
+        ];
+        return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_MATCHING_PRODUCTS, $options);
     }
 
+    public function getThrottleSnoozeSeconds() {
+        return [
+            self::METHOD_LIST_MATCHING_PRODUCTS => 5,
+        ];
+    }
 
     // ####################################################################################
     // # more advanced methods, trying to retrieve more usefully formed data from the API #
@@ -298,13 +306,11 @@ class MwsProductClientPack extends MwsProductClient {
         $potentialMatches = [];
 
         try {
-            sleep(5);
             /** @var \MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse $searchResult */
             $searchResult = $this->callListMatchingProducts($searchTerm, $searchContext);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
                 echo "\nThe request was throttled";
-                sleep(5);
             } else {
                 echo "\nThere was a problem with the search";
                 echo "\nTerms searched:";
