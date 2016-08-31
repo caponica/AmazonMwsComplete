@@ -5,6 +5,8 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
 use CaponicaAmazonMwsComplete\Domain\Product\PotentialMatch;
+use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
+use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
@@ -103,6 +105,8 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     public function __construct(MwsClientPoolConfig $poolConfig) {
         $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
         $this->sellerId         = $poolConfig->getSellerId();
+
+        $this->initThrottleManager();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -283,10 +287,23 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_MATCHING_PRODUCTS, $options);
     }
 
-    public function getThrottleSnoozeSeconds() {
-        return [
-            self::METHOD_LIST_MATCHING_PRODUCTS => 5,
-        ];
+    // ###################################################
+    // # ThrottleAwareClientPackInterface implementation #
+    // ###################################################
+    private $throttleManager;
+
+    public function initThrottleManager() {
+        $this->throttleManager = new ThrottledRequestManager(
+            [
+                self::METHOD_LIST_MATCHING_PRODUCTS => 20,
+            ], [
+                self::METHOD_LIST_MATCHING_PRODUCTS => 0.2,
+            ]
+        );
+    }
+
+    public function getThrottleManager() {
+        return $this->throttleManager;
     }
 
     // ####################################################################################
