@@ -316,8 +316,13 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
                 echo "\nTerms searched:";
                 print_r($searchTerm);
             }
+            // @todo - better way to debug an exception
             echo "\nException details:";
-            print_r($e); // @todo - better way to debug an exception
+            echo "\nCode:    " . $e->getErrorCode();
+            echo "\nError:   " . $e->getErrorMessage();
+            echo "\nMessage: " . $e->getMessage();
+            echo "\nXML:     " . $e->getXML();
+            echo "\nHeaders: " . $e->getResponseHeaderMetadata();
             return null;
         }
         /** @var \MarketplaceWebServiceProducts_Model_ListMatchingProductsResult $mwsProductResults */
