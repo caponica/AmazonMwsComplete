@@ -31,13 +31,10 @@ class CaponicaClientPack {
         if ($snoozeLength > 0) {
             echo "\nSnoozing for $snoozeLength seconds";
             if (is_int($snoozeLength)) {
-                echo "\nSleep for $snoozeLength seconds";
                 sleep($snoozeLength);
             } else {
-                echo "\nusleep for $snoozeLength seconds";
                 usleep($snoozeLength * 1000000);
             }
-            echo "\nSnooze over";
         }
     }
 }

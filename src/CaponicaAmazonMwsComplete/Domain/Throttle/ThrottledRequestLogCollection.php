@@ -38,8 +38,6 @@ final class ThrottledRequestLogCollection {
             }
         }
         foreach ($keysToClear as $key) {
-echo "\nTimestamp is " . time();
-echo "\nRemoving log " . $this->logs[$key]->getClearsAtTime();
             unset($this->logs[$key]);
         }
     }
