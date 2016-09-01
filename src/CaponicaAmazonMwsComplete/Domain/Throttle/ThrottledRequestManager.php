@@ -5,31 +5,30 @@ namespace CaponicaAmazonMwsComplete\Domain\Throttle;
 final class ThrottledRequestManager {
     /** @var ThrottledRequestLogCollection[] */
     private $requestLogCollections  = [];
-    private $maximumRequestQuotas   = [];
-    private $restoreRatesPerSecond  = [];
 
-    public function __construct($maximumRequestQuotas=[], $restoreRatesPerSecond=[]) {
-        $this->maximumRequestQuotas  = $maximumRequestQuotas;
-        $this->restoreRatesPerSecond = $restoreRatesPerSecond;
-        if (count($maximumRequestQuotas) != count($restoreRatesPerSecond)) {
-            throw new \InvalidArgumentException('Should be identical number of settings for each ThrottledRequestManager parameter');
+    /**
+     * ThrottledRequestManager constructor.
+     * @param array $configuration  Indexed by apiMethod, each one should have 2 or 3 values:
+     *                              - int maximumRequestQuota
+     *                              - float restoreRatePerSecond
+     *                              - string restoreRateBasis
+     */
+    public function __construct($configuration=[]) {
+        foreach ($configuration as $apiMethod => $settings) {
+            $maximumRequestQuota = $settings[0];
+            $restoreRatePerSecond = $settings[1];
+            $restoreRateBasis = empty($settings[2]) ? ThrottledRequestLogCollection::RESTORE_BASIS_REQUEST : $settings[2];
+            $this->requestLogCollections[$apiMethod] = new ThrottledRequestLogCollection($maximumRequestQuota, $restoreRatePerSecond, $restoreRateBasis);
         }
-
-        $apiMethods = array_keys($this->maximumRequestQuotas);
-        foreach ($apiMethods as $apiMethod) {
-            $maximumRequestQuota = $this->maximumRequestQuotas[$apiMethod];
-            $restoreRatePerSecond = $this->restoreRatesPerSecond[$apiMethod];
-            $this->requestLogCollections[$apiMethod] = new ThrottledRequestLogCollection($maximumRequestQuota, $restoreRatePerSecond);
-        }
     }
 
-    public function getRestoreInterval($apiMethod) {
-        return ceil(1 / $this->restoreRatesPerSecond[$apiMethod]);
+    public function getRestoreInterval($apiMethod, $weight=null) {
+        return $this->requestLogCollections[$apiMethod]->getRestoreInterval($weight);
     }
-    public function snoozeRequiredBeforeNewRequest($apiMethod) {
-        return $this->requestLogCollections[$apiMethod]->snoozeRequiredBeforeNewRequest();
+    public function snoozeRequiredBeforeNewRequest($apiMethod, $weight=null) {
+        return $this->requestLogCollections[$apiMethod]->snoozeRequiredBeforeNewRequest($weight);
     }
-    public function addRequestLogForMethod($apiMethod) {
-        $this->requestLogCollections[$apiMethod]->addLog($apiMethod);
+    public function addRequestLogForMethod($apiMethod, $weight=null) {
+        $this->requestLogCollections[$apiMethod]->addLog($apiMethod, $weight);
     }
 }

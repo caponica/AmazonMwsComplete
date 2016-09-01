@@ -6,6 +6,7 @@ use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
 use CaponicaAmazonMwsComplete\Domain\Product\PotentialMatch;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
+use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestLogCollection;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
@@ -95,7 +96,8 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const QUERY_CONTEXT_WIRELESS                = 'Wireless';
     const QUERY_CONTEXT_WIRELESS_ACCESSORIES    = 'WirelessAccessories';
 
-    const METHOD_LIST_MATCHING_PRODUCTS         = 'listMatchingProducts';
+    const METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   = 'getCompetitivePricingForASIN';
+    const METHOD_LIST_MATCHING_PRODUCTS             = 'listMatchingProducts';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -130,11 +132,13 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetCompetitivePricingForASINResponse
      */
     public function callGetCompetitivePricingForASIN($asin) {
-        return $this->getCompetitivePricingForASIN([
+        $options = [
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asin),
-        ]);
+        ];
+        $weight = is_array($asin) ? count($asin) : 1;
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN, $options, $weight);
     }
     /**
      * @param string|array $skuList     One or more SKUs to lookup
@@ -295,9 +299,8 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     public function initThrottleManager() {
         $this->throttleManager = new ThrottledRequestManager(
             [
-                self::METHOD_LIST_MATCHING_PRODUCTS => 20,
-            ], [
-                self::METHOD_LIST_MATCHING_PRODUCTS => 0.2,
+                self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
+                self::METHOD_LIST_MATCHING_PRODUCTS             => [20, 0.2],
             ]
         );
     }
