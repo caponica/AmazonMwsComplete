@@ -219,7 +219,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
         $xpath = new DOMXPath($dom);
         $response = $xpath->query("//*[local-name()='GetMatchingProductForIdResponse']");
         if ($response->length == 1) {
-            return new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse(($response->item(0))); 
+            $mwsResponse = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse(($response->item(0)));
+            $mwsResponse->setRawXml($xml); // Caponica addition to save the raw XML in case you want to custom parse it later
+            return $mwsResponse;
         } else {
             throw new Exception ("Unable to construct MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse from provided XML. 
                                   Make sure that GetMatchingProductForIdResponse is a root element");

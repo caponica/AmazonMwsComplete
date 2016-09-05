@@ -22,6 +22,15 @@
  */
 abstract class MarketplaceWebServiceProducts_Model
 {
+    /* Caponica addition to retain raw XML from the HTTP response */
+    protected $rawXml;
+    public function getRawXml() {
+        return $this->rawXml;
+    }
+    public function setRawXml($rawXml) {
+        $this->rawXml = $rawXml;
+    }
+
 
     /** @var array */
     protected $_fields = array ();
