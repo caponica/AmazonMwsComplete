@@ -24,15 +24,13 @@ final class PotentialMatch {
     private $rankCat;
     private $title;
     private $weightPounds;
-    private $finalAttributeOffset;
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
      * @param string $rawXml            Raw XML from the Amazon response
-     * @param int $attributeOffset      Offset for this product in the XML
      * @throws \InvalidArgumentException
      */
-    public function __construct($product, $rawXml, $attributeOffset) {
+    public function __construct($product, $rawXml) {
         /** @var \MarketplaceWebServiceProducts_Model_IdentifierType $idType */
         $idType = $product->getIdentifiers();
         if ($idType->isSetMarketplaceASIN()) {
@@ -58,21 +56,24 @@ final class PotentialMatch {
             }
         }
 
-        $attributes = null;
         // The parser cannot calculate attribute sets, so we need to do it manually:
-        $attributeOffset = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_START, $attributeOffset);
-        if (false !== $attributeOffset) {
-            $attributeOffsetEnd = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_END, $attributeOffset);
+        $attributes = null;
+        $attributesAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+        if (false!==$attributesAppearAfter) {
+            $attributeOffset = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_START, $attributesAppearAfter);
             if (false !== $attributeOffset) {
-                $processedXml = substr(
-                    $rawXml,
-                    $attributeOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
-                    $attributeOffsetEnd - $attributeOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
-                );
-                $processedXml = str_replace('ns2:', '', $processedXml);
-                $attributes = new \SimpleXMLElement($processedXml);
+                $attributeOffsetEnd = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_END, $attributeOffset);
+                if (false !== $attributeOffset) {
+                    $processedXml = substr(
+                        $rawXml,
+                        $attributeOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
+                        $attributeOffsetEnd - $attributeOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
+                    );
+                    $processedXml = str_replace('ns2:', '', $processedXml);
+                    $attributes = new \SimpleXMLElement($processedXml);
 
-                $attributeOffset = $attributeOffsetEnd;
+                    $attributeOffset = $attributeOffsetEnd;
+                }
             }
         }
         if (!empty($attributes)) {
@@ -137,8 +138,6 @@ final class PotentialMatch {
         if (!empty($potentialMatch)) {
             $potentialMatches[] = $potentialMatch;
         }
-
-        $this->finalAttributeOffset = $attributeOffset;
     }
 
     public function hasAllThreeDimensions() {
@@ -313,13 +312,5 @@ final class PotentialMatch {
     public function getWeightPounds()
     {
         return $this->weightPounds;
-    }
-
-    /**
-     * @return bool|int
-     */
-    public function getFinalAttributeOffset()
-    {
-        return $this->finalAttributeOffset;
     }
 }
