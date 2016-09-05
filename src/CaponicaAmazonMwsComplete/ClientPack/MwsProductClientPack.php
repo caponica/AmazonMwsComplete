@@ -99,6 +99,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   = 'getCompetitivePricingForASIN';
     const METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN = 'getLowestOfferListingsForASIN';
     const METHOD_LIST_MATCHING_PRODUCTS             = 'listMatchingProducts';
+    const METHOD_GET_MATCHING_PRODUCTS_FOR_ID       = 'getMatchingProductForId';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -223,12 +224,14 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse
      */
     public function callGetMatchingProductForId($idType, $idList) {
-        return $this->getMatchingProductForId([
+        $options = [
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ID_TYPE         => $idType,
             self::PARAM_ID_LIST         => array('Id' => $idList),
-        ]);
+        ];
+        $weight = is_array($idList) ? count($idList) : 1;
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID, $options, $weight);
     }
     /**
      * @param string|array $asinList    One or more ASINs to lookup
@@ -304,6 +307,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             [
                 self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
+                self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID       => [20, 5,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_LIST_MATCHING_PRODUCTS             => [20, 0.2],
             ]
         );
@@ -317,8 +321,56 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     // # more advanced methods, trying to retrieve more usefully formed data from the API #
     // ####################################################################################
     /**
-     * @param $searchTerm
-     * @param $searchContext
+     * @param array $eans                   Up to five EANs to search for
+     * @return PotentialMatch[][]|null
+     */
+    public function retrievePotentialEanMatchesOnAmazon($eans) {
+        if (empty($eans)) {
+            echo "\nNo EANs to search for.";
+            return null;
+        }
+
+        $potentialMatchesByEan = [];
+
+        try {
+            /** @var \MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse $searchResponse */
+            $searchResponse = $this->callGetMatchingProductForId(self::ID_TYPE_EAN, $eans);
+        } catch (\MarketplaceWebServiceProducts_Exception $e) {
+            if ('RequestThrottled' == $e->getErrorCode()) {
+                echo "\nThe request was throttled (twice)";
+            } else {
+                echo "\nThere was a problem with the search";
+                echo "\nTerms searched:";
+                print_r($eans);
+            }
+            $this->debugException($e);
+            return null;
+        }
+        /** @var \MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResult[] $mwsProductResultsForAllSearchTerms */
+        $mwsProductResultsForAllSearchTerms = $searchResponse->getGetMatchingProductForIdResult();
+
+        foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
+            $searchTerm = $mwsProductResultsForOneSearchTerm->getId();
+            if (empty($searchTerm)) {
+                echo "\nEmpty search term in results";
+                continue;
+            }
+
+            if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
+                echo "\nError for search term $searchTerm: " . $error->getMessage();
+                continue;
+            }
+
+            /** @var \MarketplaceWebServiceProducts_Model_ProductList $mwsProductList */
+            $mwsProductList = $mwsProductResultsForOneSearchTerm->getProducts();
+            $potentialMatchesByEan[$searchTerm] = $this->convertMwsProductListIntoPotentialMatchesArray($mwsProductList, $searchResponse->getRawXml());
+        }
+
+        return $potentialMatchesByEan;
+    }
+    /**
+     * @param string $searchTerm
+     * @param string $searchContext
      * @return PotentialMatch[]|null
      */
     public function retrievePotentialMatchesOnAmazon($searchTerm, $searchContext=null) {
@@ -326,8 +378,6 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             echo "\nNo terms to search for.";
             return null;
         }
-
-        $potentialMatches = [];
 
         try {
             /** @var \MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse $searchResult */
@@ -345,29 +395,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         }
         /** @var \MarketplaceWebServiceProducts_Model_ListMatchingProductsResult $mwsProductResults */
         $mwsProductResults = $searchResult->getListMatchingProductsResult();
-        /** @var \MarketplaceWebServiceProducts_Model_ProductList $mwsProducts */
-        $mwsProducts = $mwsProductResults->getProducts();
 
-        /** @var \MarketplaceWebServiceProducts_Model_Product[] $productArray */
-        $productArray = $mwsProducts->getProduct();
-        if (empty($productArray)) {
-            echo "\nNo results were found when searching for $searchTerm";
-            return null;
-        }
+        /** @var \MarketplaceWebServiceProducts_Model_ProductList $mwsProductList */
+        $mwsProductList = $mwsProductResults->getProducts();
 
-        $attributeOffset = 0;
-        foreach ($productArray as $product) {
-            try {
-                $potentialMatch = new PotentialMatch($product, $searchResult->getRawXml(), $attributeOffset);
-                $attributeOffset = $potentialMatch->getFinalAttributeOffset();
-                $potentialMatches[] = $potentialMatch;
-            } catch (\InvalidArgumentException $e) {
-                print_r($e); // @todo - better way to debug an exception
-                return null;
-            }
-        }
-
-        return $potentialMatches;
+        return $this->convertMwsProductListIntoPotentialMatchesArray($mwsProductList, $searchResult->getRawXml());
     }
 
     /**
@@ -491,6 +523,28 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $mpfaObjects;
     }
 
+    private function convertMwsProductListIntoPotentialMatchesArray(\MarketplaceWebServiceProducts_Model_ProductList $mwsProductList, $rawXml) {
+        $potentialMatches = [];
+
+        /** @var \MarketplaceWebServiceProducts_Model_Product[] $productArray */
+        $productArray = $mwsProductList->getProduct();
+        if (empty($productArray)) {
+            echo "\nNo results were found for the search term";
+            return null;
+        }
+
+        foreach ($productArray as $product) {
+            try {
+                $potentialMatch = new PotentialMatch($product, $rawXml);
+                $potentialMatches[] = $potentialMatch;
+            } catch (\InvalidArgumentException $e) {
+                print_r($e); // @todo - better way to debug an exception
+                return null;
+            }
+        }
+
+        return $potentialMatches;
+    }
     private function debugException(\MarketplaceWebServiceProducts_Exception $e) {
         echo "\nException details:";
         echo "\nCode:    " . $e->getErrorCode();
