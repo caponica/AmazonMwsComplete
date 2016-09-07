@@ -141,13 +141,17 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     const PARAM_SUBMITTED_DATE_FROM                     = 'SubmittedFromDate';
     const PARAM_SUBMITTED_DATE_TO                       = 'SubmittedToDate';
 
-    const PROCESSING_STATUS_AWAIT_ASYNCH_REPLY          = '_AWAITING_ASYNCHRONOUS_REPLY_';  // The request is being processed, but is waiting for external information before it can complete.
-    const PROCESSING_STATUS_CANCELLED                   = '_CANCELLED_'; 	                // The request has been aborted due to a fatal error.
-    const PROCESSING_STATUS_DONE                        = '_DONE_'; 	                    // The request has been processed. You can call the GetFeedSubmissionResult operation to receive a processing report that describes which records in the feed were successful and which records generated errors.
-    const PROCESSING_STATUS_IN_PROGRESS                 = '_IN_PROGRESS_'; 	                // The request is being processed.
-    const PROCESSING_STATUS_IN_SAFETY_NET               = '_IN_SAFETY_NET_';                // The request is being processed, but the system has determined that there is a potential error with the feed (for example, the request will remove all inventory from a seller's account.) An Amazon seller support associate will contact the seller to confirm whether the feed should be processed.
     const PROCESSING_STATUS_SUBMITTED                   = '_SUBMITTED_'; 	                // The request has been received, but has not yet started processing.
     const PROCESSING_STATUS_UNCONFIRMED                 = '_UNCONFIRMED_'; 	                // The request is pending.
+    const PROCESSING_STATUS_IN_PROGRESS                 = '_IN_PROGRESS_'; 	                // The request is being processed.
+    const PROCESSING_STATUS_IN_SAFETY_NET               = '_IN_SAFETY_NET_';                // The request is being processed, but the system has determined that there is a potential error with the feed (for example, the request will remove all inventory from a seller's account.) An Amazon seller support associate will contact the seller to confirm whether the feed should be processed.
+    const PROCESSING_STATUS_AWAIT_ASYNCH_REPLY          = '_AWAITING_ASYNCHRONOUS_REPLY_';  // The request is being processed, but is waiting for external information before it can complete.
+    const PROCESSING_STATUS_CANCELLED                   = '_CANCELLED_'; 	                // The request has been aborted due to a fatal error.
+    const PROCESSING_STATUS_DONE_NO_DATA                = '_DONE_NO_DATA_'; 	            // (Reports only) The request has been processed.
+    const PROCESSING_STATUS_DONE                        = '_DONE_'; 	                    // The request has been processed.
+    // Once you have PROCESSING_STATUS_DONE:
+    // For feeds you can now call the GetFeedSubmissionResult operation to receive a processing report that describes which records in the feed were successful and which records generated errors.
+    // For reports you can now call GetReport to retrieve the actual report data.
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
