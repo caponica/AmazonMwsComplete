@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Products
  * @version  2011-10-01
- * Library Version: 2015-09-01
- * Generated: Thu Mar 10 07:30:00 PST 2016
+ * Library Version: 2016-06-01
+ * Generated: Mon Jun 13 10:07:56 PDT 2016
  */
 
 /**
@@ -38,6 +38,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  */
 
  class MarketplaceWebServiceProducts_Model_ListMatchingProductsResponse extends MarketplaceWebServiceProducts_Model {
+
     public function __construct($data = null)
     {
     $this->_fields = array (

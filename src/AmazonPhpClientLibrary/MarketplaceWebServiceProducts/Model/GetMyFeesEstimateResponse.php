@@ -25,24 +25,24 @@ require_once (dirname(__FILE__) . '/../Model.php');
 
 
 /**
- * MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse
+ * MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse
  * 
  * Properties:
  * <ul>
  * 
- * <li>GetMatchingProductForIdResult: array</li>
+ * <li>GetMyFeesEstimateResult: MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResult</li>
  * <li>ResponseMetadata: MarketplaceWebServiceProducts_Model_ResponseMetadata</li>
  * <li>ResponseHeaderMetadata: MarketplaceWebServiceProducts_Model_ResponseHeaderMetadata</li>
  *
  * </ul>
  */
 
- class MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse extends MarketplaceWebServiceProducts_Model {
+ class MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse extends MarketplaceWebServiceProducts_Model {
 
     public function __construct($data = null)
     {
     $this->_fields = array (
-    'GetMatchingProductForIdResult' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResult')),
+    'GetMyFeesEstimateResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResult'),
     'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_ResponseMetadata'),
     'ResponseHeaderMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_ResponseHeaderMetadata'),
     );
@@ -50,66 +50,48 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
-     * Get the value of the GetMatchingProductForIdResult property.
+     * Get the value of the GetMyFeesEstimateResult property.
      *
-     * @return List<GetMatchingProductForIdResult> GetMatchingProductForIdResult.
+     * @return GetMyFeesEstimateResult GetMyFeesEstimateResult.
      */
-    public function getGetMatchingProductForIdResult()
+    public function getGetMyFeesEstimateResult()
     {
-        if ($this->_fields['GetMatchingProductForIdResult']['FieldValue'] == null)
-        {
-            $this->_fields['GetMatchingProductForIdResult']['FieldValue'] = array();
-        }
-        return $this->_fields['GetMatchingProductForIdResult']['FieldValue'];
+        return $this->_fields['GetMyFeesEstimateResult']['FieldValue'];
     }
 
     /**
-     * Set the value of the GetMatchingProductForIdResult property.
+     * Set the value of the GetMyFeesEstimateResult property.
      *
-     * @param array getMatchingProductForIdResult
+     * @param MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResult getMyFeesEstimateResult
      * @return this instance
      */
-    public function setGetMatchingProductForIdResult($value)
+    public function setGetMyFeesEstimateResult($value)
     {
-        if (!$this->_isNumericArray($value)) {
-            $value = array ($value);
-        }
-        $this->_fields['GetMatchingProductForIdResult']['FieldValue'] = $value;
+        $this->_fields['GetMyFeesEstimateResult']['FieldValue'] = $value;
         return $this;
     }
 
     /**
-     * Clear GetMatchingProductForIdResult.
-     */
-    public function unsetGetMatchingProductForIdResult()
-    {
-        $this->_fields['GetMatchingProductForIdResult']['FieldValue'] = array();
-    }
-
-    /**
-     * Check to see if GetMatchingProductForIdResult is set.
+     * Check to see if GetMyFeesEstimateResult is set.
      *
-     * @return true if GetMatchingProductForIdResult is set.
+     * @return true if GetMyFeesEstimateResult is set.
      */
-    public function isSetGetMatchingProductForIdResult()
+    public function isSetGetMyFeesEstimateResult()
     {
-                return !empty($this->_fields['GetMatchingProductForIdResult']['FieldValue']);
+                return !is_null($this->_fields['GetMyFeesEstimateResult']['FieldValue']);
             }
 
     /**
-     * Add values for GetMatchingProductForIdResult, return this.
+     * Set the value of GetMyFeesEstimateResult, return this.
      *
-     * @param getMatchingProductForIdResult
-     *             New values to add.
+     * @param getMyFeesEstimateResult
+     *             The new value to set.
      *
      * @return This instance.
      */
-    public function withGetMatchingProductForIdResult()
+    public function withGetMyFeesEstimateResult($value)
     {
-        foreach (func_get_args() as $GetMatchingProductForIdResult)
-        {
-            $this->_fields['GetMatchingProductForIdResult']['FieldValue'][] = $GetMatchingProductForIdResult;
-        }
+        $this->setGetMyFeesEstimateResult($value);
         return $this;
     }
 
@@ -205,26 +187,24 @@ require_once (dirname(__FILE__) . '/../Model.php');
         return $this;
     }
     /**
-     * Construct MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse from XML string
+     * Construct MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse from XML string
      * 
      * @param $xml
      *        XML string to construct from
      *
-     * @return MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse 
+     * @return MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse 
      */
     public static function fromXML($xml)
     {
         $dom = new DOMDocument();
         $dom->loadXML($xml);
         $xpath = new DOMXPath($dom);
-        $response = $xpath->query("//*[local-name()='GetMatchingProductForIdResponse']");
+        $response = $xpath->query("//*[local-name()='GetMyFeesEstimateResponse']");
         if ($response->length == 1) {
-            $mwsResponse = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse(($response->item(0)));
-            $mwsResponse->setRawXml($xml); // Caponica addition to save the raw XML in case you want to custom parse it later
-            return $mwsResponse;
+            return new MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse(($response->item(0))); 
         } else {
-            throw new Exception ("Unable to construct MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse from provided XML. 
-                                  Make sure that GetMatchingProductForIdResponse is a root element");
+            throw new Exception ("Unable to construct MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse from provided XML. 
+                                  Make sure that GetMyFeesEstimateResponse is a root element");
         }
     }
     /**
@@ -235,9 +215,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function toXML() 
     {
         $xml = "";
-        $xml .= "<GetMatchingProductForIdResponse xmlns=\"http://mws.amazonservices.com/schema/Products/2011-10-01\">";
+        $xml .= "<GetMyFeesEstimateResponse xmlns=\"http://mws.amazonservices.com/schema/Products/2011-10-01\">";
         $xml .= $this->_toXMLFragment();
-        $xml .= "</GetMatchingProductForIdResponse>";
+        $xml .= "</GetMyFeesEstimateResponse>";
         return $xml;
     }
 
