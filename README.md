@@ -81,7 +81,7 @@ Client library versions
 |FBAOutboundServiceMWS              |2010-10-01 |2016-02-01     |
 |MarketplaceWebService              |2009-01-01 |2015-06-18     |
 |MarketplaceWebServiceOrders        |2013-09-01 |2015-09-24     |
-|MarketplaceWebServiceProducts      |2011-10-01 |2015-09-01     |
+|MarketplaceWebServiceProducts      |2011-10-01 |2016-06-01     |
 |MarketplaceWebServiceSellers       |2011-07-01 |2015-06-18     |
 |MWSCartService                     |2014-03-01 |2015-06-18     |
 |MWSCustomerService                 |2014-03-01 |2015-06-18     |
