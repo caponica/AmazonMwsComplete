@@ -2,9 +2,9 @@
 namespace CaponicaAmazonMwsComplete\Domain\Report;
 
 /**
- * Domain object to encapsulate information about Active Listing Reports
+ * Encapsulates information about a single row from an Active Listing Report
  */
-class ReportListingActiveListingsRecord {
+class ReportListingActiveListingsRecord extends BaseMwsReportRecord {
     private $itemName;
     private $itemDescription;
     private $listingId;
@@ -34,12 +34,7 @@ class ReportListingActiveListingsRecord {
     private $fulfillmentChannel;
 
     public function __construct($fileRow) {
-        $fieldArray = explode("\t", $fileRow);
-        $fieldCount = count($fieldArray); 
-
-        if (ReportListingActiveListings::EXPECTED_FIELD_COUNT != $fieldCount) {
-            throw new \InvalidArgumentException('Expected ' . ReportListingActiveListings::EXPECTED_FIELD_COUNT . ' fields, but only found ' . $fieldCount);
-        }
+        $fieldArray = $this->convertRowStringToArray($fileRow, ReportListingActiveListings::EXPECTED_FIELD_COUNT);
 
         $this->itemName                 = $fieldArray[0];
         $this->itemDescription          = $fieldArray[1];

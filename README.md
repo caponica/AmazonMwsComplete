@@ -72,6 +72,43 @@ MWS responses:
     }
 
 
+Working with reports
+====================
+
+There are domain objects to help with reading reports. Not all reports have been implemented (by a long way!) but feel 
+free to implement any that you need to use and submit a PR. The basic structure is to have a `ReportXyz` class related 
+to the overall report and a `ReportXyzRecord` class relating to each record (row) in the report.
+
+The basic usage would then look something like:
+
+    $reportFilePath = '/path/to/file.txt';
+    $reportType = MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN;
+    $fileHandle = @fopen($reportFilePath, 'r');
+    if (!$fileHandle) {
+        return "Could not open $reportFilePath to read the report from";
+    }
+
+    try {
+        while (($lineFromFile = fgets($fileHandle)) !== false) {
+            if (!$checkedHeader) {
+                BaseMwsReport::validateHeaderRowForReportType($lineFromFile, $reportType);
+                $reportRecordClass = BaseMwsReport::convertReportTypeToReportRecordClass($reportType);
+                $checkedHeader = true;
+                continue;
+            }
+
+            $reportRecord = new $reportRecordClass($lineFromFile);
+            // do something with the record 
+            echo "The SellerSku field value is" . $reportRecord->getSellerSku();
+        }
+    } catch (InvalidReportHeaderException $e) {
+        // Handle the exception, which is thrown if the header is not the expected format
+    } catch (InvalidReportRecordException $e) {
+        // Handle the exception, which is thrown if the row is not the expected format
+    }
+
+
+
 Client library versions
 =======================
 
