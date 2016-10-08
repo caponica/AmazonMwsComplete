@@ -4,7 +4,7 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
 /**
  * Encapsulates information about a single row from an Active Listing Report
  */
-class ReportListingActiveListingsRecord extends BaseMwsReportRecord {
+class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements IdentifiableStockRecordInterface {
     private $itemName;
     private $itemDescription;
     private $listingId;
@@ -32,6 +32,11 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord {
     private $addDelete;
     private $pendingQuantity;
     private $fulfillmentChannel;
+
+    /** Alias to fit IdentifiableStockRecordInterface */
+    public function getAsin() {
+        return $this->asin1;
+    }
 
     public function __construct($fileRow) {
         $fieldArray = $this->convertRowStringToArray($fileRow, ReportListingActiveListings::EXPECTED_FIELD_COUNT);

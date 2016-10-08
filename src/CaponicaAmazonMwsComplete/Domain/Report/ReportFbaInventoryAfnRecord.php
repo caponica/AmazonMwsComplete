@@ -4,7 +4,7 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
 /**
  * Encapsulates information about a single row from an FBA Inventory AFN report
  */
-class ReportFbaInventoryAfnRecord extends BaseMwsReportRecord {
+class ReportFbaInventoryAfnRecord extends BaseMwsReportRecord implements IdentifiableStockRecordInterface {
     protected $sellerSku;
     protected $fnSku;
     protected $asin;
