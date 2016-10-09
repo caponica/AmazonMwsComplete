@@ -5,6 +5,29 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
  * Encapsulates information about a single row from an Active Listing Report
  */
 class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements IdentifiableStockRecordInterface {
+    const CONDITION_USED_LIKE_NEW               = 1;
+    const CONDITION_USED_VERY_GOOD              = 2;
+    const CONDITION_USED_GOOD                   = 3;
+    const CONDITION_USED_ACCEPTABLE             = 4;
+    const CONDITION_COLLECTIBLE_LIKE_NEW        = 5;
+    const CONDITION_COLLECTIBLE_VERY_GOOD       = 6;
+    const CONDITION_COLLECTIBLE_GOOD            = 7;
+    const CONDITION_COLLECTIBLE_ACCEPTABLE      = 8;
+    const CONDITION_NEW                         = 11;
+
+    const FULFILMENT_CENTER_FBA_EUROPE          = 'AMAZON_EU';
+    const FULFILMENT_CENTER_FBM                 = 'DEFAULT';
+
+    const PRODUCT_ID_TYPE_ASIN                  = 1;
+    const PRODUCT_ID_TYPE_ISBN                  = 2;
+    const PRODUCT_ID_TYPE_UPC                   = 3;
+    const PRODUCT_ID_TYPE_EAN                   = 4;
+
+    const WILL_SHIP_UK_ONLY                     = 3;
+    const WILL_SHIP_UK_AND_EUROPE               = 4;
+    const WILL_SHIP_UK_EUROPE_AND_NORTH_AMERICA = 5;
+    const WILL_SHIP_WORLDWIDE                   = 6;
+
     private $itemName;
     private $itemDescription;
     private $listingId;
@@ -36,6 +59,13 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
     /** Alias to fit IdentifiableStockRecordInterface */
     public function getAsin() {
         return $this->asin1;
+    }
+
+    public function isFulfilledByAmazon() {
+        return self::FULFILMENT_CENTER_FBA_EUROPE == $this->fulfillmentChannel;
+    }
+    public function isConditionNew() {
+        return self::CONDITION_NEW == $this->itemCondition;
     }
 
     public function __construct($fileRow) {
