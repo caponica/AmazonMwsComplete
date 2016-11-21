@@ -77,6 +77,8 @@ final class PotentialMatch {
             }
         }
         if (!empty($attributes)) {
+            echo "\nTrying manual string based attribute search";
+
             if (!empty($attributes->ListPrice->Amount)) {
                 $this->listPrice = $attributes->ListPrice->Amount->__toString();
             }
@@ -134,6 +136,44 @@ final class PotentialMatch {
             if (!empty($attributes->Title)) {
                 $this->title = $attributes->Title->__toString();
             }
+        } else {
+            echo "\nTrying XML based attribute search";
+
+            /** @var \MarketplaceWebServiceProducts_Model_AttributeSetList $asl */
+            $asl = $product->getAttributeSets();
+            /** @var \DOMElement[] $elementgroups */
+            $elementgroups = $asl->getAny();
+
+            $packageBasedDimensions = $this->extractDimensionsFromDomElementArray($elementgroups, 'PackageDimensions');
+            if (!empty($packageBasedDimensions)) {
+                $this->dimensions = $packageBasedDimensions;
+            } else {
+                $itemBasedDimensions = $this->extractDimensionsFromDomElementArray($elementgroups, 'ItemDimensions');
+                if (!empty($itemBasedDimensions)) {
+                    $this->dimensions = $itemBasedDimensions;
+                }
+            }
+            $packageBasedWeight = $this->extractWeightFromDomElementArray($elementgroups, 'PackageDimensions');
+            if (!empty($packageBasedWeight)) {
+                $this->weightPounds = $packageBasedWeight;
+            } else {
+                $itemBasedWeight = $this->extractWeightFromDomElementArray($elementgroups, 'ItemDimensions');
+                if (!empty($itemBasedWeight)) {
+                    $this->weightPounds = $itemBasedWeight;
+                }
+            }
+
+            if ($foundValue = $this->extractInnerValueFromDomElementArray($elementgroups, 'ListPrice', 'Amount', null)) {
+                $this->listPrice = $foundValue;
+            }
+            if ($foundValue = $this->extractInnerValueFromDomElementArray($elementgroups, 'ListPrice', 'CurrencyCode', null)) {
+                $this->listPriceCurrency = $foundValue;
+            }
+
+            $basicFields = ['Model', 'ItemPartNumber', 'PartNumber', 'Brand', 'Label', 'Manufacturer', 'Publisher', 'Title'];
+            foreach ($basicFields as $xmlKey) {
+                $this->setFieldIfBasicValueExists($elementgroups, $xmlKey);
+            }
         }
         if (!empty($potentialMatch)) {
             $potentialMatches[] = $potentialMatch;
@@ -161,6 +201,156 @@ final class PotentialMatch {
     // # Helper methods for extracting extra data from the API responses #
     // ###################################################################
 
+    /**
+     * @param \DOMElement[] $domElementArray
+     * @param string $key                       The key to lookup, e.g. 'ItemDimensions'
+     * @return array
+     */
+    private function extractDimensionsFromDomElementArray($domElementArray, $key) {
+        $dimensionAttributeNames = ['Width', 'Length', 'Height'];
+        $requiredUnits = 'inches';
+
+        foreach ($domElementArray as $domElement) {
+            /** @var \DOMNodeList $nodeList */
+            $dimensionNodeList = $domElement->getElementsByTagName($key);
+            if ($dimensionNodeList) {
+                $dimensionValues = [];
+                foreach ($dimensionNodeList as $node) {
+                    foreach ($dimensionAttributeNames as $nodeKey) {
+                        $innerNodeList = $node->getElementsByTagName($nodeKey);
+                        if ($innerNodeList) {
+                            list($dimensionValues[$nodeKey], $units) = $this->extractValueAndUnitsFromNodeList($innerNodeList);
+                            if (empty($units) || $requiredUnits!=$units || empty($dimensionValues[$nodeKey])) {
+                                break 2;
+                            }
+                        } else {
+                            break 2;
+                        }
+                    }
+                }
+
+                if (
+                    empty($dimensionValues['Width']) ||
+                    empty($dimensionValues['Length']) ||
+                    empty($dimensionValues['Height'])
+                ) {
+                    continue;
+                }
+
+                return [
+                    'W' => $dimensionValues['Width'],
+                    'L' => $dimensionValues['Length'],
+                    'H' => $dimensionValues['Height'],
+                ];
+            }
+        }
+
+        return [];
+    }
+    /**
+     * @param \DOMElement[] $domElementArray
+     * @param string $key                       The key to lookup, e.g. 'ItemDimensions'
+     * @return float|null
+     */
+    private function extractWeightFromDomElementArray($domElementArray, $key) {
+        $requiredUnits = 'pounds';
+
+        foreach ($domElementArray as $domElement) {
+            /** @var \DOMNodeList $nodeList */
+            $dimensionNodeList = $domElement->getElementsByTagName($key);
+            if ($dimensionNodeList) {
+                $weight = 0;
+                foreach ($dimensionNodeList as $node) {
+                    $innerNodeList = $node->getElementsByTagName('Weight');
+                    if ($innerNodeList) {
+                        list($weight, $units) = $this->extractValueAndUnitsFromNodeList($innerNodeList);
+                        if (empty($units) || $requiredUnits!=$units || empty($weight)) {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if (empty($weight)) {
+                    continue;
+                }
+
+                return $weight * 1;
+            }
+        }
+
+        return null;
+    }
+    /**
+     * @param \DOMElement[] $domElementArray
+     * @param string $outerKey                      The outer key to lookup, e.g. 'ListPrice'
+     * @param string $innerKey                      The inner key to lookup, e.g. 'Amount'
+     * @param int|float|string|null $defaultValue   Value to return if no match found
+     * @return int|float|string|null
+     */
+    private function extractInnerValueFromDomElementArray($domElementArray, $outerKey, $innerKey, $defaultValue=null) {
+        foreach ($domElementArray as $domElement) {
+            /** @var \DOMNodeList $outerNodeList */
+            $outerNodeList = $domElement->getElementsByTagName($outerKey);
+            if ($outerNodeList) {
+                foreach ($outerNodeList as $node) {
+                    $innerNodeList = $node->getElementsByTagName($innerKey);
+                    if ($innerNodeList) {
+                        foreach ($innerNodeList as $innerNode) {
+                            return $innerNode->nodeValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $defaultValue;
+    }
+    /**
+     * @param \DOMElement[] $domElementArray
+     * @param string $key                           The key to lookup, e.g. 'ItemPartNumber'
+     * @param int|float|string|null $defaultValue   Value to return if no match found
+     * @return int|float|string|null
+     */
+    private function extractBasicValueFromDomElementArray($domElementArray, $key, $defaultValue=null) {
+        foreach ($domElementArray as $domElement) {
+            /** @var \DOMNodeList $nodeList */
+            $nodeList = $domElement->getElementsByTagName($key);
+            if ($nodeList) {
+                foreach ($nodeList as $node) {
+                    return $node->nodeValue;
+                }
+            }
+        }
+
+        return $defaultValue;
+    }
+
+    /**
+     * Tries to find a value for the given xml key. If it is found and non-empty then the given fieldname is updated.
+     *
+     * @param \DOMElement[] $elementgroups
+     * @param string $xmlKey                        The key to lookup, e.g. 'ItemPartNumber'
+     * @param null $fieldName                       The field to update if a value is found. Defaults to the xmlKey with a lower case first letter
+     */
+    private function setFieldIfBasicValueExists($elementgroups, $xmlKey, $fieldName=null) {
+        if ($foundValue = $this->extractBasicValueFromDomElementArray($elementgroups, $xmlKey, null)) {
+            if (empty($fieldName)) {
+                $fieldName = lcfirst($xmlKey);
+            }
+            $this->$fieldName = $foundValue;
+        }
+    }
+
+    private function extractValueAndUnitsFromNodeList($nodeList) {
+        foreach ($nodeList as $node) {
+            $value = $node->nodeValue;
+            $units = $node->attributes->getNamedItem('Units')->nodeValue;
+            return [$value, $units];
+        }
+        return [null, null];
+    }
     private function extractDimensionsFromAttributes($productAttributes) {
         $dimensions = [];
         if (!empty($productAttributes->Width) &&

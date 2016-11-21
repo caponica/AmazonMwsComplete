@@ -369,6 +369,56 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $potentialMatchesByEan;
     }
     /**
+     * @param array $asins                  Up to ten ASINs to search for
+     * @return PotentialMatch[]|null
+     */
+    public function retrieveProductsByAsins($asins) {
+        if (empty($asins)) {
+            echo "\nNo ASINs to search for.";
+            return null;
+        }
+
+        $productsByAsin = [];
+
+        try {
+            /** @var \MarketplaceWebServiceProducts_Model_GetMatchingProductResponse $searchResponse */
+            $searchResponse = $this->callGetMatchingProduct($asins);
+        } catch (\MarketplaceWebServiceProducts_Exception $e) {
+            if ('RequestThrottled' == $e->getErrorCode()) {
+                echo "\nThe request was throttled (twice)";
+            } else {
+                echo "\nThere was a problem with the search";
+                echo "\nTerms searched:";
+                print_r($asins);
+            }
+            $this->debugException($e);
+            return null;
+        }
+
+        /** @var \MarketplaceWebServiceProducts_Model_GetMatchingProductResult[] $mwsProductResultsForAllSearchTerms */
+        $mwsProductResultsForAllSearchTerms = $searchResponse->getGetMatchingProductResult();
+
+        foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
+            $searchTerm = $mwsProductResultsForOneSearchTerm->getASIN();
+            if (empty($searchTerm)) {
+                echo "\nEmpty ASIN in results";
+                continue;
+            }
+
+            if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
+                echo "\nError for ASIN $searchTerm: " . $error->getMessage();
+                continue;
+            }
+
+            /** @var \MarketplaceWebServiceProducts_Model_Product $mwsProduct */
+            $mwsProduct = $mwsProductResultsForOneSearchTerm->getProduct();
+
+            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml());
+        }
+
+        return $productsByAsin;
+    }
+    /**
      * @param string $searchTerm
      * @param string $searchContext
      * @return PotentialMatch[]|null
