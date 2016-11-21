@@ -99,6 +99,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   = 'getCompetitivePricingForASIN';
     const METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN = 'getLowestOfferListingsForASIN';
     const METHOD_LIST_MATCHING_PRODUCTS             = 'listMatchingProducts';
+    const METHOD_GET_MATCHING_PRODUCTS              = 'getMatchingProduct';
     const METHOD_GET_MATCHING_PRODUCTS_FOR_ID       = 'getMatchingProductForId';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
@@ -212,11 +213,13 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductResponse
      */
     public function callGetMatchingProduct($asinList) {
-        return $this->getMatchingProduct([
+        $parameters = [
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
-            self::PARAM_ASIN_LIST          => array('ASIN' => $asinList),
-        ]);
+            self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
+        ];
+        $weight = is_array($asinList) ? count($asinList) : 1;
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS, $parameters, $weight);
     }
     /**
      * @param string $idType            The IdType of the IDs to look up, one of the ID_TYPE_XYZ values
@@ -307,6 +310,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             [
                 self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN   => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
+                self::METHOD_GET_MATCHING_PRODUCTS              => [20, 2,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID       => [20, 5,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_LIST_MATCHING_PRODUCTS             => [20, 0.2],
             ]
