@@ -270,17 +270,26 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     }
 
     /**
-     * @param string $reportType            A valid ReportType @todo - add class constants for various report types
-     * @todo - add startDate, endDate, reportOptions
+     * @param string $reportType            A valid ReportType, see the REPORT_XYZ class constants
+     * @param \DateTime $startDate          (optional) The start of a date range used for selecting the data to report
+     * @param \DateTime $endDate            (optional) The end of a date range used for selecting the data to report
+     * @todo - add reportOptions
      * @return \MarketplaceWebService_Model_RequestReportResponse
      */
-    public function callRequestReport($reportType) {
-        return $this->requestReport([
+    public function callRequestReport($reportType, $startDate=null, $endDate=null) {
+        $parameters = [
             self::PARAM_MARKETPLACE         => $this->marketplaceId,
             self::PARAM_MERCHANT            => $this->sellerId,
             self::PARAM_REPORT_TYPE         => $reportType,
             self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
-        ]);
+        ];
+        if (!empty($startDate)) {
+            $parameters[self::PARAM_START_DATE] = $startDate;
+        }
+        if (!empty($endDate)) {
+            $parameters[self::PARAM_END_DATE] = $endDate;
+        }
+        return $this->requestReport($parameters);
     }
 
     /**
