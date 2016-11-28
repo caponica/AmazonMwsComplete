@@ -293,16 +293,25 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     }
 
     /**
-     * @param string|array $reportRequestIds    One or more ReportRequestIds, as returned by requestReport()
+     * @param string|array $reportRequestIds    (optional) One or more ReportRequestIds, as returned by requestReport()
+     * @param string $reportType                (optional) A valid ReportType, see the REPORT_XYZ class constants
      * @todo - add ReportTypeList, ReportProcessingStatusList, MaxCount, RequestedFromDate, RequestedFromDate
      * @return \MarketplaceWebService_Model_GetReportRequestListResponse
      */
-    public function callGetReportRequestList($reportRequestIds) {
-        return $this->getReportRequestList([
+    public function callGetReportRequestList($reportRequestIds=null, $reportType=null) {
+
+        $parameters = [
             self::PARAM_MARKETPLACE             => $this->marketplaceId,
             self::PARAM_MERCHANT                => $this->sellerId,
-            self::PARAM_REPORT_REQUEST_ID_LIST  => array('Id' => $reportRequestIds),
-        ]);
+        ];
+        if (!empty($reportRequestIds)) {
+            $parameters[self::PARAM_REPORT_REQUEST_ID_LIST] = array('Id' => $reportRequestIds);
+        }
+        if (!empty($reportType)) {
+            $parameters[self::PARAM_REPORT_TYPE_LIST] = array('Type' => $reportType);
+        }
+
+        return $this->getReportRequestList($parameters);
     }
 
     /**
