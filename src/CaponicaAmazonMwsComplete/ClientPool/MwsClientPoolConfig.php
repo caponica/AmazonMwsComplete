@@ -196,6 +196,18 @@ class MwsClientPoolConfig {
         ];
     }
 
+    public function getConfigKeysForOrder() {
+        return [
+            self::CONFIG_KEY_SERVICE_URL,
+            self::CONFIG_KEY_USER_AGENT,
+            self::CONFIG_KEY_SIGNATURE_VERSION,
+            self::CONFIG_KEY_SIGNATURE_METHOD,
+            self::CONFIG_KEY_PROXY_HOST,
+            self::CONFIG_KEY_PROXY_PORT,
+            self::CONFIG_KEY_MAX_ERROR_RETRY,
+        ];
+    }
+
     public function getConfigKeysForFinance() {
         return [
             self::CONFIG_KEY_SERVICE_URL,
@@ -242,6 +254,22 @@ class MwsClientPoolConfig {
         $config [self::CONFIG_KEY_SERVICE_URL] = $this->getMwsEndpoint($this->amazonSite) . $serviceUrlSuffix;
         return $config;
     }
+    /**
+     * Builds the array of extra "config" values to pass through to MarketplaceWebService_Client::__construct()
+     *
+     * @param $serviceUrlSuffix
+     * @return array
+     */
+    public function getConfigForOrder($serviceUrlSuffix) {
+        $config = [];
+        foreach ($this->getConfigKeysForOrder() as $key) {
+            if (!empty($this->extras[$key])) {
+                $config[$key] = $this->extras[$key];
+            }
+        }
+        $config [self::CONFIG_KEY_SERVICE_URL] = $this->getMwsEndpoint($this->amazonSite) . $serviceUrlSuffix;
+        return $config;
+    }    
     /**
      * Builds the array of extra "config" values to pass through to MWSFinancesService_Client::__construct()
      *
