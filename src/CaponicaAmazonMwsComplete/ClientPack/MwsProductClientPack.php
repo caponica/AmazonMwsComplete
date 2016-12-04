@@ -390,6 +390,8 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
                 echo "\nThe request was throttled (twice)";
+                echo "\nSleeping for 5 seconds...";
+                sleep(5);
             } else {
                 echo "\nThere was a problem with the search";
                 echo "\nTerms searched:";
