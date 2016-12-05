@@ -294,15 +294,40 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
 
     /**
      * @param string|array $reportRequestIds    One or more ReportRequestIds, as returned by requestReport()
-     * @todo - add ReportTypeList, ReportProcessingStatusList, MaxCount, RequestedFromDate, RequestedFromDate
+     * @param array $reportTypeList                 (optional) An array of ReportTypes to fetch
+     * @param array $reportProcessingStatusList     (optional) An array of ReportStatuses to fetch
+     * @param \DateTime $requestedFromDate          (optional) The start of a date range used for selecting the data to report
+     * @param \DateTime $requestedToDate            (optional) The end of a date range used for selecting the data to report
+     * @param int $maxCount                         (optional) The max number of report requests to return
      * @return \MarketplaceWebService_Model_GetReportRequestListResponse
      */
-    public function callGetReportRequestList($reportRequestIds) {
-        return $this->getReportRequestList([
+    public function callGetReportRequestList($reportRequestIds, $reportTypeList=[], $reportProcessingStatusList=[], $requestedFromDate=null, $requestedToDate=null, $maxCount=10) {
+        $parameters = [
             self::PARAM_MARKETPLACE             => $this->marketplaceId,
             self::PARAM_MERCHANT                => $this->sellerId,
             self::PARAM_REPORT_REQUEST_ID_LIST  => array('Id' => $reportRequestIds),
-        ]);
+        ];
+        if (!empty($reportTypeList)) {
+            $parameters[self::PARAM_REPORT_TYPE_LIST] = $reportTypeList;
+        }
+        if (!empty($reportProcessingStatusList)) {
+            $parameters[self::PARAM_REPORT_PROCESSING_STATUS_LIST] = $reportProcessingStatusList;
+        }
+        if (!empty($requestedFromDate)) {
+            $parameters[self::PARAM_REQUESTED_FROM_DATE] = $requestedFromDate;
+        }
+        if (!empty($requestedToDate)) {
+            $parameters[self::PARAM_REQUESTED_TO_DATE] = $requestedToDate;
+        }
+        if (!empty($maxCount)) {
+            if ($maxCount > 100) {
+                $maxCount = 100;
+            } elseif ($maxCount < 1) {
+                $maxCount = 1;
+            }
+            $parameters[self::PARAM_MAX_COUNT] = $maxCount;
+        }
+        return $this->getReportRequestList($parameters);
     }
 
     /**
