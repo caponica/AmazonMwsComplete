@@ -74,7 +74,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
         $this->throttleManager = new ThrottledRequestManager(
             [
                 self::METHOD_LIST_ORDERS                => [6, 0.015],
-                self::METHOD_LIST_ORDERS_BY_NEXT_TOKEN  => [6, 0.015],
+                self::METHOD_LIST_ORDERS_BY_NEXT_TOKEN  => [null, null, null, self::METHOD_LIST_ORDERS],
             ]
         );
     }
