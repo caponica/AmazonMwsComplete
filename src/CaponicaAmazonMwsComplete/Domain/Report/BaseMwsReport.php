@@ -19,7 +19,7 @@ abstract class BaseMwsReport {
      * @throws InvalidReportHeaderException
      */
     public static function validateHeaderRow($headerString) {
-        $headerString = trim($headerString,"\n\r");
+        $headerString = trim($headerString,"\n\r ");
         if ($headerString == static::EXPECTED_HEADER) {
             return true;
         } else {
@@ -53,6 +53,8 @@ abstract class BaseMwsReport {
             $reportClass = 'ReportFbaInventoryAfnByCountry';
         } elseif (MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS == $reportType) {
             $reportClass = 'ReportListingActiveListings';
+        } elseif (MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE == $reportType) {
+            $reportClass = 'ReportTrackingByOrderDateFlatFile';
         } else {
             throw new \InvalidArgumentException('No report class implemented yet for report type:' . $reportType);
         }
