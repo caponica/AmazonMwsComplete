@@ -37,8 +37,8 @@ class MwsClientPool {
 
     protected $config;
 
-    public function setConfig($config = []) {
-        $this->config = new MwsClientPoolConfig($config);
+    public function setConfig($config=[], $siteCode=null) {
+        $this->config = new MwsClientPoolConfig($config, $siteCode);
     }
 
     /**

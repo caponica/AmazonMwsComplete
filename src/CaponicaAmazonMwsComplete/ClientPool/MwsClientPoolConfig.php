@@ -47,30 +47,41 @@ class MwsClientPoolConfig {
     private $amazonSite;    // One of the SITE_XYZ constants
     private $sellerId;
 
-    public function __construct($parameterArray) {
+    /**
+     * MwsClientPoolConfig constructor.
+     *
+     * @param array $parameterArray     Required. Array of configuration parameters.
+     * @param null $siteCode            Optional. Can be set to over-ride the site setting in $parameterArray (to share config between different sites)
+     */
+    public function __construct($parameterArray, $siteCode=null) {
         $requiredKeys = [
             self::PARAM_ACCESS_KEY,
             self::PARAM_SECRET_KEY,
             self::PARAM_APP_NAME,
             self::PARAM_APP_VERSION,
-            self::PARAM_AMAZON_SITE,
             self::PARAM_SELLER_ID,
         ];
+        if (empty($siteCode)) {
+            $requiredKeys[] = self::PARAM_AMAZON_SITE;
+        }
 
         foreach ($requiredKeys as $key) {
             if (empty($parameterArray[$key])) {
                 throw new \InvalidArgumentException('Missing required parameter (' . $key . ') in MwsClientPoolConfig');
             }
         }
-        if (!$this->isValidAmazonSite($parameterArray[self::PARAM_AMAZON_SITE])) {
-            throw new \InvalidArgumentException('Invalid site code (' . $parameterArray[self::PARAM_AMAZON_SITE] . ') in MwsClientPoolConfig');
+
+        $amazonSite = empty($siteCode) ? $parameterArray[self::PARAM_AMAZON_SITE] : $siteCode;
+
+        if (!$this->isValidAmazonSite($amazonSite)) {
+            throw new \InvalidArgumentException('Invalid site code (' . $amazonSite . ') in MwsClientPoolConfig');
         }
 
+        $this->amazonSite           = $amazonSite;
         $this->accessKey            = $parameterArray[self::PARAM_ACCESS_KEY];
         $this->secretKey            = $parameterArray[self::PARAM_SECRET_KEY];
         $this->applicationName      = $parameterArray[self::PARAM_APP_NAME];
         $this->applicationVersion   = $parameterArray[self::PARAM_APP_VERSION];
-        $this->amazonSite           = $parameterArray[self::PARAM_AMAZON_SITE];
         $this->sellerId             = $parameterArray[self::PARAM_SELLER_ID];
         if (!empty($parameterArray[self::PARAM_EXTRAS])) {
             $this->extras = $parameterArray[self::PARAM_EXTRAS];
