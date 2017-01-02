@@ -37,6 +37,17 @@ final class ThrottledRequestLogCollection {
         }
     }
 
+    public function exhaustRequestQuota($apiMethod) {
+        $slotsToFill = $this->maximumRequestQuota - count($this->logs);
+        if ($slotsToFill <= 0) {
+            return;
+        }
+        for ($i=1; $i<=$slotsToFill; ++$i) {
+            echo "\nAdding fake entry #{$i} to Throttle log to fill a slot";
+            $this->addLog($apiMethod);
+        }
+    }
+
     public function getRestoreInterval($weight=null) {
         if ($this->isRequestBased()) {
             return ceil(1 / $this->restoreRatePerSecond);

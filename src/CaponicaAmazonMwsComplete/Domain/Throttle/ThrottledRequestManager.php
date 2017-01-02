@@ -44,4 +44,8 @@ final class ThrottledRequestManager {
         $key = $this->convertApiMethodToThrottleLogKey($apiMethod);
         $this->requestLogCollections[$key]->addLog($apiMethod, $weight);
     }
+    public function exhaustRequestQuotaForMethod($apiMethod) {
+        $key = $this->convertApiMethodToThrottleLogKey($apiMethod);
+        $this->requestLogCollections[$key]->exhaustRequestQuota($apiMethod);
+    }
 }
