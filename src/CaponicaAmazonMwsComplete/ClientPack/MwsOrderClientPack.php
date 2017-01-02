@@ -8,6 +8,7 @@ use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 
 class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPackInterface {
+    const PARAM_AMAZON_ORDER_IDS            = 'AmazonOrderId';
     const PARAM_CREATED_AFTER               = 'CreatedAfter';
     const PARAM_CREATED_BEFORE              = 'CreatedBefore';
     const PARAM_MARKETPLACE_ID              = 'MarketplaceId';
@@ -15,6 +16,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const PARAM_MERCHANT                    = 'SellerId';
     const PARAM_NEXT_TOKEN                  = 'NextToken';
 
+    const METHOD_GET_ORDER                  = 'getOrder';
     const METHOD_LIST_ORDERS                = 'listOrders';
     const METHOD_LIST_ORDERS_BY_NEXT_TOKEN  = 'listOrdersByNextToken';
 
@@ -45,6 +47,19 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     // ##################################################
     // #      basic wrappers for API calls go here      #
     // ##################################################
+    public function callGetOrder($amazonOrderIds) {
+        if (is_string($amazonOrderIds)) {
+            $amazonOrderIds = explode(',', $amazonOrderIds);
+        }
+
+        $requestArray = [
+            self::PARAM_MERCHANT            => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
+            self::PARAM_AMAZON_ORDER_IDS    => $amazonOrderIds,
+        ];
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_ORDER, $requestArray);
+    }
     public function callListOrdersByCreateDate(\DateTime $dateFrom, \DateTime $dateTo) {
         $requestArray = [
             self::PARAM_MERCHANT            => $this->sellerId,
@@ -73,6 +88,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     public function initThrottleManager() {
         $this->throttleManager = new ThrottledRequestManager(
             [
+                self::METHOD_GET_ORDER                  => [6, 0.015],
                 self::METHOD_LIST_ORDERS                => [6, 0.015],
                 self::METHOD_LIST_ORDERS_BY_NEXT_TOKEN  => [null, null, null, self::METHOD_LIST_ORDERS],
             ]
