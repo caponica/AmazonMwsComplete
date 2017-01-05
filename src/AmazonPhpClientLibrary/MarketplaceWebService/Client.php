@@ -1049,7 +1049,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
     return array (
       CURLOPT_POST => true,
       CURLOPT_USERAGENT => $this->config['UserAgent'],
-      CURLOPT_VERBOSE => true,
+      CURLOPT_VERBOSE => false,
       CURLOPT_HEADERFUNCTION => array ($this, 'headerCallback'),
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_SSL_VERIFYPEER => true,
