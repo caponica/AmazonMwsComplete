@@ -129,7 +129,7 @@ class MwsClientPoolConfig {
         throw new \InvalidArgumentException('No endpoint known for site code "' . $amazonSite . '"');
     }
 
-    private function getMarketplaceIds() {
+    public static function getMarketplaceIds() {
         return [
             self::SITE_CANADA   => 'A2EUQ1WTGCTBG2',
             self::SITE_MEXICO   => 'A1AM78C64UM0Y8',
@@ -144,8 +144,15 @@ class MwsClientPoolConfig {
             self::SITE_JAPAN    => 'A1VC38T7YXB528',
         ];
     }
+    public static function convertMarketplaceIdIntoCountry($marketplaceId) {
+        $lookup = array_flip(self::getMarketplaceIds());
+        if (!empty($lookup[$marketplaceId])) {
+            return $lookup[$marketplaceId];
+        }
+        throw new \InvalidArgumentException('Marketplace id #' . $marketplaceId . ' is unknown');
+    }
     public function getMarketplaceId($amazonSite) {
-        $marketplaces = $this->getMarketplaceIds();
+        $marketplaces = self::getMarketplaceIds();
         if (!empty($marketplaces[$amazonSite])) {
             return $marketplaces[$amazonSite];
         }
