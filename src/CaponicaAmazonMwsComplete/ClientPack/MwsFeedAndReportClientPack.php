@@ -120,6 +120,7 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     const PARAM_FEED_PROCESSING_STATUS_LIST             = 'FeedProcessingStatusList';
     const PARAM_FEED_SUBMISSION_ID                      = 'FeedSubmissionId';
     const PARAM_FEED_SUBMISSION_ID_LIST                 = 'FeedSubmissionIdList';
+    const PARAM_FEED_SUBMISSION_RESULT                  = 'FeedSubmissionResult';
     const PARAM_FEED_TYPE                               = 'FeedType';
     const PARAM_FEED_TYPE_LIST                          = 'FeedTypeList';
     const PARAM_MARKETPLACE                             = 'Marketplace';
@@ -242,10 +243,16 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
             self::PARAM_MERCHANT            => $this->sellerId,
         ]);
     }
-    public function callGetFeedSubmissionResult($feedSubmissionId) {
+    /**
+     * @param string $feedSubmissionId      The feedSubmissionId to get a processing report for
+     * @param resource $filename            A file handle (resource) where the report will be written to
+     * @return \MarketplaceWebService_Model_GetFeedSubmissionResultResponse
+     */
+    public function callGetFeedSubmissionResult($feedSubmissionId, $filename) {
         return $this->getFeedSubmissionResult([
-            self::PARAM_FEED_SUBMISSION_ID  => $feedSubmissionId,
-            self::PARAM_MERCHANT            => $this->sellerId,
+            self::PARAM_FEED_SUBMISSION_ID      => $feedSubmissionId,
+            self::PARAM_MERCHANT                => $this->sellerId,
+            self::PARAM_FEED_SUBMISSION_RESULT  => $filename,
         ]);
     }
 
