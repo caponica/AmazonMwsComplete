@@ -151,11 +151,16 @@ class MwsClientPoolConfig {
         }
         throw new \InvalidArgumentException('Marketplace id #' . $marketplaceId . ' is unknown');
     }
-    public function getMarketplaceId($amazonSite) {
+    public function getMarketplaceId($amazonSite=null) {
+        if (empty($amazonSite)) {
+            $amazonSite = $this->amazonSite;
+        }
+
         $marketplaces = self::getMarketplaceIds();
         if (!empty($marketplaces[$amazonSite])) {
             return $marketplaces[$amazonSite];
         }
+
         throw new \InvalidArgumentException('No marketplace id known for site code "' . $amazonSite . '"');
     }
 

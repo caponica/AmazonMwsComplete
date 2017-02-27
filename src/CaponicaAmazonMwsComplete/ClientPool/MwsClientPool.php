@@ -35,6 +35,7 @@ class MwsClientPool {
      */
     protected $productClientPack;
 
+    /** @var MwsClientPoolConfig */
     protected $config;
 
     public function setConfig($config=[], $siteCode=null) {
@@ -87,10 +88,10 @@ class MwsClientPool {
     public function getChannelId() {
         return $this->channelId;
     }
-//    public function getMarketplaceId() {
-//        return $this->config....marketplaceId;
-//    }
-//    public function getSellerId() {
-//        return $this->config...sellerId;
-//    }
+    public function getMarketplaceId() {
+        return $this->config->getMarketplaceId();
+    }
+    public function getSellerId() {
+        return $this->config->getSellerId();
+    }
 }
