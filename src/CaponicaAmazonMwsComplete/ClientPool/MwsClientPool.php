@@ -15,6 +15,7 @@ use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
 
+
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
     protected $channelId;
@@ -40,6 +41,7 @@ class MwsClientPool {
      */
     protected $fbaOutboundClientPack;
 
+    protected $orderClientPack;    
 
     protected $config;
 
@@ -86,6 +88,7 @@ class MwsClientPool {
         }
         return $this->orderClientPack;
     }
+
 
     /**
      * @return FbaOutboundClientPack
