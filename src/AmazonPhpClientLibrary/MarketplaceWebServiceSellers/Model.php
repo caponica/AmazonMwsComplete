@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2016 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -11,16 +11,16 @@
  *******************************************************************************
  * PHP Version 5
  * @category Amazon
- * @package  Marketplace Web Service Sellers
- * @version  2011-07-01
- * Library Version: 2015-06-18
- * Generated: Thu Jun 18 20:37:51 GMT 2015
+ * @package  FBA Outbound Service MWS
+ * @version  2010-10-01
+ * Library Version: 2016-10-19
+ * Generated: Wed Oct 19 08:37:58 PDT 2016
  */
 
 /**
- * MarketplaceWebServiceSellers_Model - base class for all model classes
+ * FBAOutboundServiceMWS_Model - base class for all model classes
  */
-abstract class MarketplaceWebServiceSellers_Model
+abstract class FBAOutboundServiceMWS_Model
 {
 
     /** @var array */
@@ -154,10 +154,14 @@ abstract class MarketplaceWebServiceSellers_Model
                             }
                         }
                     } else {
-                        $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
-                        if ($element->length == 1) {
-                            $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
-                        }
+                       if ($fieldType[0] == ".") {
+                           $element = $xpath->query("./text()", $dom);
+                       } else {
+                            $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
+                       }
+                       if ($element->length == 1) {
+                                $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
+                       }
                     }
 
                     $attribute = $xpath->query("./@$fieldName", $dom);
@@ -294,7 +298,7 @@ abstract class MarketplaceWebServiceSellers_Model
         $xml = "";
         foreach ($this->_fields as $fieldName => $field) {
             $fieldValue = $field['FieldValue'];
-            if (!is_null($fieldValue) && $field['FieldType'] != "MarketplaceWebServiceSellers_Model_ResponseHeaderMetadata") {
+            if (!is_null($fieldValue) && $field['FieldType'] != "FBAOutboundServiceMWS_Model_ResponseHeaderMetadata") {
                 $fieldType = $field['FieldType'];
                 if (is_array($fieldType)) {
                     if ($fieldType[0] == "object") {
@@ -350,6 +354,8 @@ abstract class MarketplaceWebServiceSellers_Model
                         $xml .= ">";
                         $xml .= $fieldValue->_toXMLFragment();
                         $xml .= "</$fieldName>";
+                    } else if($fieldType[0] == ".") {
+                         $xml .= $this->_escapeXML($fieldValue);
                     } else if($fieldType[0] != "@") {
                         $xml .= "<$fieldName>";
                         $xml .= $this->_escapeXML($fieldValue);
@@ -393,7 +399,7 @@ abstract class MarketplaceWebServiceSellers_Model
      */
     private function _isComplexType ($fieldType) 
     {
-        return preg_match("/^MarketplaceWebServiceSellers_/", $fieldType);
+        return preg_match("/^FBAOutboundServiceMWS_/", $fieldType);
     }
 
    /**

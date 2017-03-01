@@ -12,6 +12,8 @@ namespace CaponicaAmazonMwsComplete\ClientPool;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
 
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
@@ -29,6 +31,15 @@ class MwsClientPool {
      * @var MwsProductClientPack
      */
     protected $productClientPack;
+    /**
+     * @var MwsOrderClientPack
+     */
+    protected $orderClientPack;  
+    /**
+     * @var FbaOutboundClientPack
+     */
+    protected $fbaOutboundClientPack;
+
 
     protected $config;
 
@@ -65,6 +76,27 @@ class MwsClientPool {
         }
         return $this->feedAndReportClientPack;
     }
+
+    /**
+     * @return MwsOrderClientPack
+     */
+    public function getOrderClientPack() {
+        if(empty($this->orderClientPack)) {
+            $this->orderClientPack = new MwsOrderClientPack($this->config);
+        }
+        return $this->orderClientPack;
+    }
+
+    /**
+     * @return FbaOutboundClientPack
+     */
+    public function getFbaOutboundClientPack() {
+        if(empty($this->fbaOutboundClientPack)) {
+            $this->fbaOutboundClientPack = new FbaOutboundClientPack($this->config);
+        }
+        return $this->fbaOutboundClientPack;
+    }
+
 
     public function setChannelId($value) {
         return $this->channelId = $value;
