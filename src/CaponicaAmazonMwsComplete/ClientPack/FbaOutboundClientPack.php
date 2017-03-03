@@ -67,6 +67,17 @@ class FbaOutboundClientPack extends FbaOutboundClient {
     // #      basic wrappers for API calls go here      #
     // ##################################################    
 
+    public function callGetFulfillmentOrder($sellerFulfillmentOrderId) {
+
+        $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
+
+        if (!empty($sellerFulfillmentOrderId)) {
+            $parameters[self::PARAM_SELLER_FULFILLMENT_ORDER_ID] = $sellerFulfillmentOrderId;
+        }
+        
+        return $this->getFulfillmentOrder($parameters);
+    }
+
     public function callCreateFulfillmentOrder($sellerFulfillmentOrderId, $displayableOrderId, $displayableOrderDatetime,$displayableOrderComment,$shippingSpeed,$destinationAddressName,$destinationAddressLine1,$destinationAddressLine2='',$destinationAddressLine3='',$destinationAddressCity,$destinationAddressStateCode,$destinationAddressPostalCode,$destinationAddressCountryCode,$items) {
 
         $address = [];
@@ -104,8 +115,6 @@ class FbaOutboundClientPack extends FbaOutboundClient {
 
             }
         }
-
-
 
 
         if (!empty($destinationAddressName)) {
