@@ -52,7 +52,7 @@ class MwsOrderClientPack extends MwsOrderClient {
     // #      basic wrappers for API calls go here      #
     // ##################################################    
 
-    public function callListOrdersRequest($createdAfter, $createdBefore) {
+    public function callListOrdersRequest($createdAfter, $orderStatus) {
 
         return $this->listOrders([
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
@@ -60,8 +60,7 @@ class MwsOrderClientPack extends MwsOrderClient {
             self::PARAM_MERCHANT  => $this->sellerId,
             self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
             self::PARAM_CREATED_AFTER => $createdAfter,
-            //self::PARAM_CREATED_BEFORE => $createdBefore,
-            self::PARAM_ORDER_STATUS_LIST => array(self::STATUS_PENDING)
+            self::PARAM_ORDER_STATUS_LIST => $orderStatus
         ]);
     }
     public function calllistOrderItems($amazonOrderId)
