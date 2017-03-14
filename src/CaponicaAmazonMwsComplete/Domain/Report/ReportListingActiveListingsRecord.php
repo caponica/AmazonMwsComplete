@@ -55,6 +55,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
     private $addDelete;
     private $pendingQuantity;
     private $fulfillmentChannel;
+    private $merchantShippingGroup;
 
     /** Alias to fit IdentifiableStockRecordInterface */
     public function getAsin() {
@@ -98,6 +99,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         $this->addDelete                = $fieldArray[24];
         $this->pendingQuantity          = $fieldArray[25];
         $this->fulfillmentChannel       = $fieldArray[26];
+        $this->merchantShippingGroup    = $fieldArray[27];
     }
 
     public function getItemName() {
@@ -206,5 +208,9 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
 
     public function getFulfillmentChannel() {
         return $this->fulfillmentChannel;
+    }
+
+    public function getMerchantShippingGroup() {
+        return $this->merchantShippingGroup;
     }
 }
