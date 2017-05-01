@@ -16,6 +16,7 @@ class MwsOrderClientPack extends MwsOrderClient {
     const PARAM_REPORT_REQUEST_ID_LIST              = 'ReportRequestIdList';
     const PARAM_ORDER_STATUS_LIST                   = 'OrderStatus';
     const PARAM_AMAZON_ORDER_ID                     = 'AmazonOrderId';
+    const PARAM_NEXT_TOKEN                          = 'NextToken';
     const STATUS_PENDING                            = 'Pending';
     const STATUS_UNSHIPPED                          = 'Unshipped';
     const STATUS_PARTIALLY_SHIPPED                  = 'PartiallyShipped';
@@ -63,6 +64,15 @@ class MwsOrderClientPack extends MwsOrderClient {
             self::PARAM_ORDER_STATUS_LIST => $orderStatus
         ]);
     }
+
+    public function callListOrdersRequestByNextToken($nextToken) {
+
+        return $this->listOrdersByNextToken([
+            self::PARAM_NEXT_TOKEN          => $nextToken,
+            self::PARAM_SELLER_ID            => $this->sellerId,
+        ]);
+    }
+
     public function calllistOrderItems($amazonOrderId)
     {
         return $this->listOrderItems([
