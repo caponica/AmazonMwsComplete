@@ -11,6 +11,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const PARAM_AMAZON_ORDER_IDS            = 'AmazonOrderId';
     const PARAM_CREATED_AFTER               = 'CreatedAfter';
     const PARAM_CREATED_BEFORE              = 'CreatedBefore';
+    const PARAM_LAST_UPDATED_AFTER          = 'LastUpdatedAfter';
     const PARAM_MARKETPLACE_ID              = 'MarketplaceId';
     const PARAM_MARKETPLACE_ID_LIST         = 'MarketplaceId.Id.1';
     const PARAM_MERCHANT                    = 'SellerId';
@@ -76,6 +77,19 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
             self::PARAM_CREATED_AFTER       => $dateFrom->format('c'),
             self::PARAM_CREATED_BEFORE      => $dateTo->format('c'),
+        ];
+
+        if (!empty($orderStatusArray)) {
+            $requestArray[self::PARAM_ORDER_STATUS_LIST] = $orderStatusArray;
+        }
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
+    }
+    public function callListOrdersByLastUpdatedDate(\DateTime $dateSince, $orderStatusArray = []) {
+        $requestArray = [
+            self::PARAM_MERCHANT            => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
+            self::PARAM_LAST_UPDATED_AFTER  => $dateSince->format('c'),
         ];
 
         if (!empty($orderStatusArray)) {
