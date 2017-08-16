@@ -26,7 +26,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
     const PARAM_DESTINATION_ADDRESS_POSTAL_CODE         = 'PostalCode';
     const PARAM_DESTINATION_ADDRESS_CITY                = 'City';
     const PARAM_DESTINATION_ADDRESS_COUNTRY_CODE        = 'CountryCode';
-    
+    const PARAM_NOTIFICATION_EMAIL_LIST                 = 'NotificationEmailList';
 
     const PARAM_ITEMS                                   = 'Items';
     const PARAM_ITEMS_SELLER_SKU                        = 'SellerSKU';
@@ -78,10 +78,11 @@ class FbaOutboundClientPack extends FbaOutboundClient {
         return $this->getFulfillmentOrder($parameters);
     }
 
-    public function callCreateFulfillmentOrder($sellerFulfillmentOrderId, $displayableOrderId, $displayableOrderDatetime,$displayableOrderComment,$shippingSpeed,$destinationAddressName,$destinationAddressLine1,$destinationAddressLine2='',$destinationAddressLine3='',$destinationAddressCity,$destinationAddressStateCode,$destinationAddressPostalCode,$destinationAddressCountryCode,$items) {
+    public function callCreateFulfillmentOrder($sellerFulfillmentOrderId, $displayableOrderId, $displayableOrderDatetime,$displayableOrderComment,$shippingSpeed,$destinationAddressName,$destinationAddressLine1,$destinationAddressLine2='',$destinationAddressLine3='',$destinationAddressCity,$destinationAddressStateCode,$destinationAddressPostalCode,$destinationAddressCountryCode,$notificationEmail, $items) {
 
         $address = [];
         $itemsMember = [];
+        $notificationEmailMember = [];
 
         if (!empty($items)) {
             foreach ($items as $item) {
@@ -115,7 +116,13 @@ class FbaOutboundClientPack extends FbaOutboundClient {
 
             }
         }
+        if (!empty($notificationEmail)) {
 
+            foreach ($notificationEmail as $email) {
+                $notificationEmailMember['member'][] = $email;
+            }
+            
+        }
 
         if (!empty($destinationAddressName)) {
             $address[self::PARAM_DESTINATION_ADDRESS_NAME] = $destinationAddressName;
@@ -160,6 +167,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
 
         $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
         $parameters[self::PARAM_DESTINATION_ADDRESS] = $address;
+        $parameters[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailMember;
         $parameters[self::PARAM_ITEMS] = $itemsMember;
 
         return $this->createFulfillmentOrder($parameters);
