@@ -300,7 +300,7 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     }
 
     /**
-     * @param string|array $reportRequestIds        One or more ReportRequestIds, as returned by requestReport()
+     * @param string|array $reportRequestIds        (optional) One or more ReportRequestIds, as returned by requestReport()
      * @param array $reportTypes                    (optional) An array of ReportTypes to fetch
      * @param array $reportProcessingStatuses       (optional) An array of ReportStatuses to fetch
      * @param \DateTime $requestedFromDate          (optional) The start of a date range used for selecting the data to report
@@ -308,7 +308,7 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
      * @param int $maxCount                         (optional) The max number of report requests to return
      * @return \MarketplaceWebService_Model_GetReportRequestListResponse
      */
-    public function callGetReportRequestList($reportRequestIds, $reportTypes=[], $reportProcessingStatuses=[], $requestedFromDate=null, $requestedToDate=null, $maxCount=10) {
+    public function callGetReportRequestList($reportRequestIds=null, $reportTypes=[], $reportProcessingStatuses=[], $requestedFromDate=null, $requestedToDate=null, $maxCount=10) {
         $parameters = [
             self::PARAM_MARKETPLACE             => $this->marketplaceId,
             self::PARAM_MERCHANT                => $this->sellerId,
