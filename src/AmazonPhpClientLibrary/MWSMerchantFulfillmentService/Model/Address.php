@@ -14,7 +14,7 @@
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
  * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Generated: Fri Nov 11 06:01:18 PST 2016
  */
 
 /**

@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Wed Oct 05 06:15:45 PDT 2016
  */
 
 class FBAInboundServiceMWS_Model_ResponseHeaderMetadata {

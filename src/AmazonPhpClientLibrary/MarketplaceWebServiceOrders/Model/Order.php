@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2015-09-24
- * Generated: Fri Sep 25 20:06:28 GMT 2015
+ * Library Version: 2017-02-22
+ * Generated: Thu Mar 02 12:41:08 UTC 2017
  */
 
 /**
@@ -45,9 +45,12 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>NumberOfItemsUnshipped: int</li>
  * <li>PaymentExecutionDetail: array</li>
  * <li>PaymentMethod: string</li>
+ * <li>PaymentMethodDetails: array</li>
  * <li>MarketplaceId: string</li>
  * <li>BuyerEmail: string</li>
  * <li>BuyerName: string</li>
+ * <li>BuyerCounty: string</li>
+ * <li>BuyerTaxInfo: MarketplaceWebServiceOrders_Model_BuyerTaxInfo</li>
  * <li>ShipmentServiceLevelCategory: string</li>
  * <li>ShippedByAmazonTFM: bool</li>
  * <li>TFMShipmentStatus: string</li>
@@ -61,6 +64,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>PurchaseOrderNumber: string</li>
  * <li>IsPrime: bool</li>
  * <li>IsPremiumOrder: bool</li>
+ * <li>ReplacedOrderId: string</li>
+ * <li>IsReplacementOrder: bool</li>
  *
  * </ul>
  */
@@ -85,9 +90,12 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'NumberOfItemsUnshipped' => array('FieldValue' => null, 'FieldType' => 'int'),
     'PaymentExecutionDetail' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebServiceOrders_Model_PaymentExecutionDetailItem'), 'ListMemberName' => 'PaymentExecutionDetailItem'),
     'PaymentMethod' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'PaymentMethodDetails' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'PaymentMethodDetail'),
     'MarketplaceId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'BuyerEmail' => array('FieldValue' => null, 'FieldType' => 'string'),
     'BuyerName' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'BuyerCounty' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'BuyerTaxInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_BuyerTaxInfo'),
     'ShipmentServiceLevelCategory' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShippedByAmazonTFM' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'TFMShipmentStatus' => array('FieldValue' => null, 'FieldType' => 'string'),
@@ -101,6 +109,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'PurchaseOrderNumber' => array('FieldValue' => null, 'FieldType' => 'string'),
     'IsPrime' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'IsPremiumOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'ReplacedOrderId' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'IsReplacementOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
     );
     parent::__construct($data);
     }
@@ -814,6 +824,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
+     * Get the value of the PaymentMethodDetails property.
+     *
+     * @return List<String> PaymentMethodDetails.
+     */
+    public function getPaymentMethodDetails()
+    {
+        if ($this->_fields['PaymentMethodDetails']['FieldValue'] == null)
+        {
+            $this->_fields['PaymentMethodDetails']['FieldValue'] = array();
+        }
+        return $this->_fields['PaymentMethodDetails']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PaymentMethodDetails property.
+     *
+     * @param array paymentMethodDetails
+     * @return this instance
+     */
+    public function setPaymentMethodDetails($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['PaymentMethodDetails']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear PaymentMethodDetails.
+     */
+    public function unsetPaymentMethodDetails()
+    {
+        $this->_fields['PaymentMethodDetails']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if PaymentMethodDetails is set.
+     *
+     * @return true if PaymentMethodDetails is set.
+     */
+    public function isSetPaymentMethodDetails()
+    {
+                return !empty($this->_fields['PaymentMethodDetails']['FieldValue']);
+            }
+
+    /**
+     * Add values for PaymentMethodDetails, return this.
+     *
+     * @param paymentMethodDetails
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withPaymentMethodDetails()
+    {
+        foreach (func_get_args() as $PaymentMethodDetails)
+        {
+            $this->_fields['PaymentMethodDetails']['FieldValue'][] = $PaymentMethodDetails;
+        }
+        return $this;
+    }
+
+    /**
      * Get the value of the MarketplaceId property.
      *
      * @return String MarketplaceId.
@@ -948,6 +1022,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withBuyerName($value)
     {
         $this->setBuyerName($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the BuyerCounty property.
+     *
+     * @return String BuyerCounty.
+     */
+    public function getBuyerCounty()
+    {
+        return $this->_fields['BuyerCounty']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the BuyerCounty property.
+     *
+     * @param string buyerCounty
+     * @return this instance
+     */
+    public function setBuyerCounty($value)
+    {
+        $this->_fields['BuyerCounty']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if BuyerCounty is set.
+     *
+     * @return true if BuyerCounty is set.
+     */
+    public function isSetBuyerCounty()
+    {
+                return !is_null($this->_fields['BuyerCounty']['FieldValue']);
+            }
+
+    /**
+     * Set the value of BuyerCounty, return this.
+     *
+     * @param buyerCounty
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withBuyerCounty($value)
+    {
+        $this->setBuyerCounty($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the BuyerTaxInfo property.
+     *
+     * @return BuyerTaxInfo BuyerTaxInfo.
+     */
+    public function getBuyerTaxInfo()
+    {
+        return $this->_fields['BuyerTaxInfo']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the BuyerTaxInfo property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_BuyerTaxInfo buyerTaxInfo
+     * @return this instance
+     */
+    public function setBuyerTaxInfo($value)
+    {
+        $this->_fields['BuyerTaxInfo']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if BuyerTaxInfo is set.
+     *
+     * @return true if BuyerTaxInfo is set.
+     */
+    public function isSetBuyerTaxInfo()
+    {
+                return !is_null($this->_fields['BuyerTaxInfo']['FieldValue']);
+            }
+
+    /**
+     * Set the value of BuyerTaxInfo, return this.
+     *
+     * @param buyerTaxInfo
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withBuyerTaxInfo($value)
+    {
+        $this->setBuyerTaxInfo($value);
         return $this;
     }
 
@@ -1586,6 +1752,108 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withIsPremiumOrder($value)
     {
         $this->setIsPremiumOrder($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ReplacedOrderId property.
+     *
+     * @return String ReplacedOrderId.
+     */
+    public function getReplacedOrderId()
+    {
+        return $this->_fields['ReplacedOrderId']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ReplacedOrderId property.
+     *
+     * @param string replacedOrderId
+     * @return this instance
+     */
+    public function setReplacedOrderId($value)
+    {
+        $this->_fields['ReplacedOrderId']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ReplacedOrderId is set.
+     *
+     * @return true if ReplacedOrderId is set.
+     */
+    public function isSetReplacedOrderId()
+    {
+                return !is_null($this->_fields['ReplacedOrderId']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ReplacedOrderId, return this.
+     *
+     * @param replacedOrderId
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withReplacedOrderId($value)
+    {
+        $this->setReplacedOrderId($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of IsReplacementOrder.
+     *
+     * @return true if IsReplacementOrder is set to true.
+     */
+    public function isIsReplacementOrder()
+    {
+        return !is_null($this->_fields['IsReplacementOrder']['FieldValue']) && $this->_fields['IsReplacementOrder']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsReplacementOrder property.
+     *
+     * @return Boolean IsReplacementOrder.
+     */
+    public function getIsReplacementOrder()
+    {
+        return $this->_fields['IsReplacementOrder']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsReplacementOrder property.
+     *
+     * @param bool isReplacementOrder
+     * @return this instance
+     */
+    public function setIsReplacementOrder($value)
+    {
+        $this->_fields['IsReplacementOrder']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsReplacementOrder is set.
+     *
+     * @return true if IsReplacementOrder is set.
+     */
+    public function isSetIsReplacementOrder()
+    {
+                return !is_null($this->_fields['IsReplacementOrder']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsReplacementOrder, return this.
+     *
+     * @param isReplacementOrder
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsReplacementOrder($value)
+    {
+        $this->setIsReplacementOrder($value);
         return $this;
     }
 

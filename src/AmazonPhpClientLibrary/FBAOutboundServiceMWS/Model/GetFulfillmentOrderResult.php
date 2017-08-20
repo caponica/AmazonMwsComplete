@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-02-01
- * Generated: Fri Jan 08 13:26:48 PST 2016
+ * Library Version: 2016-10-19
+ * Generated: Wed Oct 19 08:37:58 PDT 2016
  */
 
 /**
@@ -33,6 +33,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>FulfillmentOrder: FBAOutboundServiceMWS_Model_FulfillmentOrder</li>
  * <li>FulfillmentOrderItem: FBAOutboundServiceMWS_Model_FulfillmentOrderItemList</li>
  * <li>FulfillmentShipment: FBAOutboundServiceMWS_Model_FulfillmentShipmentList</li>
+ * <li>ReturnItemList: FBAOutboundServiceMWS_Model_ReturnItemList</li>
+ * <li>ReturnAuthorizationList: FBAOutboundServiceMWS_Model_ReturnAuthorizationList</li>
  *
  * </ul>
  */
@@ -45,6 +47,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'FulfillmentOrder' => array('FieldValue' => null, 'FieldType' => 'FBAOutboundServiceMWS_Model_FulfillmentOrder'),
     'FulfillmentOrderItem' => array('FieldValue' => null, 'FieldType' => 'FBAOutboundServiceMWS_Model_FulfillmentOrderItemList'),
     'FulfillmentShipment' => array('FieldValue' => null, 'FieldType' => 'FBAOutboundServiceMWS_Model_FulfillmentShipmentList'),
+    'ReturnItemList' => array('FieldValue' => null, 'FieldType' => 'FBAOutboundServiceMWS_Model_ReturnItemList'),
+    'ReturnAuthorizationList' => array('FieldValue' => null, 'FieldType' => 'FBAOutboundServiceMWS_Model_ReturnAuthorizationList'),
     );
     parent::__construct($data);
     }
@@ -184,6 +188,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withFulfillmentShipment($value)
     {
         $this->setFulfillmentShipment($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ReturnItemList property.
+     *
+     * @return ReturnItemList ReturnItemList.
+     */
+    public function getReturnItemList()
+    {
+        return $this->_fields['ReturnItemList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ReturnItemList property.
+     *
+     * @param FBAOutboundServiceMWS_Model_ReturnItemList returnItemList
+     * @return this instance
+     */
+    public function setReturnItemList($value)
+    {
+        $this->_fields['ReturnItemList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ReturnItemList is set.
+     *
+     * @return true if ReturnItemList is set.
+     */
+    public function isSetReturnItemList()
+    {
+                return !is_null($this->_fields['ReturnItemList']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ReturnItemList, return this.
+     *
+     * @param returnItemList
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withReturnItemList($value)
+    {
+        $this->setReturnItemList($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ReturnAuthorizationList property.
+     *
+     * @return ReturnAuthorizationList ReturnAuthorizationList.
+     */
+    public function getReturnAuthorizationList()
+    {
+        return $this->_fields['ReturnAuthorizationList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ReturnAuthorizationList property.
+     *
+     * @param FBAOutboundServiceMWS_Model_ReturnAuthorizationList returnAuthorizationList
+     * @return this instance
+     */
+    public function setReturnAuthorizationList($value)
+    {
+        $this->_fields['ReturnAuthorizationList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ReturnAuthorizationList is set.
+     *
+     * @return true if ReturnAuthorizationList is set.
+     */
+    public function isSetReturnAuthorizationList()
+    {
+                return !is_null($this->_fields['ReturnAuthorizationList']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ReturnAuthorizationList, return this.
+     *
+     * @param returnAuthorizationList
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withReturnAuthorizationList($value)
+    {
+        $this->setReturnAuthorizationList($value);
         return $this;
     }
 

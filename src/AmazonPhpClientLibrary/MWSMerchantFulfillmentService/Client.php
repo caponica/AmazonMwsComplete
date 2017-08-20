@@ -14,7 +14,7 @@
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
  * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Generated: Fri Nov 11 06:01:18 PST 2016
  */
 
 /**
@@ -153,6 +153,9 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
         }
         if ($request->isSetShippingServiceOfferId()) {
             $parameters['ShippingServiceOfferId'] =  $request->getShippingServiceOfferId();
+        }
+        if ($request->isSetHazmatType()) {
+            $parameters['HazmatType'] =  $request->getHazmatType();
         }
 
         return $parameters;

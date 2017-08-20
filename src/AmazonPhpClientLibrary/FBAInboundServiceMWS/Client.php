@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Wed Oct 05 06:15:45 PDT 2016
  */
 
 /**
@@ -30,7 +30,7 @@ class FBAInboundServiceMWS_Client implements FBAInboundServiceMWS_Interface
 {
 
     const SERVICE_VERSION = '2010-10-01';
-    const MWS_CLIENT_VERSION = '2016-04-06';
+    const MWS_CLIENT_VERSION = '2016-10-05';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -397,6 +397,116 @@ class FBAInboundServiceMWS_Client implements FBAInboundServiceMWS_Interface
         }
         if ($request->isSetShipmentId()) {
             $parameters['ShipmentId'] =  $request->getShipmentId();
+        }
+
+        return $parameters;
+    }
+
+
+    /**
+     * Get Inbound Guidance For ASIN
+     * Given a list of ASINs and shipToCountryCode, this API returns Inbound
+     *      guidance to ASINs in request with optional reason code if applicable.
+     *
+     * @param mixed $request array of parameters for FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN request or FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN object itself
+     * @see FBAInboundServiceMWS_Model_GetInboundGuidanceForASINRequest
+     * @return FBAInboundServiceMWS_Model_GetInboundGuidanceForASINResponse
+     *
+     * @throws FBAInboundServiceMWS_Exception
+     */
+    public function getInboundGuidanceForASIN($request)
+    {
+        if (!($request instanceof FBAInboundServiceMWS_Model_GetInboundGuidanceForASINRequest)) {
+            require_once (dirname(__FILE__) . '/Model/GetInboundGuidanceForASINRequest.php');
+            $request = new FBAInboundServiceMWS_Model_GetInboundGuidanceForASINRequest($request);
+        }
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'GetInboundGuidanceForASIN';
+        $httpResponse = $this->_invoke($parameters);
+
+        require_once (dirname(__FILE__) . '/Model/GetInboundGuidanceForASINResponse.php');
+        $response = FBAInboundServiceMWS_Model_GetInboundGuidanceForASINResponse::fromXML($httpResponse['ResponseBody']);
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        return $response;
+    }
+
+
+    /**
+     * Convert GetInboundGuidanceForASINRequest to name value pairs
+     */
+    private function _convertGetInboundGuidanceForASIN($request) {
+
+        $parameters = array();
+        $parameters['Action'] = 'GetInboundGuidanceForASIN';
+        if ($request->isSetSellerId()) {
+            $parameters['SellerId'] =  $request->getSellerId();
+        }
+        if ($request->isSetMWSAuthToken()) {
+            $parameters['MWSAuthToken'] =  $request->getMWSAuthToken();
+        }
+        if ($request->isSetASINList()) {
+            $ASINListGetInboundGuidanceForASINRequest = $request->getASINList();
+            foreach  ($ASINListGetInboundGuidanceForASINRequest->getId() as $IdASINListIndex => $IdASINList) {
+                $parameters['ASINList' . '.' . 'Id' . '.'  . ($IdASINListIndex + 1)] =  $IdASINList;
+            }
+        }
+        if ($request->isSetMarketplaceId()) {
+            $parameters['MarketplaceId'] =  $request->getMarketplaceId();
+        }
+
+        return $parameters;
+    }
+
+
+    /**
+     * Get Inbound Guidance For SKU
+     * Given a list of SKUs and shipToCountryCode, this API returns Inbound
+     *      guidance to SKUs in request with optional reason code if applicable.
+     *
+     * @param mixed $request array of parameters for FBAInboundServiceMWS_Model_GetInboundGuidanceForSKU request or FBAInboundServiceMWS_Model_GetInboundGuidanceForSKU object itself
+     * @see FBAInboundServiceMWS_Model_GetInboundGuidanceForSKURequest
+     * @return FBAInboundServiceMWS_Model_GetInboundGuidanceForSKUResponse
+     *
+     * @throws FBAInboundServiceMWS_Exception
+     */
+    public function getInboundGuidanceForSKU($request)
+    {
+        if (!($request instanceof FBAInboundServiceMWS_Model_GetInboundGuidanceForSKURequest)) {
+            require_once (dirname(__FILE__) . '/Model/GetInboundGuidanceForSKURequest.php');
+            $request = new FBAInboundServiceMWS_Model_GetInboundGuidanceForSKURequest($request);
+        }
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'GetInboundGuidanceForSKU';
+        $httpResponse = $this->_invoke($parameters);
+
+        require_once (dirname(__FILE__) . '/Model/GetInboundGuidanceForSKUResponse.php');
+        $response = FBAInboundServiceMWS_Model_GetInboundGuidanceForSKUResponse::fromXML($httpResponse['ResponseBody']);
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        return $response;
+    }
+
+
+    /**
+     * Convert GetInboundGuidanceForSKURequest to name value pairs
+     */
+    private function _convertGetInboundGuidanceForSKU($request) {
+
+        $parameters = array();
+        $parameters['Action'] = 'GetInboundGuidanceForSKU';
+        if ($request->isSetSellerId()) {
+            $parameters['SellerId'] =  $request->getSellerId();
+        }
+        if ($request->isSetMWSAuthToken()) {
+            $parameters['MWSAuthToken'] =  $request->getMWSAuthToken();
+        }
+        if ($request->isSetSellerSKUList()) {
+            $SellerSKUListGetInboundGuidanceForSKURequest = $request->getSellerSKUList();
+            foreach  ($SellerSKUListGetInboundGuidanceForSKURequest->getId() as $IdSellerSKUListIndex => $IdSellerSKUList) {
+                $parameters['SellerSKUList' . '.' . 'Id' . '.'  . ($IdSellerSKUListIndex + 1)] =  $IdSellerSKUList;
+            }
+        }
+        if ($request->isSetMarketplaceId()) {
+            $parameters['MarketplaceId'] =  $request->getMarketplaceId();
         }
 
         return $parameters;

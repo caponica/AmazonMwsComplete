@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Products
  * @version  2011-10-01
- * Library Version: 2016-06-01
- * Generated: Mon Jun 13 10:07:56 PDT 2016
+ * Library Version: 2017-03-22
+ * Generated: Wed Mar 22 23:24:40 UTC 2017
  */
 
 /**
@@ -37,6 +37,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ListPrice: MarketplaceWebServiceProducts_Model_MoneyType</li>
  * <li>SuggestedLowerPricePlusShipping: MarketplaceWebServiceProducts_Model_MoneyType</li>
  * <li>BuyBoxEligibleOffers: MarketplaceWebServiceProducts_Model_BuyBoxEligibleOffers</li>
+ * <li>OffersAvailableTime: string</li>
  *
  * </ul>
  */
@@ -53,6 +54,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ListPrice' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_MoneyType'),
     'SuggestedLowerPricePlusShipping' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_MoneyType'),
     'BuyBoxEligibleOffers' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceProducts_Model_BuyBoxEligibleOffers'),
+    'OffersAvailableTime' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -376,6 +378,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withBuyBoxEligibleOffers($value)
     {
         $this->setBuyBoxEligibleOffers($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the OffersAvailableTime property.
+     *
+     * @return XMLGregorianCalendar OffersAvailableTime.
+     */
+    public function getOffersAvailableTime()
+    {
+        return $this->_fields['OffersAvailableTime']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the OffersAvailableTime property.
+     *
+     * @param string offersAvailableTime
+     * @return this instance
+     */
+    public function setOffersAvailableTime($value)
+    {
+        $this->_fields['OffersAvailableTime']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if OffersAvailableTime is set.
+     *
+     * @return true if OffersAvailableTime is set.
+     */
+    public function isSetOffersAvailableTime()
+    {
+                return !is_null($this->_fields['OffersAvailableTime']['FieldValue']);
+            }
+
+    /**
+     * Set the value of OffersAvailableTime, return this.
+     *
+     * @param offersAvailableTime
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withOffersAvailableTime($value)
+    {
+        $this->setOffersAvailableTime($value);
         return $this;
     }
 

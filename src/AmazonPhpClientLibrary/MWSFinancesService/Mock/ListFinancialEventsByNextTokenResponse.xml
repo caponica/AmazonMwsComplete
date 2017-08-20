@@ -901,6 +901,11 @@
                     <SellerStoreName>String</SellerStoreName>
                     <ProviderId>String</ProviderId>
                     <ProviderStoreName>String</ProviderStoreName>
+                    <TransactionAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TransactionAmount>
+                    <TransactionCreationDate>1969-07-21T02:56:03Z</TransactionCreationDate>
                 </SolutionProviderCreditEvent>
             </ServiceProviderCreditEventList>
             <RetrochargeEventList>
@@ -966,6 +971,25 @@
                     </ProductGroupList>
                 </PerformanceBondRefundEvent>
             </PerformanceBondRefundEventList>
+            <ProductAdsPaymentEventList>
+                <ProductAdsPaymentEvent>
+                    <postedDate>1969-07-21T02:56:03Z</postedDate>
+                    <transactionType>String</transactionType>
+                    <invoiceId>String</invoiceId>
+                    <baseValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </baseValue>
+                    <taxValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </taxValue>
+                    <transactionValue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </transactionValue>
+                </ProductAdsPaymentEvent>
+            </ProductAdsPaymentEventList>
             <ServiceFeeEventList>
                 <ServiceFeeEvent>
                     <AmazonOrderId>String</AmazonOrderId>
@@ -985,6 +1009,27 @@
                     <ASIN>String</ASIN>
                 </ServiceFeeEvent>
             </ServiceFeeEventList>
+            <SellerDealPaymentEventList>
+                <SellerDealPaymentEvent>
+                    <postedDate>1969-07-21T02:56:03Z</postedDate>
+                    <dealId>String</dealId>
+                    <dealDescription>String</dealDescription>
+                    <eventType>String</eventType>
+                    <feeType>String</feeType>
+                    <feeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </feeAmount>
+                    <taxAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </taxAmount>
+                    <totalAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </totalAmount>
+                </SellerDealPaymentEvent>
+            </SellerDealPaymentEventList>
             <DebtRecoveryEventList>
                 <DebtRecoveryEvent>
                     <DebtRecoveryType>String</DebtRecoveryType>
@@ -1057,6 +1102,68 @@
                     </AdjustmentItemList>
                 </AdjustmentEvent>
             </AdjustmentEventList>
+            <SAFETReimbursementEventList>
+                <SAFETReimbursementEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <SAFETClaimId>String</SAFETClaimId>
+                    <ReimbursedAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </ReimbursedAmount>
+                    <SAFETReimbursementItemList>
+                        <SAFETReimbursementItem>
+                        <itemChargeList>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </itemChargeList>
+                        </SAFETReimbursementItem>
+                    </SAFETReimbursementItemList>
+                </SAFETReimbursementEvent>
+            </SAFETReimbursementEventList>
+            <SellerReviewEnrollmentPaymentEventList>
+                <SellerReviewEnrollmentPaymentEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <EnrollmentId>String</EnrollmentId>
+                    <ParentASIN>String</ParentASIN>
+                    <FeeComponent>
+                        <FeeType>String</FeeType>
+                        <FeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </FeeAmount>
+                    </FeeComponent>
+                    <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                    </ChargeComponent>
+                    <TotalAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TotalAmount>
+                </SellerReviewEnrollmentPaymentEvent>
+            </SellerReviewEnrollmentPaymentEventList>
+            <FBALiquidationEventList>
+                <FBALiquidationEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <OriginalRemovalOrderId>String</OriginalRemovalOrderId>
+                    <LiquidationProceedsAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </LiquidationProceedsAmount>
+                    <LiquidationFeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </LiquidationFeeAmount>
+                </FBALiquidationEvent>
+            </FBALiquidationEventList>
         </FinancialEvents>
     </ListFinancialEventsByNextTokenResult>
    <ResponseMetadata>

@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-02-01
- * Generated: Fri Jan 08 13:26:48 PST 2016
+ * Library Version: 2016-10-19
+ * Generated: Wed Oct 19 08:37:58 PDT 2016
  */
 
 interface  FBAOutboundServiceMWS_Interface
@@ -96,6 +96,28 @@ interface  FBAOutboundServiceMWS_Interface
      * @throws FBAOutboundServiceMWS_Exception
      */
     public function createFulfillmentOrder($request);
+
+
+    /**
+     * Create Fulfillment Return
+     * Requests a return of one or more items that were 
+     *   originally fulfilled by SI. The client must look at
+     *   the item/authorization list details in the response
+     *   to determine what was accepted. All accepted returned 
+     *   items will be returned as a list in ReturnItemList. 
+     *   All non-returnable items are return as a list in InvalidReturnItemList. 
+     *   Both lists will always be returned as part of the response. If all 
+     *   items are accepted for return InvalidReturnItemList will be empty. If all 
+     *   the items are invalid for a return, ReturnItemList will be empty. 
+     *   If all the items are invalid for a return, ReturnItemList will be empty.
+     *
+     * @param mixed $request array of parameters for FBAOutboundServiceMWS_Model_CreateFulfillmentReturn request or FBAOutboundServiceMWS_Model_CreateFulfillmentReturn object itself
+     * @see FBAOutboundServiceMWS_Model_CreateFulfillmentReturnRequest
+     * @return FBAOutboundServiceMWS_Model_CreateFulfillmentReturnResponse
+     *
+     * @throws FBAOutboundServiceMWS_Exception
+     */
+    public function createFulfillmentReturn($request);
 
 
     /**
@@ -203,6 +225,21 @@ interface  FBAOutboundServiceMWS_Interface
      * @throws FBAOutboundServiceMWS_Exception
      */
     public function listAllFulfillmentOrdersByNextToken($request);
+
+
+    /**
+     * List Return Reason Codes
+     * This operation will result in a list of eligible return reasons for
+     *   a given SKU and original ordering country. The eligible return reasons 
+     *   may vary from country to country.
+     *
+     * @param mixed $request array of parameters for FBAOutboundServiceMWS_Model_ListReturnReasonCodes request or FBAOutboundServiceMWS_Model_ListReturnReasonCodes object itself
+     * @see FBAOutboundServiceMWS_Model_ListReturnReasonCodesRequest
+     * @return FBAOutboundServiceMWS_Model_ListReturnReasonCodesResponse
+     *
+     * @throws FBAOutboundServiceMWS_Exception
+     */
+    public function listReturnReasonCodes($request);
 
 
     /**

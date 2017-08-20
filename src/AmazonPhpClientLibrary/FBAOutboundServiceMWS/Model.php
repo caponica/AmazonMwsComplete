@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-02-01
- * Generated: Fri Jan 08 13:26:48 PST 2016
+ * Library Version: 2016-10-19
+ * Generated: Wed Oct 19 08:37:58 PDT 2016
  */
 
 /**
@@ -154,10 +154,14 @@ abstract class FBAOutboundServiceMWS_Model
                             }
                         }
                     } else {
-                        $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
-                        if ($element->length == 1) {
-                            $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
-                        }
+                       if ($fieldType[0] == ".") {
+                           $element = $xpath->query("./text()", $dom);
+                       } else {
+                            $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
+                       }
+                       if ($element->length == 1) {
+                                $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
+                       }
                     }
 
                     $attribute = $xpath->query("./@$fieldName", $dom);
@@ -350,6 +354,8 @@ abstract class FBAOutboundServiceMWS_Model
                         $xml .= ">";
                         $xml .= $fieldValue->_toXMLFragment();
                         $xml .= "</$fieldName>";
+                    } else if($fieldType[0] == ".") {
+                         $xml .= $this->_escapeXML($fieldValue);
                     } else if($fieldType[0] != "@") {
                         $xml .= "<$fieldName>";
                         $xml .= $this->_escapeXML($fieldValue);

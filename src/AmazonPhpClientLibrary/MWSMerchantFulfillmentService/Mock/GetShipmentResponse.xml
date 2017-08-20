@@ -71,9 +71,14 @@
                         <Amount>100</Amount>
                     </DeclaredValue>
                     <CarrierWillPickUp>true</CarrierWillPickUp>
+                    <LabelFormat>String</LabelFormat>
                 </ShippingServiceOptions>
+                <AvailableLabelFormats>
+                    <LabelFormat>String</LabelFormat>
+                </AvailableLabelFormats>
             </ShippingService>
             <Label>
+                <CustomTextForLabel>String</CustomTextForLabel>
                 <Dimensions>
                     <Length>100</Length>
                     <Width>100</Width>
@@ -84,6 +89,8 @@
                     <FileType>String</FileType>
                     <Checksum>String</Checksum>
                 </FileContents>
+                <LabelFormat>String</LabelFormat>
+                <StandardIdForLabel>String</StandardIdForLabel>
             </Label>
             <Status>String</Status>
             <TrackingId>String</TrackingId>

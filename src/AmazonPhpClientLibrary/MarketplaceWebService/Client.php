@@ -42,7 +42,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
 
   /** @var array */
   private  $config = array ('ServiceURL' => null,
-                            'UserAgent' => 'PHP Client Library/2015-06-18 (Language=PHP5)',
+                            'UserAgent' => 'PHP Client Library/2016-09-21 (Language=PHP5)',
                             'SignatureVersion' => 2,
                             'SignatureMethod' => 'HmacSHA256',
                             'ProxyHost' => null,
@@ -54,7 +54,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
 
   const REQUEST_TYPE = "POST";
 
-  const MWS_CLIENT_VERSION = '2015-06-18';
+  const MWS_CLIENT_VERSION = '2016-09-21';
   
   private $defaultHeaders = array();
 
@@ -371,7 +371,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       $request = new MarketplaceWebService_Model_SubmitFeedRequest($request);
     }
     require_once (dirname(__FILE__) . '/Model/SubmitFeedResponse.php');
-    $httpResponse = $this->invoke($this->convertSubmitFeed($request), $request->getFeedContent(), $request->getContentMd5());
+    $httpResponse = $this->invoke($this->convertSubmitFeed($request), $request->getFeedContent());
     $response = MarketplaceWebService_Model_SubmitFeedResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
     return $response;
@@ -791,7 +791,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   /**
    * Invoke request and return response
    */
-  private function invoke(array $converted, $dataHandle = null, $contentMd5 = null)
+  private function invoke(array $converted, $dataHandle = null)
   {
   	
   	$parameters = $converted[CONVERTED_PARAMETERS_KEY];
@@ -818,7 +818,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       $retries = 0;
       do {
         try {
-          $response = $this->performRequest($actionName, $converted, $dataHandle, $contentMd5);
+          $response = $this->performRequest($actionName, $converted, $dataHandle);
           
           $httpStatus = $response['Status'];
           
@@ -897,12 +897,11 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
    * @param $action - the MWS action to perform.
    * @param $parameters - the MWS parameters for the Action.
    * @param $dataHandle - A stream handle to either a feed to upload, or a report/feed submission result to download.
-   * @param $contentMd5 - The Content-MD5 HTTP header value used for feed submissions.
    * @return array
    */
-  private function performRequest($action, array $converted, $dataHandle = null, $contentMd5 = null) {
+  private function performRequest($action, array $converted, $dataHandle = null) {
 
-    $curlOptions = $this->configureCurlOptions($action, $converted, $dataHandle, $contentMd5);
+    $curlOptions = $this->configureCurlOptions($action, $converted, $dataHandle);
 
     if (is_null($curlOptions[CURLOPT_RETURNTRANSFER]) || !$curlOptions[CURLOPT_RETURNTRANSFER]) {
       $curlOptions[CURLOPT_RETURNTRANSFER] = true;
@@ -1065,7 +1064,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
    * @param $streamHandle
    * @return array
    */
-  private function configureCurlOptions($action, array $converted, $streamHandle = null, $contentMd5 = null) {
+  private function configureCurlOptions($action, array $converted, $streamHandle = null) {
     $curlOptions = $this->getDefaultCurlOptions();
     
     if (!is_null($this->config['ProxyHost'])) {
@@ -1099,7 +1098,6 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       $header[] = 'Expect: ';
       $header[] = 'Accept: ';
       $header[] = 'Transfer-Encoding: chunked';
-      $header[] = 'Content-MD5: ' . $contentMd5;
       
       $curlOptions[CURLOPT_HTTPHEADER] = array_merge($header, $converted[CONVERTED_HEADERS_KEY]);
 
@@ -1440,6 +1438,9 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       }
       if ($request->isSetMWSAuthToken()) {
         $parameters['MWSAuthToken'] = $request->getMWSAuthToken();
+      }
+      if ($request->isSetContentMd5()) {
+              $parameters['ContentMD5Value'] = $request->getContentMd5();
       }
 
       $headers = array();

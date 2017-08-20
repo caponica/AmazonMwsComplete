@@ -14,7 +14,7 @@
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
  * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Generated: Fri Nov 11 06:01:18 PST 2016
  */
 
 /**
@@ -39,6 +39,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>LatestEstimatedDeliveryDate: string</li>
  * <li>Rate: MWSMerchantFulfillmentService_Model_CurrencyAmount</li>
  * <li>ShippingServiceOptions: MWSMerchantFulfillmentService_Model_ShippingServiceOptions</li>
+ * <li>AvailableLabelFormats: array</li>
  *
  * </ul>
  */
@@ -57,6 +58,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'LatestEstimatedDeliveryDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Rate' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_CurrencyAmount'),
     'ShippingServiceOptions' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShippingServiceOptions'),
+    'AvailableLabelFormats' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'LabelFormat'),
     );
     parent::__construct($data);
     }
@@ -472,6 +474,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withShippingServiceOptions($value)
     {
         $this->setShippingServiceOptions($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the AvailableLabelFormats property.
+     *
+     * @return List<String> AvailableLabelFormats.
+     */
+    public function getAvailableLabelFormats()
+    {
+        if ($this->_fields['AvailableLabelFormats']['FieldValue'] == null)
+        {
+            $this->_fields['AvailableLabelFormats']['FieldValue'] = array();
+        }
+        return $this->_fields['AvailableLabelFormats']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the AvailableLabelFormats property.
+     *
+     * @param array availableLabelFormats
+     * @return this instance
+     */
+    public function setAvailableLabelFormats($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['AvailableLabelFormats']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear AvailableLabelFormats.
+     */
+    public function unsetAvailableLabelFormats()
+    {
+        $this->_fields['AvailableLabelFormats']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if AvailableLabelFormats is set.
+     *
+     * @return true if AvailableLabelFormats is set.
+     */
+    public function isSetAvailableLabelFormats()
+    {
+                return !empty($this->_fields['AvailableLabelFormats']['FieldValue']);
+            }
+
+    /**
+     * Add values for AvailableLabelFormats, return this.
+     *
+     * @param availableLabelFormats
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withAvailableLabelFormats()
+    {
+        foreach (func_get_args() as $AvailableLabelFormats)
+        {
+            $this->_fields['AvailableLabelFormats']['FieldValue'][] = $AvailableLabelFormats;
+        }
         return $this;
     }
 

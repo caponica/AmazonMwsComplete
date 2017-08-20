@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Wed Oct 05 06:15:45 PDT 2016
  */
 
 interface  FBAInboundServiceMWS_Interface
@@ -117,6 +117,34 @@ interface  FBAInboundServiceMWS_Interface
      * @throws FBAInboundServiceMWS_Exception
      */
     public function getBillOfLading($request);
+
+
+    /**
+     * Get Inbound Guidance For ASIN
+     * Given a list of ASINs and shipToCountryCode, this API returns Inbound
+     *      guidance to ASINs in request with optional reason code if applicable.
+     *
+     * @param mixed $request array of parameters for FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN request or FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN object itself
+     * @see FBAInboundServiceMWS_Model_GetInboundGuidanceForASINRequest
+     * @return FBAInboundServiceMWS_Model_GetInboundGuidanceForASINResponse
+     *
+     * @throws FBAInboundServiceMWS_Exception
+     */
+    public function getInboundGuidanceForASIN($request);
+
+
+    /**
+     * Get Inbound Guidance For SKU
+     * Given a list of SKUs and shipToCountryCode, this API returns Inbound
+     *      guidance to SKUs in request with optional reason code if applicable.
+     *
+     * @param mixed $request array of parameters for FBAInboundServiceMWS_Model_GetInboundGuidanceForSKU request or FBAInboundServiceMWS_Model_GetInboundGuidanceForSKU object itself
+     * @see FBAInboundServiceMWS_Model_GetInboundGuidanceForSKURequest
+     * @return FBAInboundServiceMWS_Model_GetInboundGuidanceForSKUResponse
+     *
+     * @throws FBAInboundServiceMWS_Exception
+     */
+    public function getInboundGuidanceForSKU($request);
 
 
     /**

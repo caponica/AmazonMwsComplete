@@ -29,6 +29,17 @@
                         </PrepDetailsList>
                     </member>
                 </Items>
+                <EstimatedBoxContentsFee>
+                    <TotalUnits>1</TotalUnits>
+                    <FeePerUnit>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Value>100</Value>
+                    </FeePerUnit>
+                    <TotalFee>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Value>100</Value>
+                    </TotalFee>
+                </EstimatedBoxContentsFee>
             </member>
         </InboundShipmentPlans>
     </CreateInboundShipmentPlanResult>

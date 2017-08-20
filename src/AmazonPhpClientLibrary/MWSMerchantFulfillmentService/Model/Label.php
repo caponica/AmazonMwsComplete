@@ -14,7 +14,7 @@
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
  * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Generated: Fri Nov 11 06:01:18 PST 2016
  */
 
 /**
@@ -30,8 +30,11 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * Properties:
  * <ul>
  * 
+ * <li>CustomTextForLabel: string</li>
  * <li>Dimensions: MWSMerchantFulfillmentService_Model_LabelDimensions</li>
  * <li>FileContents: MWSMerchantFulfillmentService_Model_FileContents</li>
+ * <li>LabelFormat: string</li>
+ * <li>StandardIdForLabel: string</li>
  *
  * </ul>
  */
@@ -41,10 +44,59 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function __construct($data = null)
     {
     $this->_fields = array (
+    'CustomTextForLabel' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Dimensions' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_LabelDimensions'),
     'FileContents' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_FileContents'),
+    'LabelFormat' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'StandardIdForLabel' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
+    }
+
+    /**
+     * Get the value of the CustomTextForLabel property.
+     *
+     * @return String CustomTextForLabel.
+     */
+    public function getCustomTextForLabel()
+    {
+        return $this->_fields['CustomTextForLabel']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the CustomTextForLabel property.
+     *
+     * @param string customTextForLabel
+     * @return this instance
+     */
+    public function setCustomTextForLabel($value)
+    {
+        $this->_fields['CustomTextForLabel']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if CustomTextForLabel is set.
+     *
+     * @return true if CustomTextForLabel is set.
+     */
+    public function isSetCustomTextForLabel()
+    {
+                return !is_null($this->_fields['CustomTextForLabel']['FieldValue']);
+            }
+
+    /**
+     * Set the value of CustomTextForLabel, return this.
+     *
+     * @param customTextForLabel
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withCustomTextForLabel($value)
+    {
+        $this->setCustomTextForLabel($value);
+        return $this;
     }
 
     /**
@@ -136,6 +188,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withFileContents($value)
     {
         $this->setFileContents($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the LabelFormat property.
+     *
+     * @return String LabelFormat.
+     */
+    public function getLabelFormat()
+    {
+        return $this->_fields['LabelFormat']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the LabelFormat property.
+     *
+     * @param string labelFormat
+     * @return this instance
+     */
+    public function setLabelFormat($value)
+    {
+        $this->_fields['LabelFormat']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if LabelFormat is set.
+     *
+     * @return true if LabelFormat is set.
+     */
+    public function isSetLabelFormat()
+    {
+                return !is_null($this->_fields['LabelFormat']['FieldValue']);
+            }
+
+    /**
+     * Set the value of LabelFormat, return this.
+     *
+     * @param labelFormat
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withLabelFormat($value)
+    {
+        $this->setLabelFormat($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the StandardIdForLabel property.
+     *
+     * @return String StandardIdForLabel.
+     */
+    public function getStandardIdForLabel()
+    {
+        return $this->_fields['StandardIdForLabel']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the StandardIdForLabel property.
+     *
+     * @param string standardIdForLabel
+     * @return this instance
+     */
+    public function setStandardIdForLabel($value)
+    {
+        $this->_fields['StandardIdForLabel']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if StandardIdForLabel is set.
+     *
+     * @return true if StandardIdForLabel is set.
+     */
+    public function isSetStandardIdForLabel()
+    {
+                return !is_null($this->_fields['StandardIdForLabel']['FieldValue']);
+            }
+
+    /**
+     * Set the value of StandardIdForLabel, return this.
+     *
+     * @param standardIdForLabel
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withStandardIdForLabel($value)
+    {
+        $this->setStandardIdForLabel($value);
         return $this;
     }
 

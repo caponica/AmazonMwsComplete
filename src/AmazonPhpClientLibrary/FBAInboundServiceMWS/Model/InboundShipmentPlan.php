@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Wed Oct 05 06:15:45 PDT 2016
  */
 
 /**
@@ -35,6 +35,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ShipToAddress: FBAInboundServiceMWS_Model_Address</li>
  * <li>LabelPrepType: string</li>
  * <li>Items: FBAInboundServiceMWS_Model_InboundShipmentPlanItemList</li>
+ * <li>EstimatedBoxContentsFee: FBAInboundServiceMWS_Model_BoxContentsFeeDetails</li>
  *
  * </ul>
  */
@@ -49,6 +50,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ShipToAddress' => array('FieldValue' => null, 'FieldType' => 'FBAInboundServiceMWS_Model_Address'),
     'LabelPrepType' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Items' => array('FieldValue' => null, 'FieldType' => 'FBAInboundServiceMWS_Model_InboundShipmentPlanItemList'),
+    'EstimatedBoxContentsFee' => array('FieldValue' => null, 'FieldType' => 'FBAInboundServiceMWS_Model_BoxContentsFeeDetails'),
     );
     parent::__construct($data);
     }
@@ -280,6 +282,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withItems($value)
     {
         $this->setItems($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the EstimatedBoxContentsFee property.
+     *
+     * @return BoxContentsFeeDetails EstimatedBoxContentsFee.
+     */
+    public function getEstimatedBoxContentsFee()
+    {
+        return $this->_fields['EstimatedBoxContentsFee']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the EstimatedBoxContentsFee property.
+     *
+     * @param FBAInboundServiceMWS_Model_BoxContentsFeeDetails estimatedBoxContentsFee
+     * @return this instance
+     */
+    public function setEstimatedBoxContentsFee($value)
+    {
+        $this->_fields['EstimatedBoxContentsFee']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if EstimatedBoxContentsFee is set.
+     *
+     * @return true if EstimatedBoxContentsFee is set.
+     */
+    public function isSetEstimatedBoxContentsFee()
+    {
+                return !is_null($this->_fields['EstimatedBoxContentsFee']['FieldValue']);
+            }
+
+    /**
+     * Set the value of EstimatedBoxContentsFee, return this.
+     *
+     * @param estimatedBoxContentsFee
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withEstimatedBoxContentsFee($value)
+    {
+        $this->setEstimatedBoxContentsFee($value);
         return $this;
     }
 

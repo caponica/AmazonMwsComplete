@@ -105,6 +105,41 @@
                 </FulfillmentShipmentPackage>
             </member>
         </FulfillmentShipment>
+        <ReturnItemList>
+            <member>
+                <SellerReturnItemId>String</SellerReturnItemId>
+                <SellerFulfillmentOrderItemId>String</SellerFulfillmentOrderItemId>
+                <AmazonShipmentId>String</AmazonShipmentId>
+                <SellerReturnReasonCode>String</SellerReturnReasonCode>
+                <ReturnComment>String</ReturnComment>
+                <AmazonReturnReasonCode>String</AmazonReturnReasonCode>
+                <Status>String</Status>
+                <StatusChangedDate>1969-07-21T02:56:03Z</StatusChangedDate>
+                <ReturnAuthorizationId>String</ReturnAuthorizationId>
+                <ReturnReceivedCondition>String</ReturnReceivedCondition>
+                <FulfillmentCenterId>String</FulfillmentCenterId>
+            </member>
+        </ReturnItemList>
+        <ReturnAuthorizationList>
+            <member>
+                <ReturnAuthorizationId>String</ReturnAuthorizationId>
+                <FulfillmentCenterId>String</FulfillmentCenterId>
+                <ReturnToAddress>
+                    <Name>String</Name>
+                    <Line1>String</Line1>
+                    <Line2>String</Line2>
+                    <Line3>String</Line3>
+                    <DistrictOrCounty>String</DistrictOrCounty>
+                    <City>String</City>
+                    <StateOrProvinceCode>String</StateOrProvinceCode>
+                    <CountryCode>String</CountryCode>
+                    <PostalCode>String</PostalCode>
+                    <PhoneNumber>String</PhoneNumber>
+                </ReturnToAddress>
+                <AmazonRmaId>String</AmazonRmaId>
+                <RmaPageURL>String</RmaPageURL>
+            </member>
+        </ReturnAuthorizationList>
     </GetFulfillmentOrderResult>
    <ResponseMetadata>
         <RequestId>String</RequestId>

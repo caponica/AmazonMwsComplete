@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2015-09-03
- * Generated: Thu Sep 03 17:55:25 GMT 2015
+ * Library Version: 2017-07-26
+ * Generated: Tue Jul 25 12:48:59 UTC 2017
  */
 
 /**
@@ -38,6 +38,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>SellerStoreName: string</li>
  * <li>ProviderId: string</li>
  * <li>ProviderStoreName: string</li>
+ * <li>TransactionAmount: MWSFinancesService_Model_Currency</li>
+ * <li>TransactionCreationDate: string</li>
  *
  * </ul>
  */
@@ -55,6 +57,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'SellerStoreName' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ProviderId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ProviderStoreName' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'TransactionAmount' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
+    'TransactionCreationDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -424,6 +428,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withProviderStoreName($value)
     {
         $this->setProviderStoreName($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the TransactionAmount property.
+     *
+     * @return Currency TransactionAmount.
+     */
+    public function getTransactionAmount()
+    {
+        return $this->_fields['TransactionAmount']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the TransactionAmount property.
+     *
+     * @param MWSFinancesService_Model_Currency transactionAmount
+     * @return this instance
+     */
+    public function setTransactionAmount($value)
+    {
+        $this->_fields['TransactionAmount']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if TransactionAmount is set.
+     *
+     * @return true if TransactionAmount is set.
+     */
+    public function isSetTransactionAmount()
+    {
+                return !is_null($this->_fields['TransactionAmount']['FieldValue']);
+            }
+
+    /**
+     * Set the value of TransactionAmount, return this.
+     *
+     * @param transactionAmount
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withTransactionAmount($value)
+    {
+        $this->setTransactionAmount($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the TransactionCreationDate property.
+     *
+     * @return XMLGregorianCalendar TransactionCreationDate.
+     */
+    public function getTransactionCreationDate()
+    {
+        return $this->_fields['TransactionCreationDate']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the TransactionCreationDate property.
+     *
+     * @param string transactionCreationDate
+     * @return this instance
+     */
+    public function setTransactionCreationDate($value)
+    {
+        $this->_fields['TransactionCreationDate']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if TransactionCreationDate is set.
+     *
+     * @return true if TransactionCreationDate is set.
+     */
+    public function isSetTransactionCreationDate()
+    {
+                return !is_null($this->_fields['TransactionCreationDate']['FieldValue']);
+            }
+
+    /**
+     * Set the value of TransactionCreationDate, return this.
+     *
+     * @param transactionCreationDate
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withTransactionCreationDate($value)
+    {
+        $this->setTransactionCreationDate($value);
         return $this;
     }
 

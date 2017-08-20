@@ -44,9 +44,23 @@
                     </PaymentExecutionDetailItem>
                 </PaymentExecutionDetail>
                 <PaymentMethod>String</PaymentMethod>
+                <PaymentMethodDetails>
+                    <PaymentMethodDetail>String</PaymentMethodDetail>
+                </PaymentMethodDetails>
                 <MarketplaceId>String</MarketplaceId>
                 <BuyerEmail>String</BuyerEmail>
                 <BuyerName>String</BuyerName>
+                <BuyerCounty>String</BuyerCounty>
+                <BuyerTaxInfo>
+                    <CompanyLegalName>String</CompanyLegalName>
+                    <TaxingRegion>String</TaxingRegion>
+                    <TaxClassifications>
+                        <TaxClassification>
+                        <Name>String</Name>
+                        <Value>String</Value>
+                        </TaxClassification>
+                    </TaxClassifications>
+                </BuyerTaxInfo>
                 <ShipmentServiceLevelCategory>String</ShipmentServiceLevelCategory>
                 <ShippedByAmazonTFM>true</ShippedByAmazonTFM>
                 <TFMShipmentStatus>String</TFMShipmentStatus>
@@ -60,6 +74,8 @@
                 <PurchaseOrderNumber>String</PurchaseOrderNumber>
                 <IsPrime>true</IsPrime>
                 <IsPremiumOrder>true</IsPremiumOrder>
+                <ReplacedOrderId>String</ReplacedOrderId>
+                <IsReplacementOrder>true</IsReplacementOrder>
             </Order>
         </Orders>
     </ListOrdersByNextTokenResult>

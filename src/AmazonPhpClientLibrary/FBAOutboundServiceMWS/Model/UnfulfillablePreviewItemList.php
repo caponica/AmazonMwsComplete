@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-02-01
- * Generated: Fri Jan 08 13:26:48 PST 2016
+ * Library Version: 2016-10-19
+ * Generated: Wed Oct 19 08:37:58 PDT 2016
  */
 
 /**
