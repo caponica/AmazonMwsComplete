@@ -338,6 +338,7 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
      */
     public function getFulfillmentPreview($request)
     {
+
         if (!($request instanceof FBAOutboundServiceMWS_Model_GetFulfillmentPreviewRequest)) {
             require_once (dirname(__FILE__) . '/Model/GetFulfillmentPreviewRequest.php');
             $request = new FBAOutboundServiceMWS_Model_GetFulfillmentPreviewRequest($request);

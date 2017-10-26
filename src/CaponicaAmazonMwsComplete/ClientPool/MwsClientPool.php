@@ -14,6 +14,7 @@ use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\MwsMerchantClientPack;
 
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
@@ -40,6 +41,10 @@ class MwsClientPool {
      */
     protected $fbaOutboundClientPack;
 
+    /**
+     * @var MwsMerchantClientPack
+     */
+    protected $MwsMerchantClientPack;
 
     protected $config;
 
@@ -97,6 +102,15 @@ class MwsClientPool {
         return $this->fbaOutboundClientPack;
     }
 
+    /**
+     * @return MwsMerchantClientPack
+     */
+    public function getMerchantClientPack() {
+        if(empty($this->MwsMerchantClientPack)) {
+            $this->MwsMerchantClientPack = new MwsMerchantClientPack($this->config);
+        }
+        return $this->MwsMerchantClientPack;
+    }
 
     public function setChannelId($value) {
         return $this->channelId = $value;

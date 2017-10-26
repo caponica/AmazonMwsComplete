@@ -173,6 +173,7 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
      */
     public function getEligibleShippingServices($request)
     {
+
         if (!($request instanceof MWSMerchantFulfillmentService_Model_GetEligibleShippingServicesRequest)) {
             require_once (dirname(__FILE__) . '/Model/GetEligibleShippingServicesRequest.php');
             $request = new MWSMerchantFulfillmentService_Model_GetEligibleShippingServicesRequest($request);
@@ -334,6 +335,7 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;
         if (!is_null($config)) $this->_config = array_merge($this->_config, $config);
+
         $this->setUserAgentHeader($applicationName, $applicationVersion);
     }
 
@@ -464,6 +466,7 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
      */
     private function _invoke(array $parameters)
     {
+
         try {
             if (empty($this->_config['ServiceURL'])) {
                 require_once (dirname(__FILE__) . '/Exception.php');
