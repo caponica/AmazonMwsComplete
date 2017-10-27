@@ -13,6 +13,8 @@ class MwsOrderClientPack extends MwsOrderClient {
     const PARAM_MARKETPLACE_ID                      = 'MarketplaceId';
     const PARAM_CREATED_AFTER                       = 'CreatedAfter';
     const PARAM_CREATED_BEFORE                      = 'CreatedBefore';
+    const PARAM_LAST_UPDATED_AFTER                  = 'LastUpdatedAfter';
+
     const PARAM_REPORT_REQUEST_ID_LIST              = 'ReportRequestIdList';
     const PARAM_ORDER_STATUS_LIST                   = 'OrderStatus';
     const PARAM_AMAZON_ORDER_ID                     = 'AmazonOrderId';
@@ -24,7 +26,9 @@ class MwsOrderClientPack extends MwsOrderClient {
     const STATUS_CANCELED                           = 'Canceled';
     const STATUS_UNFULFILLABLE                      = 'Unfulfillable';
     const STATUS_PENDING_AVAILABILITY               = 'PendingAvailability';
-
+    const PARAM_FULFILLMENT_CHANNEL = 'FulfillmentChannel';
+    const PARAM_FULFILLMENT_CHANNEL_AFN = 'AFN';
+    const PARAM_FULFILLMENT_CHANNEL_MFN = 'MFN';
 
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
@@ -53,16 +57,27 @@ class MwsOrderClientPack extends MwsOrderClient {
     // #      basic wrappers for API calls go here      #
     // ##################################################    
 
-    public function callListOrdersRequest($createdAfter, $orderStatus) {
+    public function callListOrdersRequest($createdAfter='', $lastUpdatedAfter='', $fulfillmentChannel='', $orderStatus) {
 
-        return $this->listOrders([
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
-            self::PARAM_SELLER_ID => $this->sellerId,
-            self::PARAM_MERCHANT  => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
-            self::PARAM_CREATED_AFTER => $createdAfter,
-            self::PARAM_ORDER_STATUS_LIST => $orderStatus
-        ]);
+        if (!empty($createdAfter)) {
+            $parameters[self::PARAM_CREATED_AFTER] = $createdAfter;
+        }
+        if (!empty($lastUpdatedAfter)) {
+            $parameters[self::PARAM_LAST_UPDATED_AFTER] = $lastUpdatedAfter;
+        }
+        if (!empty($fulfillmentChannel)) {
+            $parameters[self::PARAM_FULFILLMENT_CHANNEL] = $fulfillmentChannel;
+        }
+
+        $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
+        $parameters[self::PARAM_MERCHANT] = $this->sellerId;
+        $parameters[self::PARAM_MARKETPLACE_ID_LIST] = array('Id' => $this->marketplaceId);
+        $parameters[self::PARAM_ORDER_STATUS_LIST] = $orderStatus;
+        
+
+        return $this->listOrders(
+            array_merge([self::PARAM_MARKETPLACE_ID  => $this->marketplaceId], $parameters)
+        );
     }
 
     public function callListOrdersRequestByNextToken($nextToken) {
