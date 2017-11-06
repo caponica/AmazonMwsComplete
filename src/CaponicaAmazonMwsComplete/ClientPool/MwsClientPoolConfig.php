@@ -47,6 +47,30 @@ class MwsClientPoolConfig {
     private $amazonSite;    // One of the SITE_XYZ constants
     private $sellerId;
 
+    public static function getDomainSuffixForSite($site, $fullDomain=false) {
+        $suffixes = self::getDomainSuffixes();
+        if (empty($suffixes[$site])) {
+            throw new \Exception("No domain suffix exists for site $site");
+        }
+        $prefix = ($fullDomain ? 'https://www.amazon.' : '');
+        return $prefix . $suffixes[$site];
+    }
+    public static function getDomainSuffixes() {
+        return [
+            self::SITE_CANADA   => 'ca',
+            self::SITE_MEXICO   => 'com.mx',
+            self::SITE_USA      => 'com',
+            self::SITE_GERMANY  => 'de',
+            self::SITE_SPAIN    => 'es',
+            self::SITE_FRANCE   => 'fr',
+            self::SITE_ITALY    => 'it',
+            self::SITE_UK       => 'co.uk',
+            self::SITE_CHINA    => 'cn',
+            self::SITE_INDIA    => 'in',
+            self::SITE_JAPAN    => 'co.jp',
+        ];
+    }
+
     /**
      * MwsClientPoolConfig constructor.
      *
