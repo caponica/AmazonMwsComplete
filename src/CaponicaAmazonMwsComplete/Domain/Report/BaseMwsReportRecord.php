@@ -6,7 +6,7 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
  */
 abstract class BaseMwsReportRecord {
     public function convertRowStringToArray($rowString, $expectedFieldCount) {
-        $fieldArray = explode("\t", trim($rowString, "\n"));
+        $fieldArray = explode("\t", trim($rowString, "\r\n"));
         $fieldCount = count($fieldArray);
 
         if ($expectedFieldCount != $fieldCount) {
