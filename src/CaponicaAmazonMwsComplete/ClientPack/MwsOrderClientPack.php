@@ -12,6 +12,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const PARAM_CREATED_AFTER               = 'CreatedAfter';
     const PARAM_CREATED_BEFORE              = 'CreatedBefore';
     const PARAM_LAST_UPDATED_AFTER          = 'LastUpdatedAfter';
+    const PARAM_LAST_UPDATED_BEFORE         = 'LastUpdatedBefore';
     const PARAM_MARKETPLACE_ID              = 'MarketplaceId';
     const PARAM_MARKETPLACE_ID_LIST         = 'MarketplaceId.Id.1';
     const PARAM_MERCHANT                    = 'SellerId';
@@ -31,14 +32,21 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const METHOD_LIST_ORDERS                = 'listOrders';
     const METHOD_LIST_ORDERS_BY_NEXT_TOKEN  = 'listOrdersByNextToken';
 
-    /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
+    const OPTION_MARKETPLACE_ONLY_AMAZON    = 'AMZ';
+    const OPTION_MARKETPLACE_ONLY_NON_AMAZON= 'MCF';
+    const OPTION_MARKETPLACE_ALL            = 'ALL';
+
+    /** @var string $marketplaceId              The MWS MarketplaceID string used in API connections (for Amazon orders) */
     protected $marketplaceId;
-    /** @var string $sellerId           The MWS SellerID string used in API connections */
+    /** @var string $nonAmazonMarketplaceId     The MWS MarketplaceID string used in API connections (for MCF orders) */
+    protected $nonAmazonMarketplaceId;
+    /** @var string $sellerId                   The MWS SellerID string used in API connections */
     protected $sellerId;
 
     public function __construct(MwsClientPoolConfig $poolConfig) {
-        $this->marketplaceId    = $poolConfig->getMarketplaceId();
-        $this->sellerId         = $poolConfig->getSellerId();
+        $this->marketplaceId            = $poolConfig->getMarketplaceId();
+        $this->nonAmazonMarketplaceId   = $poolConfig->getNonAmazonMarketplaceId();
+        $this->sellerId                 = $poolConfig->getSellerId();
 
         $this->initThrottleManager();
 
@@ -65,16 +73,15 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
 
         $requestArray = [
             self::PARAM_MERCHANT            => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
             self::PARAM_AMAZON_ORDER_IDS    => $amazonOrderIds,
         ];
 
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_ORDER, $requestArray);
     }
-    public function callListOrdersByCreateDate(\DateTime $dateFrom, \DateTime $dateTo, $orderStatusArray = []) {
+    public function callListOrdersByCreateDate(\DateTime $dateFrom, \DateTime $dateTo, $orderStatusArray = [], $marketplaceOption = null) {
         $requestArray = [
             self::PARAM_MERCHANT            => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
+            self::PARAM_MARKETPLACE_ID      => $this->convertMarketplaceOptionIntoArray($marketplaceOption),
             self::PARAM_CREATED_AFTER       => $dateFrom->format('c'),
             self::PARAM_CREATED_BEFORE      => $dateTo->format('c'),
         ];
@@ -85,11 +92,25 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
 
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
     }
-    public function callListOrdersByLastUpdatedDate(\DateTime $dateSince, $orderStatusArray = []) {
+    public function callListOrdersByLastUpdatedDate(\DateTime $dateSince, $orderStatusArray = [], $marketplaceOption = null) {
         $requestArray = [
             self::PARAM_MERCHANT            => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
+            self::PARAM_MARKETPLACE_ID      => $this->convertMarketplaceOptionIntoArray($marketplaceOption),
             self::PARAM_LAST_UPDATED_AFTER  => $dateSince->format('c'),
+        ];
+
+        if (!empty($orderStatusArray)) {
+            $requestArray[self::PARAM_ORDER_STATUS_LIST] = $orderStatusArray;
+        }
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
+    }
+    public function callListOrdersByLastUpdatedDateRange(\DateTime $dateSince, \DateTime $dateUntil, $orderStatusArray = [], $marketplaceOption = null) {
+        $requestArray = [
+            self::PARAM_MERCHANT            => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID      => $this->convertMarketplaceOptionIntoArray($marketplaceOption),
+            self::PARAM_LAST_UPDATED_AFTER  => $dateSince->format('c'),
+            self::PARAM_LAST_UPDATED_BEFORE => $dateUntil->format('c'),
         ];
 
         if (!empty($orderStatusArray)) {
@@ -101,11 +122,23 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     public function callListOrdersByNextToken($nextToken) {
         $requestArray = [
             self::PARAM_MERCHANT            => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID      => $this->marketplaceId,
             self::PARAM_NEXT_TOKEN          => $nextToken,
         ];
 
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS_BY_NEXT_TOKEN, $requestArray);
+    }
+
+    private function convertMarketplaceOptionIntoArray($marketplaceOption) {
+        if (empty($marketplaceOption) || self::OPTION_MARKETPLACE_ONLY_AMAZON === $marketplaceOption) {
+            return $this->marketplaceId;
+        }
+        if (self::OPTION_MARKETPLACE_ONLY_NON_AMAZON === $marketplaceOption) {
+            return $this->nonAmazonMarketplaceId;
+        }
+        if (self::OPTION_MARKETPLACE_ALL === $marketplaceOption) {
+            return [ $this->marketplaceId, $this->nonAmazonMarketplaceId ];
+        }
+        throw new \InvalidArgumentException('Unknown MarketplaceOption: ' . $marketplaceOption);
     }
 
     // ###################################################

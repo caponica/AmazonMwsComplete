@@ -172,6 +172,26 @@ class MwsClientPoolConfig {
             self::SITE_AUSTRALIA => 'A39IBJ37TRP1C6',
         ];
     }
+    /*
+     * Multi-channel fulfilment orders are linked to these "Non-Amazon" marketplaces
+     */
+    public static function getNonAmazonMarketplaceIds() {
+        return [
+            self::SITE_CANADA    => 'A1MQXOICRS2Z7M',
+            self::SITE_MEXICO    => 'A3H6HPSLHAK3XG',
+            self::SITE_USA       => 'A2ZV50J4W1RKNI',
+            self::SITE_GERMANY   => 'A38D8NSA03LJTC',
+            self::SITE_SPAIN     => 'AFQLKURYRPEL8',
+            self::SITE_FRANCE    => 'A1ZFFQZ3HTUKT9',
+            self::SITE_ITALY     => 'A62U237T8HV6N',
+            self::SITE_UK        => 'AZMDEXL2RVFNN',
+            self::SITE_CHINA     => null,
+            self::SITE_INDIA     => null,
+            self::SITE_JAPAN     => null,
+            self::SITE_AUSTRALIA => null,
+        ];
+    }
+
     public static function convertMarketplaceIdIntoCountry($marketplaceId) {
         $lookup = array_flip(self::getMarketplaceIds());
         if (!empty($lookup[$marketplaceId])) {
@@ -190,6 +210,21 @@ class MwsClientPoolConfig {
         }
 
         throw new \InvalidArgumentException('No marketplace id known for site code "' . $amazonSite . '"');
+    }
+    /*
+     * Returns the id string for the merchant-fulfilled version of a given marketplace
+     */
+    public function getNonAmazonMarketplaceId($amazonSite=null) {
+        if (empty($amazonSite)) {
+            $amazonSite = $this->amazonSite;
+        }
+
+        $marketplaces = self::getNonAmazonMarketplaceIds();
+        if (!empty($marketplaces[$amazonSite])) {
+            return $marketplaces[$amazonSite];
+        }
+
+        throw new \InvalidArgumentException('No Non-Amazon marketplace id known for site code "' . $amazonSite . '"');
     }
 
     private function isValidAmazonSite($site) {
