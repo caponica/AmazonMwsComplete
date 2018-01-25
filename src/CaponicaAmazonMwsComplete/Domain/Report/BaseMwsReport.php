@@ -51,6 +51,8 @@ abstract class BaseMwsReport {
             $reportClass = 'ReportFbaInventoryAfn';
         } elseif (MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN_BY_COUNTRY == $reportType) {
             $reportClass = 'ReportFbaInventoryAfnByCountry';
+        } elseif (MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW == $reportType) {
+            $reportClass = 'ReportFbaPaymentsFeePreview';
         } elseif (MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS == $reportType) {
             $reportClass = 'ReportListingActiveListings';
         } elseif (MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE == $reportType) {
@@ -71,6 +73,6 @@ abstract class BaseMwsReport {
      * @return string               The class name which encapsulates records of the given reportType
      */
     public static function convertReportTypeToReportRecordClass($reportType, $withNamespace = true) {
-        return self::convertReportTypeToReportClass($reportType) . 'Record';
+        return self::convertReportTypeToReportClass($reportType, $withNamespace) . 'Record';
     }
 }
