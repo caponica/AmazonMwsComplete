@@ -10,7 +10,7 @@ abstract class BaseMwsReportRecord {
         $fieldCount = count($fieldArray);
 
         if ($expectedFieldCount != $fieldCount) {
-            throw new InvalidReportRecordException("Expected $expectedFieldCount fields, but found $fieldCount.");
+            throw new InvalidReportRecordException("Expected $expectedFieldCount fields, but found $fieldCount in row: [ " . implode('~~~', $fieldArray) . " ]");
         }
 
         return $fieldArray;
