@@ -9,6 +9,7 @@ use CaponicaAmazonMwsComplete\AmazonClient\MwsMerchantClient;
 class MwsMerchantClientPack extends MwsMerchantClient {
 
     const PARAM_SELLER_ID = 'SellerId';
+    const PARAM_MWS_AUTH_TOKEN = 'MWSAuthToken';
 
     const PARAM_SHIPPING_SERVICE_ID = 'ShippingServiceId';
     const PARAM_SHIPPING_SERVICE_OFFER_ID = 'ShippingServiceOfferId';
@@ -58,14 +59,9 @@ class MwsMerchantClientPack extends MwsMerchantClient {
 
     public function __construct(MwsClientPoolConfig $poolConfig) {
 
-        //function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
-
-
         $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
         $this->sellerId         = $poolConfig->getSellerId();
-
-        // dump($poolConfig->getConfigForOrder($this->getServiceUrlSuffix()));
-        // exit;
+        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -132,7 +128,12 @@ class MwsMerchantClientPack extends MwsMerchantClient {
         $parameters[self::PARAM_SHIPPING_SERVICE_OPTIONS] = $shippingServiceOptions;
         $parameters['ItemList'] = $itemList;
 
-        return $this->getEligibleShippingServices([self::PARAM_SELLER_ID=> $this->sellerId,  'ShipmentRequestDetails' => $parameters]);
+        return $this->getEligibleShippingServices(
+            [
+                self::PARAM_SELLER_ID => $this->sellerId, 
+                self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken,
+                'ShipmentRequestDetails' => $parameters
+            ]);
     }
     public function callCreateShipment($amazonOrderId, $mustArriveByDate, $dimensionsLength, $dimensionsWidth, $dimensionsHeight, $dimensionsUnit='inches', $weightValue, $weightUnit = 'ounces', $shipDate, $senderName, $senderAddress1, $senderCity, $senderState, $senderPostalCode, $senderCountryCode, $senderEmail, $senderPhone, $deliveryExperience = 'DeliveryConfirmationWithoutSignature', $carrierWillPickUp = false, $currencyCode, $declaredValue=0, $items=[], $shippingServiceId, $shippingServiceOfferId) {
         $dimensions[self::PARAM_PACKAGE_DIMENSIONS_LENGTH] = $dimensionsLength;
@@ -192,8 +193,9 @@ class MwsMerchantClientPack extends MwsMerchantClient {
     }
     public function callGetShipment($shipmentId) {
         return $this->getShipment([
-            self::PARAM_SELLER_ID=> $this->sellerId,  
-            self::PARAM_SHIPMENT_ID => $shipmentId
+            self::PARAM_SELLER_ID   => $this->sellerId,  
+            self::PARAM_SHIPMENT_ID => $shipmentId,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
 }

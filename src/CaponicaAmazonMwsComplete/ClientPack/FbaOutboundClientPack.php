@@ -8,6 +8,7 @@ use CaponicaAmazonMwsComplete\AmazonClient\FbaOutboundClient;
 
 class FbaOutboundClientPack extends FbaOutboundClient {
     const PARAM_SELLER_ID                               = 'SellerId';
+    const PARAM_MWS_AUTH_TOKEN                          = 'MWSAuthToken';
     const PARAM_SELLER_FULFILLMENT_ORDER_ID             = 'SellerFulfillmentOrderId';
     const PARAM_DISPLAYABLE_ORDER_ID                    = 'DisplayableOrderId';
     const PARAM_DISPLAYABLE_ORDER_DATETIME              = 'DisplayableOrderDateTime';
@@ -49,6 +50,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
 
         $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
         $this->sellerId         = $poolConfig->getSellerId();
+        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -70,6 +72,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
     public function callGetFulfillmentOrder($sellerFulfillmentOrderId) {
 
         $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
+        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
 
         if (!empty($sellerFulfillmentOrderId)) {
             $parameters[self::PARAM_SELLER_FULFILLMENT_ORDER_ID] = $sellerFulfillmentOrderId;
@@ -166,6 +169,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
         }
 
         $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
+        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
         $parameters[self::PARAM_DESTINATION_ADDRESS] = $address;
         $parameters[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailMember;
         $parameters[self::PARAM_ITEMS] = $itemsMember;
@@ -256,6 +260,7 @@ class FbaOutboundClientPack extends FbaOutboundClient {
         }
 
         $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
+        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
         $parameters[self::PARAM_ADDRESS] = $address;
         $parameters[self::PARAM_ITEMS] = $itemsMember;
 

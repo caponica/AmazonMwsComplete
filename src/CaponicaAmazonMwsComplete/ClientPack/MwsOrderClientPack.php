@@ -11,6 +11,7 @@ class MwsOrderClientPack extends MwsOrderClient {
     const PARAM_SELLER_ID                           = 'SellerId';
     const PARAM_MARKETPLACE_ID_LIST                 = 'MarketplaceIdList';
     const PARAM_MARKETPLACE_ID                      = 'MarketplaceId';
+    const PARAM_MWS_AUTH_TOKEN                      = 'MWSAuthToken';
     const PARAM_CREATED_AFTER                       = 'CreatedAfter';
     const PARAM_CREATED_BEFORE                      = 'CreatedBefore';
     const PARAM_LAST_UPDATED_AFTER                  = 'LastUpdatedAfter';
@@ -26,9 +27,9 @@ class MwsOrderClientPack extends MwsOrderClient {
     const STATUS_CANCELED                           = 'Canceled';
     const STATUS_UNFULFILLABLE                      = 'Unfulfillable';
     const STATUS_PENDING_AVAILABILITY               = 'PendingAvailability';
-    const PARAM_FULFILLMENT_CHANNEL = 'FulfillmentChannel';
-    const PARAM_FULFILLMENT_CHANNEL_AFN = 'AFN';
-    const PARAM_FULFILLMENT_CHANNEL_MFN = 'MFN';
+    const PARAM_FULFILLMENT_CHANNEL                 = 'FulfillmentChannel';
+    const PARAM_FULFILLMENT_CHANNEL_AFN             = 'AFN';
+    const PARAM_FULFILLMENT_CHANNEL_MFN             = 'MFN';
 
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
@@ -40,6 +41,7 @@ class MwsOrderClientPack extends MwsOrderClient {
 
         $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
         $this->sellerId         = $poolConfig->getSellerId();
+        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -68,11 +70,12 @@ class MwsOrderClientPack extends MwsOrderClient {
         if (!empty($fulfillmentChannel)) {
             $parameters[self::PARAM_FULFILLMENT_CHANNEL] = $fulfillmentChannel;
         }
-
+        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
         $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
         $parameters[self::PARAM_MERCHANT] = $this->sellerId;
         $parameters[self::PARAM_MARKETPLACE_ID_LIST] = array('Id' => $this->marketplaceId);
         $parameters[self::PARAM_ORDER_STATUS_LIST] = $orderStatus;
+
         
 
         return $this->listOrders(
@@ -90,12 +93,16 @@ class MwsOrderClientPack extends MwsOrderClient {
 
     public function calllistOrderItems($amazonOrderId)
     {
-        return $this->listOrderItems([
+
+        $parameters = [
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_MERCHANT  => $this->sellerId,
             self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
-            self::PARAM_AMAZON_ORDER_ID => $amazonOrderId
-        ]);
+            self::PARAM_AMAZON_ORDER_ID => $amazonOrderId,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
+            ];
+
+        return $this->listOrderItems($parameters);
     }
 }

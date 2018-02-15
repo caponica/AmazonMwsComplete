@@ -9,6 +9,7 @@ namespace CaponicaAmazonMwsComplete\ClientPool;
 class MwsClientPoolConfig {
     const PARAM_ACCESS_KEY  = 'access_key';
     const PARAM_SECRET_KEY  = 'secret_key';
+    const PARAM_MWS_AUTH_TOKEN = 'MWSAuthToken';
     const PARAM_APP_NAME    = 'application_name';
     const PARAM_APP_VERSION = 'application_version';
     const PARAM_EXTRAS      = 'extras';
@@ -72,6 +73,13 @@ class MwsClientPoolConfig {
         $this->applicationVersion   = $parameterArray[self::PARAM_APP_VERSION];
         $this->amazonSite           = $parameterArray[self::PARAM_AMAZON_SITE];
         $this->sellerId             = $parameterArray[self::PARAM_SELLER_ID];
+
+        if (!empty($parameterArray[self::PARAM_MWS_AUTH_TOKEN])) {
+            $this->mwsAuthToken = $parameterArray[self::PARAM_MWS_AUTH_TOKEN];
+        }
+        else {
+            $this->mwsAuthToken = "";
+        }
         if (!empty($parameterArray[self::PARAM_EXTRAS])) {
             $this->extras = $parameterArray[self::PARAM_EXTRAS];
         } else {
@@ -162,6 +170,9 @@ class MwsClientPoolConfig {
     }
     public function getSecretKey() {
         return $this->secretKey;
+    }
+    public function getMwsAuthToken() {
+        return $this->mwsAuthToken;
     }
     public function getApplicationName() {
         return $this->applicationName;

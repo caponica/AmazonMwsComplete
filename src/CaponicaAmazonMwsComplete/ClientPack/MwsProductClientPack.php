@@ -42,6 +42,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const PARAM_SELLER_ID                       = 'SellerId';
     const PARAM_SELLER_SKU                      = 'SellerSKU';
     const PARAM_SELLER_SKU_LIST                 = 'SellerSKUList';
+    const PARAM_MWS_AUTH_TOKEN = 'MWSAuthToken';
 
     const QUERY_CONTEXT_ALL                     = 'All';
     const QUERY_CONTEXT_APPAREL                 = 'Apparel';
@@ -110,6 +111,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     public function __construct(MwsClientPoolConfig $poolConfig) {
         $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
         $this->sellerId         = $poolConfig->getSellerId();
+        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
 
         $this->initThrottleManager();
 
@@ -139,6 +141,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asin),
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asin) ? count($asin) : 1;
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN, $options, $weight);
@@ -152,6 +155,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -165,6 +169,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asinList) ? count($asinList) : 1;
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN, $options, $weight);
@@ -180,6 +185,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -193,6 +199,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN            => $asin,
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -206,6 +213,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_SKU      => $sku,
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -217,6 +225,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asinList) ? count($asinList) : 1;
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS, $parameters, $weight);
@@ -232,6 +241,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ID_TYPE         => $idType,
             self::PARAM_ID_LIST         => array('Id' => $idList),
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($idList) ? count($idList) : 1;
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID, $options, $weight);
@@ -247,6 +257,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -260,6 +271,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -271,6 +283,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN            => $asin,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
     /**
@@ -282,6 +295,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_SELLER_ID       => $this->sellerId,
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_SELLER_SKU      => $sku,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
     }
 
@@ -296,6 +310,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_QUERY           => $query,
             self::PARAM_QUERY_CONTEXT_ID => $queryContext,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_MATCHING_PRODUCTS, $options);
     }
