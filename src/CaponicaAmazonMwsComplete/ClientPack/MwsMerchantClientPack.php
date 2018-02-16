@@ -185,6 +185,7 @@ class MwsMerchantClientPack extends MwsMerchantClient {
 
         return $this->createShipment([
             self::PARAM_SELLER_ID=> $this->sellerId,  
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken,
             self::PARAM_SHIPMENT_REQUEST_DETAILS => $parameters,
             self::PARAM_SHIPPING_SERVICE_ID => $shippingServiceId,
             self::PARAM_SHIPPING_SERVICE_OFFER_ID => $shippingServiceOfferId,
