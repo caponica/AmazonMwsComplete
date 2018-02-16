@@ -78,7 +78,7 @@ class MwsClientPoolConfig {
             $this->mwsAuthToken = $parameterArray[self::PARAM_MWS_AUTH_TOKEN];
         }
         else {
-            $this->mwsAuthToken = "";
+            $this->mwsAuthToken = null;
         }
         if (!empty($parameterArray[self::PARAM_EXTRAS])) {
             $this->extras = $parameterArray[self::PARAM_EXTRAS];
