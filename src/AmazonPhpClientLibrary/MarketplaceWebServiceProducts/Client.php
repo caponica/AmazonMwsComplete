@@ -416,8 +416,12 @@ class MarketplaceWebServiceProducts_Client implements MarketplaceWebServiceProdu
         $httpResponse = $this->_invoke($parameters);
 
         require_once (dirname(__FILE__) . '/Model/GetMatchingProductResponse.php');
+        
         $response = MarketplaceWebServiceProducts_Model_GetMatchingProductResponse::fromXML($httpResponse['ResponseBody']);
+
         $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        $response->setRawXml($httpResponse['ResponseBody']);
+
         return $response;
     }
 
