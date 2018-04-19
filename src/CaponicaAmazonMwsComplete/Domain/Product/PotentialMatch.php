@@ -22,8 +22,10 @@ final class PotentialMatch {
     private $publisher;
     private $rank;
     private $rankCat;
+    private $secondaryCats;
     private $title;
     private $weightPounds;
+    private $smallImage;
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
@@ -51,14 +53,17 @@ final class PotentialMatch {
                     $this->rank = $salesRank->getRank();
                     $this->rankCat = $salesRank->getProductCategoryId();
                 } else {
-                    // echo "\n>>Found Secondary Rank: #" . $salesRank->getRank() . " in " . $salesRank->getProductCategoryId() . " for asin {$this->asin}";
+
+                    $this->secondaryCats[] = ['rank' => $salesRank->getRank(), 'rankCat' => $salesRank->getProductCategoryId()];
                 }
             }
         }
 
         // The parser cannot calculate attribute sets, so we need to do it manually:
         $attributes = null;
+
         $attributesAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+
         if (false!==$attributesAppearAfter) {
             $attributeOffset = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_START, $attributesAppearAfter);
             if (false !== $attributeOffset) {
@@ -77,7 +82,6 @@ final class PotentialMatch {
             }
         }
         if (!empty($attributes)) {
-            echo "\nTrying manual string based attribute search";
 
             if (!empty($attributes->ListPrice->Amount)) {
                 $this->listPrice = $attributes->ListPrice->Amount->__toString();
@@ -135,6 +139,9 @@ final class PotentialMatch {
             }
             if (!empty($attributes->Title)) {
                 $this->title = $attributes->Title->__toString();
+            }
+            if (!empty($attributes->SmallImage)) {
+                $this->smallImage = $this->extractSmallImageFromAttributes($attributes);
             }
         } else {
             echo "\nTrying XML based attribute search";
@@ -368,6 +375,18 @@ final class PotentialMatch {
         }
         return $dimensions;
     }
+    private function extractSmallImageFromAttributes($productAttributes) {
+        $smallImage = [];
+        if (!empty($productAttributes->SmallImage)) {
+            $smallImage = [
+                'URL' => $productAttributes->SmallImage->URL->__toString(),
+                'Height' => $productAttributes->SmallImage->Height->__toString(),
+                'Width' => $productAttributes->SmallImage->Width->__toString(),
+            ];
+
+        }
+        return $smallImage;
+    }
     private function extractWeightFromAttributes($productAttributes) {
         $weight = 0;
         if (!empty($productAttributes->Weight)) {
@@ -503,4 +522,19 @@ final class PotentialMatch {
     {
         return $this->weightPounds;
     }
+    /**
+     * @return String
+     */
+    public function getSmallImage()
+    {
+        return $this->smallImage;
+    }
+    /**
+     * @return mixed
+     */
+    public function getSecondaryCats()
+    {
+        return $this->secondaryCats;
+    }
+    
 }
