@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -33,6 +33,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>PostedDate: string</li>
  * <li>SAFETClaimId: string</li>
  * <li>ReimbursedAmount: MWSFinancesService_Model_Currency</li>
+ * <li>ReasonCode: string</li>
  * <li>SAFETReimbursementItemList: array</li>
  *
  * </ul>
@@ -46,6 +47,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'PostedDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'SAFETClaimId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ReimbursedAmount' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
+    'ReasonCode' => array('FieldValue' => null, 'FieldType' => 'string'),
     'SAFETReimbursementItemList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_SAFETReimbursementItem'), 'ListMemberName' => 'SAFETReimbursementItem'),
     );
     parent::__construct($data);
@@ -186,6 +188,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withReimbursedAmount($value)
     {
         $this->setReimbursedAmount($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ReasonCode property.
+     *
+     * @return String ReasonCode.
+     */
+    public function getReasonCode()
+    {
+        return $this->_fields['ReasonCode']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ReasonCode property.
+     *
+     * @param string reasonCode
+     * @return this instance
+     */
+    public function setReasonCode($value)
+    {
+        $this->_fields['ReasonCode']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ReasonCode is set.
+     *
+     * @return true if ReasonCode is set.
+     */
+    public function isSetReasonCode()
+    {
+                return !is_null($this->_fields['ReasonCode']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ReasonCode, return this.
+     *
+     * @param reasonCode
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withReasonCode($value)
+    {
+        $this->setReasonCode($value);
         return $this;
     }
 

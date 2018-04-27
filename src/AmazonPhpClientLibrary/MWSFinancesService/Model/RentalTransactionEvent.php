@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -39,6 +39,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>MarketplaceName: string</li>
  * <li>RentalInitialValue: MWSFinancesService_Model_Currency</li>
  * <li>RentalReimbursement: MWSFinancesService_Model_Currency</li>
+ * <li>RentalTaxWithheldList: array</li>
  *
  * </ul>
  */
@@ -57,6 +58,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'MarketplaceName' => array('FieldValue' => null, 'FieldType' => 'string'),
     'RentalInitialValue' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
     'RentalReimbursement' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
+    'RentalTaxWithheldList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_TaxWithheldComponent'), 'ListMemberName' => 'TaxWithheldComponent'),
     );
     parent::__construct($data);
     }
@@ -508,6 +510,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withRentalReimbursement($value)
     {
         $this->setRentalReimbursement($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the RentalTaxWithheldList property.
+     *
+     * @return List<TaxWithheldComponent> RentalTaxWithheldList.
+     */
+    public function getRentalTaxWithheldList()
+    {
+        if ($this->_fields['RentalTaxWithheldList']['FieldValue'] == null)
+        {
+            $this->_fields['RentalTaxWithheldList']['FieldValue'] = array();
+        }
+        return $this->_fields['RentalTaxWithheldList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the RentalTaxWithheldList property.
+     *
+     * @param array rentalTaxWithheldList
+     * @return this instance
+     */
+    public function setRentalTaxWithheldList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['RentalTaxWithheldList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear RentalTaxWithheldList.
+     */
+    public function unsetRentalTaxWithheldList()
+    {
+        $this->_fields['RentalTaxWithheldList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if RentalTaxWithheldList is set.
+     *
+     * @return true if RentalTaxWithheldList is set.
+     */
+    public function isSetRentalTaxWithheldList()
+    {
+                return !empty($this->_fields['RentalTaxWithheldList']['FieldValue']);
+            }
+
+    /**
+     * Add values for RentalTaxWithheldList, return this.
+     *
+     * @param rentalTaxWithheldList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withRentalTaxWithheldList()
+    {
+        foreach (func_get_args() as $RentalTaxWithheldList)
+        {
+            $this->_fields['RentalTaxWithheldList']['FieldValue'][] = $RentalTaxWithheldList;
+        }
         return $this;
     }
 

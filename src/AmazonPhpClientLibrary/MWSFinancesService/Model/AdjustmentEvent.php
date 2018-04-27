@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -31,6 +31,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <ul>
  * 
  * <li>AdjustmentType: string</li>
+ * <li>PostedDate: string</li>
  * <li>AdjustmentAmount: MWSFinancesService_Model_Currency</li>
  * <li>AdjustmentItemList: array</li>
  *
@@ -43,6 +44,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     {
     $this->_fields = array (
     'AdjustmentType' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'PostedDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'AdjustmentAmount' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
     'AdjustmentItemList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_AdjustmentItem'), 'ListMemberName' => 'AdjustmentItem'),
     );
@@ -92,6 +94,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withAdjustmentType($value)
     {
         $this->setAdjustmentType($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the PostedDate property.
+     *
+     * @return XMLGregorianCalendar PostedDate.
+     */
+    public function getPostedDate()
+    {
+        return $this->_fields['PostedDate']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PostedDate property.
+     *
+     * @param string postedDate
+     * @return this instance
+     */
+    public function setPostedDate($value)
+    {
+        $this->_fields['PostedDate']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if PostedDate is set.
+     *
+     * @return true if PostedDate is set.
+     */
+    public function isSetPostedDate()
+    {
+                return !is_null($this->_fields['PostedDate']['FieldValue']);
+            }
+
+    /**
+     * Set the value of PostedDate, return this.
+     *
+     * @param postedDate
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withPostedDate($value)
+    {
+        $this->setPostedDate($value);
         return $this;
     }
 

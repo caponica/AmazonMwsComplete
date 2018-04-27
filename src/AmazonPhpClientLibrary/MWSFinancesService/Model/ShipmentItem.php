@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -38,6 +38,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ItemChargeAdjustmentList: array</li>
  * <li>ItemFeeList: array</li>
  * <li>ItemFeeAdjustmentList: array</li>
+ * <li>ItemTaxWithheldList: array</li>
  * <li>PromotionList: array</li>
  * <li>PromotionAdjustmentList: array</li>
  * <li>CostOfPointsGranted: MWSFinancesService_Model_Currency</li>
@@ -59,6 +60,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ItemChargeAdjustmentList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_ChargeComponent'), 'ListMemberName' => 'ChargeComponent'),
     'ItemFeeList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_FeeComponent'), 'ListMemberName' => 'FeeComponent'),
     'ItemFeeAdjustmentList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_FeeComponent'), 'ListMemberName' => 'FeeComponent'),
+    'ItemTaxWithheldList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_TaxWithheldComponent'), 'ListMemberName' => 'TaxWithheldComponent'),
     'PromotionList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_Promotion'), 'ListMemberName' => 'Promotion'),
     'PromotionAdjustmentList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_Promotion'), 'ListMemberName' => 'Promotion'),
     'CostOfPointsGranted' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
@@ -503,6 +505,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
         foreach (func_get_args() as $ItemFeeAdjustmentList)
         {
             $this->_fields['ItemFeeAdjustmentList']['FieldValue'][] = $ItemFeeAdjustmentList;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the ItemTaxWithheldList property.
+     *
+     * @return List<TaxWithheldComponent> ItemTaxWithheldList.
+     */
+    public function getItemTaxWithheldList()
+    {
+        if ($this->_fields['ItemTaxWithheldList']['FieldValue'] == null)
+        {
+            $this->_fields['ItemTaxWithheldList']['FieldValue'] = array();
+        }
+        return $this->_fields['ItemTaxWithheldList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ItemTaxWithheldList property.
+     *
+     * @param array itemTaxWithheldList
+     * @return this instance
+     */
+    public function setItemTaxWithheldList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['ItemTaxWithheldList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear ItemTaxWithheldList.
+     */
+    public function unsetItemTaxWithheldList()
+    {
+        $this->_fields['ItemTaxWithheldList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if ItemTaxWithheldList is set.
+     *
+     * @return true if ItemTaxWithheldList is set.
+     */
+    public function isSetItemTaxWithheldList()
+    {
+                return !empty($this->_fields['ItemTaxWithheldList']['FieldValue']);
+            }
+
+    /**
+     * Add values for ItemTaxWithheldList, return this.
+     *
+     * @param itemTaxWithheldList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withItemTaxWithheldList()
+    {
+        foreach (func_get_args() as $ItemTaxWithheldList)
+        {
+            $this->_fields['ItemTaxWithheldList']['FieldValue'][] = $ItemTaxWithheldList;
         }
         return $this;
     }

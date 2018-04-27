@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -48,6 +48,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>SAFETReimbursementEventList: array</li>
  * <li>SellerReviewEnrollmentPaymentEventList: array</li>
  * <li>FBALiquidationEventList: array</li>
+ * <li>CouponPaymentEventList: array</li>
+ * <li>ImagingServicesFeeEventList: array</li>
  *
  * </ul>
  */
@@ -75,6 +77,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'SAFETReimbursementEventList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_SAFETReimbursementEvent'), 'ListMemberName' => 'SAFETReimbursementEvent'),
     'SellerReviewEnrollmentPaymentEventList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_SellerReviewEnrollmentPaymentEvent'), 'ListMemberName' => 'SellerReviewEnrollmentPaymentEvent'),
     'FBALiquidationEventList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_FBALiquidationEvent'), 'ListMemberName' => 'FBALiquidationEvent'),
+    'CouponPaymentEventList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_CouponPaymentEvent'), 'ListMemberName' => 'CouponPaymentEvent'),
+    'ImagingServicesFeeEventList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_ImagingServicesFeeEvent'), 'ListMemberName' => 'ImagingServicesFeeEvent'),
     );
     parent::__construct($data);
     }
@@ -1227,6 +1231,134 @@ require_once (dirname(__FILE__) . '/../Model.php');
         foreach (func_get_args() as $FBALiquidationEventList)
         {
             $this->_fields['FBALiquidationEventList']['FieldValue'][] = $FBALiquidationEventList;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the CouponPaymentEventList property.
+     *
+     * @return List<CouponPaymentEvent> CouponPaymentEventList.
+     */
+    public function getCouponPaymentEventList()
+    {
+        if ($this->_fields['CouponPaymentEventList']['FieldValue'] == null)
+        {
+            $this->_fields['CouponPaymentEventList']['FieldValue'] = array();
+        }
+        return $this->_fields['CouponPaymentEventList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the CouponPaymentEventList property.
+     *
+     * @param array couponPaymentEventList
+     * @return this instance
+     */
+    public function setCouponPaymentEventList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['CouponPaymentEventList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear CouponPaymentEventList.
+     */
+    public function unsetCouponPaymentEventList()
+    {
+        $this->_fields['CouponPaymentEventList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if CouponPaymentEventList is set.
+     *
+     * @return true if CouponPaymentEventList is set.
+     */
+    public function isSetCouponPaymentEventList()
+    {
+                return !empty($this->_fields['CouponPaymentEventList']['FieldValue']);
+            }
+
+    /**
+     * Add values for CouponPaymentEventList, return this.
+     *
+     * @param couponPaymentEventList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withCouponPaymentEventList()
+    {
+        foreach (func_get_args() as $CouponPaymentEventList)
+        {
+            $this->_fields['CouponPaymentEventList']['FieldValue'][] = $CouponPaymentEventList;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the ImagingServicesFeeEventList property.
+     *
+     * @return List<ImagingServicesFeeEvent> ImagingServicesFeeEventList.
+     */
+    public function getImagingServicesFeeEventList()
+    {
+        if ($this->_fields['ImagingServicesFeeEventList']['FieldValue'] == null)
+        {
+            $this->_fields['ImagingServicesFeeEventList']['FieldValue'] = array();
+        }
+        return $this->_fields['ImagingServicesFeeEventList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ImagingServicesFeeEventList property.
+     *
+     * @param array imagingServicesFeeEventList
+     * @return this instance
+     */
+    public function setImagingServicesFeeEventList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['ImagingServicesFeeEventList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear ImagingServicesFeeEventList.
+     */
+    public function unsetImagingServicesFeeEventList()
+    {
+        $this->_fields['ImagingServicesFeeEventList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if ImagingServicesFeeEventList is set.
+     *
+     * @return true if ImagingServicesFeeEventList is set.
+     */
+    public function isSetImagingServicesFeeEventList()
+    {
+                return !empty($this->_fields['ImagingServicesFeeEventList']['FieldValue']);
+            }
+
+    /**
+     * Add values for ImagingServicesFeeEventList, return this.
+     *
+     * @param imagingServicesFeeEventList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withImagingServicesFeeEventList()
+    {
+        foreach (func_get_args() as $ImagingServicesFeeEventList)
+        {
+            $this->_fields['ImagingServicesFeeEventList']['FieldValue'][] = $ImagingServicesFeeEventList;
         }
         return $this;
     }

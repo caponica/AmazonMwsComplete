@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -31,6 +31,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <ul>
  * 
  * <li>itemChargeList: array</li>
+ * <li>productDescription: string</li>
+ * <li>quantity: string</li>
  *
  * </ul>
  */
@@ -41,6 +43,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     {
     $this->_fields = array (
     'itemChargeList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_ChargeComponent'), 'ListMemberName' => 'ChargeComponent'),
+    'productDescription' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'quantity' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -106,6 +110,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
         {
             $this->_fields['itemChargeList']['FieldValue'][] = $itemChargeList;
         }
+        return $this;
+    }
+
+    /**
+     * Get the value of the productDescription property.
+     *
+     * @return String productDescription.
+     */
+    public function getproductDescription()
+    {
+        return $this->_fields['productDescription']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the productDescription property.
+     *
+     * @param string productDescription
+     * @return this instance
+     */
+    public function setproductDescription($value)
+    {
+        $this->_fields['productDescription']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if productDescription is set.
+     *
+     * @return true if productDescription is set.
+     */
+    public function isSetproductDescription()
+    {
+                return !is_null($this->_fields['productDescription']['FieldValue']);
+            }
+
+    /**
+     * Set the value of productDescription, return this.
+     *
+     * @param productDescription
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withproductDescription($value)
+    {
+        $this->setproductDescription($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the quantity property.
+     *
+     * @return String quantity.
+     */
+    public function getquantity()
+    {
+        return $this->_fields['quantity']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the quantity property.
+     *
+     * @param string quantity
+     * @return this instance
+     */
+    public function setquantity($value)
+    {
+        $this->_fields['quantity']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if quantity is set.
+     *
+     * @return true if quantity is set.
+     */
+    public function isSetquantity()
+    {
+                return !is_null($this->_fields['quantity']['FieldValue']);
+            }
+
+    /**
+     * Set the value of quantity, return this.
+     *
+     * @param quantity
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withquantity($value)
+    {
+        $this->setquantity($value);
         return $this;
     }
 

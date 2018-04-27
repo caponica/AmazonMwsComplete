@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2017-02-22
- * Generated: Thu Mar 02 12:41:08 UTC 2017
+ * Library Version: 2018-01-31
+ * Generated: Tue Jan 30 16:03:22 PST 2018
  */
 
 

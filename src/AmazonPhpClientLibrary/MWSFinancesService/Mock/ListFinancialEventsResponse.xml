@@ -114,6 +114,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -186,6 +200,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -329,6 +357,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -401,6 +443,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -544,6 +600,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -616,6 +686,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -759,6 +843,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -831,6 +929,20 @@
                         </FeeAmount>
                         </FeeComponent>
                         </ItemFeeAdjustmentList>
+                        <ItemTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                        </ItemTaxWithheldList>
                         <PromotionList>
                         <Promotion>
                         <PromotionType>String</PromotionType>
@@ -957,6 +1069,20 @@
                         <CurrencyCode>String</CurrencyCode>
                         <CurrencyAmount>100</CurrencyAmount>
                     </RentalReimbursement>
+                    <RentalTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                    </RentalTaxWithheldList>
                 </RentalTransactionEvent>
             </RentalTransactionEventList>
             <PerformanceBondRefundEventList>
@@ -1079,6 +1205,7 @@
             <AdjustmentEventList>
                 <AdjustmentEvent>
                     <AdjustmentType>String</AdjustmentType>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
                     <AdjustmentAmount>
                         <CurrencyCode>String</CurrencyCode>
                         <CurrencyAmount>100</CurrencyAmount>
@@ -1110,6 +1237,7 @@
                         <CurrencyCode>String</CurrencyCode>
                         <CurrencyAmount>100</CurrencyAmount>
                     </ReimbursedAmount>
+                    <ReasonCode>String</ReasonCode>
                     <SAFETReimbursementItemList>
                         <SAFETReimbursementItem>
                         <itemChargeList>
@@ -1121,6 +1249,8 @@
                         </ChargeAmount>
                         </ChargeComponent>
                         </itemChargeList>
+                        <productDescription>String</productDescription>
+                        <quantity>String</quantity>
                         </SAFETReimbursementItem>
                     </SAFETReimbursementItemList>
                 </SAFETReimbursementEvent>
@@ -1164,6 +1294,49 @@
                     </LiquidationFeeAmount>
                 </FBALiquidationEvent>
             </FBALiquidationEventList>
+            <CouponPaymentEventList>
+                <CouponPaymentEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <CouponId>String</CouponId>
+                    <SellerCouponDescription>String</SellerCouponDescription>
+                    <ClipOrRedemptionCount>1</ClipOrRedemptionCount>
+                    <PaymentEventId>String</PaymentEventId>
+                    <FeeComponent>
+                        <FeeType>String</FeeType>
+                        <FeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </FeeAmount>
+                    </FeeComponent>
+                    <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                    </ChargeComponent>
+                    <TotalAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TotalAmount>
+                </CouponPaymentEvent>
+            </CouponPaymentEventList>
+            <ImagingServicesFeeEventList>
+                <ImagingServicesFeeEvent>
+                    <ImagingRequestBillingItemID>String</ImagingRequestBillingItemID>
+                    <ASIN>String</ASIN>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <FeeList>
+                        <FeeComponent>
+                        <FeeType>String</FeeType>
+                        <FeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </FeeAmount>
+                        </FeeComponent>
+                    </FeeList>
+                </ImagingServicesFeeEvent>
+            </ImagingServicesFeeEventList>
         </FinancialEvents>
     </ListFinancialEventsResult>
    <ResponseMetadata>

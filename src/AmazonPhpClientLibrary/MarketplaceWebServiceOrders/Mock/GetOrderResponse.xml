@@ -24,6 +24,7 @@
                     <PostalCode>String</PostalCode>
                     <CountryCode>String</CountryCode>
                     <Phone>String</Phone>
+                    <AddressType>String</AddressType>
                 </ShippingAddress>
                 <OrderTotal>
                     <CurrencyCode>String</CurrencyCode>

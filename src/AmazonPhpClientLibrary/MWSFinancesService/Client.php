@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2017 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2017-07-26
- * Generated: Tue Jul 25 12:48:59 UTC 2017
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MWSFinancesService_Client implements MWSFinancesService_Interface
 {
 
     const SERVICE_VERSION = '2015-05-01';
-    const MWS_CLIENT_VERSION = '2017-07-26';
+    const MWS_CLIENT_VERSION = '2018-03-22';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -333,9 +333,10 @@ class MWSFinancesService_Client implements MWSFinancesService_Interface
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
+        // section customised to improve compatibility
         if (PHP_VERSION_ID < 50600) {
-            iconv_set_encoding('input_encoding', 'UTF-8');
             iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
             iconv_set_encoding('internal_encoding', 'UTF-8');
         } else {
             ini_set('default_charset', 'UTF-8');
