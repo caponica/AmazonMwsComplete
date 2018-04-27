@@ -233,6 +233,42 @@ abstract class MWSFinancesService_Model
     }
 
     /**
+     * Convert current level $_fields to an associative array
+     * @return array of keys/values for the current tier
+     */
+    public function toAssociativeArray()
+    {
+        foreach ($this->_fields as $fieldName => $field) {
+            $array[$fieldName] = $field['FieldValue'];
+        }
+        return $array;
+    }
+
+    /**
+     * Converts this and lower MWS objects to a tree of associative arrays
+     * @return tree array of keys/values
+     */
+    public function toAssociativeArrayRecursive()
+    {
+        foreach ($this->_fields as $fieldName => $field) {
+            if ( $field['FieldValue'] instanceof MWSFinancesService_Model ) {
+                $array[$fieldName] = $field['FieldValue']->toAssociativeArrayRecursive();
+            } elseif ( is_array($field['FieldValue']) ) {
+                foreach ($field['FieldValue'] as $element) {
+                    if ( $element instanceof MWSFinancesService_Model ) {
+                        $array[$fieldName][] = $element->toAssociativeArrayRecursive();
+                    } else {
+                        $array[$fieldName][] = $element;
+                   }
+                }
+            } else {
+                $array[$fieldName] = $field['FieldValue'];
+            }
+        }
+        return $array;
+    }
+
+    /**
     * Convert to query parameters suitable for POSTing.
     * @return array of query parameters
     */
