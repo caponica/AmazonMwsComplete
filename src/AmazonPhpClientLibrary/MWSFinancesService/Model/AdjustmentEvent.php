@@ -45,6 +45,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'AdjustmentType' => array('FieldValue' => null, 'FieldType' => 'string'),
     'AdjustmentAmount' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
     'AdjustmentItemList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_AdjustmentItem'), 'ListMemberName' => 'AdjustmentItem'),
+    'PostedDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -205,4 +206,49 @@ require_once (dirname(__FILE__) . '/../Model.php');
         return $this;
     }
 
+    /**
+     * Get the value of the PostedDate property.
+     *
+     * @return Currency PostedDate.
+     */
+    public function getPostedDate()
+    {
+        return $this->_fields['PostedDate']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PostedDate property.
+     *
+     * @param MWSFinancesService_Model_Currency PostedDate
+     * @return this instance
+     */
+    public function setPostedDate($value)
+    {
+        $this->_fields['PostedDate']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if PostedDate is set.
+     *
+     * @return true if PostedDate is set.
+     */
+    public function isSetPostedDate()
+    {
+                return !is_null($this->_fields['PostedDate']['FieldValue']);
+            }
+
+    /**
+     * Set the value of PostedDate, return this.
+     *
+     * @param PostedDate
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withPostedDate($value)
+    {
+        $this->setPostedDate($value);
+        return $this;
+    }
 }

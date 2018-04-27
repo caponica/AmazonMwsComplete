@@ -35,6 +35,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>OrderAdjustmentItemId: string</li>
  * <li>QuantityShipped: int</li>
  * <li>ItemChargeList: array</li>
+ * <li>ItemTaxWithheldList: array</li>
  * <li>ItemChargeAdjustmentList: array</li>
  * <li>ItemFeeList: array</li>
  * <li>ItemFeeAdjustmentList: array</li>
@@ -56,6 +57,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'OrderAdjustmentItemId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'QuantityShipped' => array('FieldValue' => null, 'FieldType' => 'int'),
     'ItemChargeList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_ChargeComponent'), 'ListMemberName' => 'ChargeComponent'),
+    'ItemTaxWithheldList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_TaxWithheldComponent'), 'ListMemberName' => 'TaxWithheldComponent'), 
     'ItemChargeAdjustmentList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_ChargeComponent'), 'ListMemberName' => 'ChargeComponent'),
     'ItemFeeList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_FeeComponent'), 'ListMemberName' => 'FeeComponent'),
     'ItemFeeAdjustmentList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_FeeComponent'), 'ListMemberName' => 'FeeComponent'),
@@ -311,6 +313,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
         foreach (func_get_args() as $ItemChargeList)
         {
             $this->_fields['ItemChargeList']['FieldValue'][] = $ItemChargeList;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the ItemTaxWithheldList property.
+     *
+     * @return List<ChargeComponent> ItemTaxWithheldList.
+     */
+    public function getItemTaxWithheldList()
+    {
+        if ($this->_fields['ItemTaxWithheldList']['FieldValue'] == null)
+        {
+            $this->_fields['ItemTaxWithheldList']['FieldValue'] = array();
+        }
+        return $this->_fields['ItemTaxWithheldList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ItemTaxWithheldList property.
+     *
+     * @param array itemTaxWithheldList
+     * @return this instance
+     */
+    public function setItemTaxWithheldList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['ItemTaxWithheldList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear ItemTaxWithheldList.
+     */
+    public function unsetItemTaxWithheldList()
+    {
+        $this->_fields['ItemTaxWithheldList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if ItemTaxWithheldList is set.
+     *
+     * @return true if ItemTaxWithheldList is set.
+     */
+    public function isSetItemTaxWithheldList()
+    {
+        return !empty($this->_fields['ItemTaxWithheldList']['FieldValue']);
+    }
+
+    /**
+     * Add values for ItemTaxWithheldList, return this.
+     *
+     * @param itemTaxWithheldList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withItemTaxWithheldList()
+    {
+        foreach (func_get_args() as $ItemTaxWithheldList)
+        {
+            $this->_fields['ItemTaxWithheldList']['FieldValue'][] = $ItemTaxWithheldList;
         }
         return $this;
     }
