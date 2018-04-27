@@ -128,7 +128,13 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
         return ReportFbaPaymentsFeePreview::VARIANT_EUROPE === $this->variant;
     }
     public function isVariantUk() {
-        return ReportFbaPaymentsFeePreview::VARIANT_UK === $this->variant;
+        if (ReportFbaPaymentsFeePreview::VARIANT_UK === $this->variant) {
+            return true;
+        }
+        if (ReportFbaPaymentsFeePreview::VARIANT_UK_TEMP === $this->variant) {
+            return true;
+        }
+        return false;
     }
     public function isVariantUsa() {
         return ReportFbaPaymentsFeePreview::VARIANT_USA === $this->variant;
@@ -264,6 +270,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getEstimatedOrderHandlingFeePerOrder()
     {
+        if (isset($this->dataArray['estimated-future-order-handling-fee-per-order'])) {
+            return $this->dataArray['estimated-future-order-handling-fee-per-order'];
+        }
         if (isset($this->dataArray['estimated-order-handling-fee-per-order'])) {
             return $this->dataArray['estimated-order-handling-fee-per-order'];
         }
@@ -272,6 +281,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedDomesticFulfilmentFeePerUnit()
     {
+        if (isset($this->dataArray['expected-future-domestic-fulfilment-fee-per-unit'])) {
+            return $this->dataArray['expected-future-domestic-fulfilment-fee-per-unit'];
+        }
         if (isset($this->dataArray['expected-domestic-fulfilment-fee-per-unit'])) {
             return $this->dataArray['expected-domestic-fulfilment-fee-per-unit'];
         }
@@ -280,6 +292,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedEfnFulfilmentFeePerUnitUk()
     {
+        if (isset($this->dataArray['expected-future-efn-fulfilment-fee-per-unit-uk'])) {
+            return $this->dataArray['expected-future-efn-fulfilment-fee-per-unit-uk'];
+        }
         if (isset($this->dataArray['expected-efn-fulfilment-fee-per-unit-uk'])) {
             return $this->dataArray['expected-efn-fulfilment-fee-per-unit-uk'];
         }
@@ -288,6 +303,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedEfnFulfilmentFeePerUnitDe()
     {
+        if (isset($this->dataArray['expected-future-efn-fulfilment-fee-per-unit-de'])) {
+            return $this->dataArray['expected-future-efn-fulfilment-fee-per-unit-de'];
+        }
         if (isset($this->dataArray['expected-efn-fulfilment-fee-per-unit-de'])) {
             return $this->dataArray['expected-efn-fulfilment-fee-per-unit-de'];
         }
@@ -296,6 +314,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedEfnFulfilmentFeePerUnitFr()
     {
+        if (isset($this->dataArray['expected-future-efn-fulfilment-fee-per-unit-fr'])) {
+            return $this->dataArray['expected-future-efn-fulfilment-fee-per-unit-fr'];
+        }
         if (isset($this->dataArray['expected-efn-fulfilment-fee-per-unit-fr'])) {
             return $this->dataArray['expected-efn-fulfilment-fee-per-unit-fr'];
         }
@@ -304,6 +325,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedEfnFulfilmentFeePerUnitIt()
     {
+        if (isset($this->dataArray['expected-future-efn-fulfilment-fee-per-unit-it'])) {
+            return $this->dataArray['expected-future-efn-fulfilment-fee-per-unit-it'];
+        }
         if (isset($this->dataArray['expected-efn-fulfilment-fee-per-unit-it'])) {
             return $this->dataArray['expected-efn-fulfilment-fee-per-unit-it'];
         }
@@ -312,6 +336,9 @@ class ReportFbaPaymentsFeePreviewRecord extends BaseMwsReportRecord implements I
 
     public function getExpectedEfnFulfilmentFeePerUnitEs()
     {
+        if (isset($this->dataArray['expected-future-efn-fulfilment-fee-per-unit-es'])) {
+            return $this->dataArray['expected-future-efn-fulfilment-fee-per-unit-es'];
+        }
         if (isset($this->dataArray['expected-efn-fulfilment-fee-per-unit-es'])) {
             return $this->dataArray['expected-efn-fulfilment-fee-per-unit-es'];
         }
