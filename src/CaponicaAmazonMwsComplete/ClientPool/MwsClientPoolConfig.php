@@ -10,6 +10,7 @@ class MwsClientPoolConfig {
     const PARAM_ACCESS_KEY  = 'access_key';
     const PARAM_SECRET_KEY  = 'secret_key';
     const PARAM_APP_NAME    = 'application_name';
+    const PARAM_AUTH_TOKEN  = 'auth_token';
     const PARAM_APP_VERSION = 'application_version';
     const PARAM_EXTRAS      = 'extras';
     const PARAM_AMAZON_SITE = 'amazon_site';
@@ -42,10 +43,11 @@ class MwsClientPoolConfig {
 
     private $accessKey;
     private $secretKey;
+    private $authToken = null;  // only needed when working with (3rd party) client accounts which provide an Auth Token
     private $applicationName;
     private $applicationVersion;
-    private $extras;        // Extra configuration parameters, passed through to Clients via "config" parameter
-    private $amazonSite;    // One of the SITE_XYZ constants
+    private $extras;            // Extra configuration parameters, passed through to Clients via "config" parameter
+    private $amazonSite;        // One of the SITE_XYZ constants
     private $sellerId;
 
     public static function getDomainSuffixForSite($site, $fullDomain=false) {
@@ -108,6 +110,11 @@ class MwsClientPoolConfig {
         $this->applicationName      = $parameterArray[self::PARAM_APP_NAME];
         $this->applicationVersion   = $parameterArray[self::PARAM_APP_VERSION];
         $this->sellerId             = $parameterArray[self::PARAM_SELLER_ID];
+        if (!empty($parameterArray[self::PARAM_AUTH_TOKEN])) {
+            $this->authToken = $parameterArray[self::PARAM_AUTH_TOKEN];
+        } else {
+            $this->authToken = null;
+        }
         if (!empty($parameterArray[self::PARAM_EXTRAS])) {
             $this->extras = $parameterArray[self::PARAM_EXTRAS];
         } else {
@@ -254,6 +261,16 @@ class MwsClientPoolConfig {
     }
     public function getApplicationVersion() {
         return $this->applicationVersion;
+    }
+
+    public function setAuthToken($authToken) {
+        $this->authToken = $authToken;
+    }
+    public function getAuthToken() {
+        return $this->authToken;
+    }
+    public function removeAuthToken() {
+        $this->authToken = null;
     }
 
     public function getConfigKeysForOrder() {

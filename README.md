@@ -71,6 +71,21 @@ MWS responses:
         echo $compPricing->asin;
     }
 
+NEW - MWSAuthToken
+==================
+
+If you're using an MWSAuthToken then you can pass it in via the config:
+
+    $mwsClientPoolUsa->setConfig([
+        'auth_token'            => 'YOUR_MWS_AUTH_TOKEN',
+        // ... other parameters ...
+    ]);
+
+Once set on the ClientPool, the token should be passed through to each Client and used in every API request.
+
+*REQUEST: Please feed back via [github](https://github.com/caponica/AmazonMwsComplete/issues) if this is the best way to 
+set and use the MWSAuthToken, and if it all works as expected. I don't used this functionality myself so cannot test it
+properly.*
 
 Working with reports
 ====================
