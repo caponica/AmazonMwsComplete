@@ -67,6 +67,8 @@ class MwsCompetitivePricing {
     /** @var int $rankInTlc */
     public $rankInTlc;
 
+    const CATEGORY_NOT_IN_CATALOGUE = 'NOT IN CATALOGUE';
+
     public function __construct(\MarketplaceWebServiceProducts_Model_GetCompetitivePricingForASINResult $cpResult) {
         /** @var \MarketplaceWebServiceProducts_Model_Error $error */
         $error = $cpResult->getError();
@@ -132,5 +134,9 @@ class MwsCompetitivePricing {
                 }
             }
         }
+    }
+
+    public function isNotInCatalogue() {
+        return self::CATEGORY_NOT_IN_CATALOGUE === $this->topLevelCategory;
     }
 }
