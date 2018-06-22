@@ -3,6 +3,7 @@
 namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
 
 class CaponicaClientPack {
     public static function throttledCall(ThrottleAwareClientPackInterface $clientPack, $method, $options, $weight=null) {
@@ -12,7 +13,7 @@ class CaponicaClientPack {
             return $clientPack->$method($options);
         } catch (\Exception $e) {
             if (method_exists($e, 'getErrorCode') && 'RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled";
+                LoggerService::logMessage("The request was throttled", LoggerService::INFO);
                 if ($snoozeLength = $clientPack->getThrottleManager()->getRestoreInterval($method, $weight)) {
                     $clientPack->getThrottleManager()->exhaustRequestQuotaForMethod($method);
                     self::snooze(ceil($snoozeLength) * 2); // Double the normal snooze since we bounced off the server limit
@@ -32,7 +33,7 @@ class CaponicaClientPack {
      */
     private static function snooze($snoozeLength) {
         if ($snoozeLength > 0) {
-            echo "\nSnoozing for $snoozeLength seconds";
+            LoggerService::logMessage("Snoozing for $snoozeLength seconds", LoggerService::DEBUG);
             if (is_int($snoozeLength)) {
                 sleep($snoozeLength);
             } else {

@@ -11,6 +11,8 @@ use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+use Psr\Log\LoggerInterface;
 
 class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClientPackInterface {
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
@@ -109,11 +111,14 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     protected $sellerId;
     /** @var string $authToken          MWSAuthToken, only needed when working with (3rd party) client accounts which provide an Auth Token */
     protected $authToken = null;
+    /** @var LoggerInterface */
+    protected $logger;
 
-    public function __construct(MwsClientPoolConfig $poolConfig) {
+    public function __construct(MwsClientPoolConfig $poolConfig, LoggerInterface $logger = null) {
         $this->marketplaceId    = $poolConfig->getMarketplaceId();
         $this->sellerId         = $poolConfig->getSellerId();
         $this->authToken        = $poolConfig->getAuthToken();
+        $this->logger           = $logger;
 
         $this->initThrottleManager();
 
@@ -332,7 +337,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrievePotentialEanMatchesOnAmazon($eans) {
         if (empty($eans)) {
-            echo "\nNo EANs to search for.";
+            $this->logMessage("No EANs to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -343,11 +348,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResponse = $this->callGetMatchingProductForId(self::ID_TYPE_EAN, $eans);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($eans);
+                $this->logMessage(
+                    "There was a problem with the search\nTerms searched: ".print_r($eans, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -358,12 +364,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
             $searchTerm = $mwsProductResultsForOneSearchTerm->getId();
             if (empty($searchTerm)) {
-                echo "\nEmpty search term in results";
+                $this->logMessage("Empty search term in results", LoggerService::DEBUG);
                 continue;
             }
 
             if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
-                echo "\nError for search term $searchTerm: " . $error->getMessage();
+                $this->logMessage("Error for search term $searchTerm: ".$error->getMessage(), LoggerService::WARNING);
                 continue;
             }
 
@@ -380,7 +386,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveProductsByAsins($asins) {
         if (empty($asins)) {
-            echo "\nNo ASINs to search for.";
+            $this->logMessage("No ASINs to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -391,13 +397,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResponse = $this->callGetMatchingProduct($asins);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
-                echo "\nSleeping for 5 seconds...";
+                $this->logMessage("The request was throttled (twice)\nSleeping for 5 seconds...", LoggerService::INFO);
                 sleep(5);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($asins);
+                $this->logMessage("There was a problem with the search\nTerms searched:".print_r($asins, true), LoggerService::INFO);
             }
             $this->debugException($e);
             return null;
@@ -409,19 +412,19 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
             $searchTerm = $mwsProductResultsForOneSearchTerm->getASIN();
             if (empty($searchTerm)) {
-                echo "\nEmpty ASIN in results";
+                $this->logMessage("Empty ASIN in results", LoggerService::DEBUG);
                 continue;
             }
 
             if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
-                echo "\nError for ASIN $searchTerm: " . $error->getMessage();
+                $this->logMessage("Error for ASIN $searchTerm: ".$error->getMessage(), LoggerService::WARNING);
                 continue;
             }
 
             /** @var \MarketplaceWebServiceProducts_Model_Product $mwsProduct */
             $mwsProduct = $mwsProductResultsForOneSearchTerm->getProduct();
 
-            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml());
+            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml(), $this->logger);
         }
 
         return $productsByAsin;
@@ -433,7 +436,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrievePotentialMatchesOnAmazon($searchTerm, $searchContext=null) {
         if (empty($searchTerm)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -442,11 +445,9 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResult = $this->callListMatchingProducts($searchTerm, $searchContext);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($searchTerm);
+                $this->logMessage("There was a problem with the search\nTerms searched:".print_r($searchTerm, true), LoggerService::ERROR);
             }
             $this->debugException($e);
             return null;
@@ -468,7 +469,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveCompetitivePricingForASIN($asinList) {
         if (empty($asinList)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -477,10 +478,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $mwsResponse = $this->callGetCompetitivePricingForASIN($asinList);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem finding competitive pricing for ASIN list:";
-                print_r($asinList);
+                $this->logMessage(
+                    "There was a problem finding competitive pricing for ASIN list:".print_r($asinList, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -505,7 +508,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveLowestOfferListingsForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         if (empty($asinList)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -514,10 +517,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $lolResponse = $this->callGetLowestOfferListingsForASIN($asinList, $itemCondition);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem finding lowest offers for ASIN list:";
-                print_r($asinList);
+                $this->logMessage(
+                    "There was a problem finding lowest offers for ASIN list:".print_r($asinList, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -553,7 +558,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveMyPriceForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         if (empty($asin)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -562,10 +567,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $mpfaResponse = $this->callGetMyPriceForASIN($asin, $itemCondition);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled";
+                $this->logMessage("The request was throttled", LoggerService::ERROR);
                 sleep(2);
             } else {
-                echo "\nThere was a problem with looking up ASIN $asin";
+                $this->logMessage("There was a problem with looking up ASIN $asin", LoggerService::ERROR);
             }
             $this->debugException($e);
             return null;
@@ -581,22 +586,41 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $mpfaObjects;
     }
 
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed  $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return void
+     */
+    protected function logMessage($message, $level, $context = [])
+    {
+        if ($this->logger) {
+            // Use the internal logger for logging.
+            $this->logger->log($level, $message, $context);
+        } else {
+            LoggerService::logMessage($message, $level, $context);
+        }
+    }
+
     private function convertMwsProductListIntoPotentialMatchesArray(\MarketplaceWebServiceProducts_Model_ProductList $mwsProductList, $rawXml) {
         $potentialMatches = [];
 
         /** @var \MarketplaceWebServiceProducts_Model_Product[] $productArray */
         $productArray = $mwsProductList->getProduct();
         if (empty($productArray)) {
-            echo "\nNo results were found for the search term";
+            $this->logMessage("No results were found for the search term", LoggerService::DEBUG);
             return null;
         }
 
         foreach ($productArray as $product) {
             try {
-                $potentialMatch = new PotentialMatch($product, $rawXml);
+                $potentialMatch = new PotentialMatch($product, $rawXml, $this->logger);
                 $potentialMatches[] = $potentialMatch;
             } catch (\InvalidArgumentException $e) {
-                print_r($e); // @todo - better way to debug an exception
+                $this->logMessage($e->getMessage(), LoggerService::ERROR);
                 return null;
             }
         }
@@ -604,11 +628,15 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $potentialMatches;
     }
     private function debugException(\MarketplaceWebServiceProducts_Exception $e) {
-        echo "\nException details:";
-        echo "\nCode:    " . $e->getErrorCode();
-        echo "\nError:   " . $e->getErrorMessage();
-        echo "\nMessage: " . $e->getMessage();
-        echo "\nXML:     " . $e->getXML();
-        echo "\nHeaders: " . $e->getResponseHeaderMetadata();
+        $this->logMessage(
+            "Exception details:".
+            "\nCode:    ".$e->getErrorCode().
+            "\nError:   ".$e->getErrorMessage().
+            "\nMessage: ".$e->getMessage().
+            "\nXML:     ".$e->getXML().
+            "\nHeaders: ".$e->getResponseHeaderMetadata()
+            ,
+            LoggerService::ERROR
+        );
     }
 }
