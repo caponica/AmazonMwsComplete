@@ -4,7 +4,7 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
 /**
  * Encapsulates information about a single row from an orders flat file
  */
-class ReportFBASalesAllByLastUpdateFlatFileRecord extends BaseMwsReportRecord {
+class ReportFbaSalesAllByLastUpdateFlatFileRecord extends BaseMwsReportRecord {
     private $amazonOrderId;
     private $merchantOrderId;
     private $purchaseDate;
@@ -46,7 +46,7 @@ class ReportFBASalesAllByLastUpdateFlatFileRecord extends BaseMwsReportRecord {
      * @throws InvalidReportRecordException
      */
     public function __construct($fileRow) {
-        $fieldArray = $this->convertRowStringToArray($fileRow, ReportFBASalesAllByLastUpdateFlatFile::EXPECTED_FIELD_COUNT);
+        $fieldArray = $this->convertRowStringToArray($fileRow, ReportFbaSalesAllByLastUpdateFlatFile::EXPECTED_FIELD_COUNT);
 
         $this->amazonOrderId            = $fieldArray[0];
         $this->merchantOrderId          = $fieldArray[1];

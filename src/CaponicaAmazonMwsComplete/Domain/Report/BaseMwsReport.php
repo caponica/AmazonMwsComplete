@@ -16,7 +16,7 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW               => 'ReportFbaPaymentsFeePreview',
         MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
         MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
-        MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFBASalesAllByLastUpdateFlatFile',
+        MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFbaSalesAllByLastUpdateFlatFile',
     ];
 
     /**
@@ -60,7 +60,7 @@ abstract class BaseMwsReport {
             throw new \InvalidArgumentException('No report class implemented yet for report type:' . $reportType);
         }
 
-        return $withNamespace ? __NAMESPACE__ . '\\' . self::$reportClassMap[$reportType] : self::$reportClassMap[$reportType];
+        return ($withNamespace ? __NAMESPACE__ . '\\' : '') . self::$reportClassMap[$reportType];
     }
 
     /**
