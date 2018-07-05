@@ -2,6 +2,8 @@
 
 namespace CaponicaAmazonMwsComplete\Domain\Throttle;
 
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+
 final class ThrottledRequestLogCollection {
     const RESTORE_BASIS_REQUEST = 'request';
     const RESTORE_BASIS_WEIGHT  = 'weight';
@@ -43,7 +45,7 @@ final class ThrottledRequestLogCollection {
             return;
         }
         for ($i=1; $i<=$slotsToFill; ++$i) {
-            echo "\nAdding fake entry #{$i} to Throttle log to fill a slot";
+            LoggerService::logMessage("Adding fake entry #{$i} to Throttle log to fill a slot", LoggerService::DEBUG);
             $this->addLog($apiMethod);
         }
     }

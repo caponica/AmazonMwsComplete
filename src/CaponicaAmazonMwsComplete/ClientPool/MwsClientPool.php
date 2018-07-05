@@ -14,6 +14,7 @@ use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use Psr\Log\LoggerInterface;
 
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
@@ -42,6 +43,19 @@ class MwsClientPool {
 
     /** @var MwsClientPoolConfig */
     protected $config;
+
+    /** @var LoggerInterface */
+    protected $logger;
+
+    /**
+     * MwsClientPool constructor.
+     *
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
 
     public function setConfig($config=[], $siteCode=null) {
         $this->config = new MwsClientPoolConfig($config, $siteCode);
@@ -82,7 +96,7 @@ class MwsClientPool {
      */
     public function getProductClientPack() {
         if(empty($this->productClientPack)) {
-            $this->productClientPack = new MwsProductClientPack($this->config);
+            $this->productClientPack = new MwsProductClientPack($this->config, $this->logger);
         }
         return $this->productClientPack;
     }

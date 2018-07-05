@@ -2,6 +2,8 @@
 
 namespace CaponicaAmazonMwsComplete\Domain\Product;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+use Psr\Log\LoggerInterface;
 
 /**
  * Attempt to convert a raw MarketplaceWebServiceProducts_Model_Product into something more workable
@@ -24,13 +26,17 @@ final class PotentialMatch {
     private $rankCat;
     private $title;
     private $weightPounds;
+    /** @var LoggerInterface */
+    protected $logger;
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
-     * @param string $rawXml            Raw XML from the Amazon response
-     * @throws \InvalidArgumentException
+     * @param string                                       $rawXml Raw XML from the Amazon response
+     * @param LoggerInterface|null                         $logger
      */
-    public function __construct($product, $rawXml) {
+    public function __construct($product, $rawXml, LoggerInterface $logger = null) {
+        $this->logger = $logger;
+
         /** @var \MarketplaceWebServiceProducts_Model_IdentifierType $idType */
         $idType = $product->getIdentifiers();
         if ($idType->isSetMarketplaceASIN()) {
@@ -51,7 +57,10 @@ final class PotentialMatch {
                     $this->rank = $salesRank->getRank();
                     $this->rankCat = $salesRank->getProductCategoryId();
                 } else {
-                    // echo "\n>>Found Secondary Rank: #" . $salesRank->getRank() . " in " . $salesRank->getProductCategoryId() . " for asin {$this->asin}";
+                    //$this->logMessage(
+                    //    ">>Found Secondary Rank: #".$salesRank->getRank()." in ".$salesRank->getProductCategoryId()." for asin {$this->asin}",
+                    //    LoggerService::DEBUG
+                    //);
                 }
             }
         }
@@ -77,7 +86,7 @@ final class PotentialMatch {
             }
         }
         if (!empty($attributes)) {
-            echo "\nTrying manual string based attribute search";
+            $this->logMessage("Trying manual string based attribute search", LoggerService::DEBUG);
 
             if (!empty($attributes->ListPrice->Amount)) {
                 $this->listPrice = $attributes->ListPrice->Amount->__toString();
@@ -137,7 +146,7 @@ final class PotentialMatch {
                 $this->title = $attributes->Title->__toString();
             }
         } else {
-            echo "\nTrying XML based attribute search";
+            $this->logMessage("Trying XML based attribute search", LoggerService::DEBUG);
 
             /** @var \MarketplaceWebServiceProducts_Model_AttributeSetList $asl */
             $asl = $product->getAttributeSets();
@@ -195,6 +204,25 @@ final class PotentialMatch {
             round((float)$this->dimensions['L'], 1),
             round((float)$this->dimensions['H'], 1),
         ];
+    }
+
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed  $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return void
+     */
+    protected function logMessage($message, $level, $context = [])
+    {
+        if ($this->logger) {
+            // Use the internal logger for logging.
+            $this->logger->log($level, $message, $context);
+        } else {
+            LoggerService::logMessage($message, $level, $context);
+        }
     }
 
     // ###################################################################
