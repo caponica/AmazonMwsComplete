@@ -71,8 +71,8 @@ MWS responses:
         echo $compPricing->asin;
     }
 
-NEW - MWSAuthToken
-==================
+MWSAuthToken
+============
 
 If you're using an MWSAuthToken then you can pass it in via the config:
 
@@ -86,6 +86,48 @@ Once set on the ClientPool, the token should be passed through to each Client an
 *REQUEST: Please feed back via [github](https://github.com/caponica/AmazonMwsComplete/issues) if this is the best way to 
 set and use the MWSAuthToken, and if it all works as expected. I don't used this functionality myself so cannot test it
 properly.*
+
+NEW - Logging
+=============
+
+The scripts no longer echo messages. Instead they use a Logger which you can define when you instantiate the ClientPool.
+
+See https://github.com/php-fig/log and https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+for more details about setting up a Logger.
+
+A basic Logger (which replicates the old echo behaviour), would look like this:
+
+    # EchoLogger.php
+
+    namespace Your\Path;
+    
+    use Psr\Log\AbstractLogger;
+    
+    class EchoLogger extends AbstractLogger
+    {
+        /**
+         * Logs with an arbitrary level.
+         *
+         * @param mixed  $level
+         * @param string $message
+         * @param array  $context
+         *
+         * @return void
+         */
+        public function log($level, $message, array $context = array())
+        {
+            echo "$message\n";
+        }
+    }
+
+You then simply pass an EchoLogger instance into the MwsClientPool constructor:
+    
+    use CaponicaAmazonMwsComplete\ClientPool\MwsClientPool;
+    use Your\Path\EchoLogger;
+
+    $echoLogger = new EchoLogger();
+    $mwsClientPoolUsa = new MwsClientPool($echoLogger);
+
 
 Working with reports
 ====================

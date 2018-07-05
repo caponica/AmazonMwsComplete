@@ -36,8 +36,6 @@ class LoggerService
     {
         if (self::$logger) {
             self::$logger->log($level, $message, $context);
-        } else {
-            echo "$message\n";
         }
     }
 
