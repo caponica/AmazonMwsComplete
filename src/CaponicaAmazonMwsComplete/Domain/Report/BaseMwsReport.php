@@ -10,6 +10,15 @@ abstract class BaseMwsReport {
     const EXPECTED_FIELD_COUNT = 'abstract'; // implement in concrete class
     const EXPECTED_HEADER = 'abstract'; // implement in concrete class
 
+    private static $reportClassMap = [
+        MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN                      => 'ReportFbaInventoryAfn',
+        MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN_BY_COUNTRY           => 'ReportFbaInventoryAfnByCountry',
+        MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW               => 'ReportFbaPaymentsFeePreview',
+        MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
+        MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
+        MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFbaSalesAllByLastUpdateFlatFile',
+    ];
+
     /**
      * Validates the given string (first line of a report file) is as-expected for a ReportType.
      * This method should not be called on BaseMwsReport itself, but rather on one of the child classes.
@@ -47,24 +56,11 @@ abstract class BaseMwsReport {
      * @return string               The class name which encapsulates reports of the given reportType
      */
     public static function convertReportTypeToReportClass($reportType, $withNamespace = true) {
-        if (MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN == $reportType) {
-            $reportClass = 'ReportFbaInventoryAfn';
-        } elseif (MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN_BY_COUNTRY == $reportType) {
-            $reportClass = 'ReportFbaInventoryAfnByCountry';
-        } elseif (MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW == $reportType) {
-            $reportClass = 'ReportFbaPaymentsFeePreview';
-        } elseif (MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS == $reportType) {
-            $reportClass = 'ReportListingActiveListings';
-        } elseif (MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE == $reportType) {
-            $reportClass = 'ReportTrackingByOrderDateFlatFile';
-        } else {
+        if (! array_key_exists($reportType, self::$reportClassMap)) {
             throw new \InvalidArgumentException('No report class implemented yet for report type:' . $reportType);
         }
 
-        if ($withNamespace) {
-            $reportClass = __NAMESPACE__ . '\\' . $reportClass;
-        }
-        return $reportClass;
+        return ($withNamespace ? __NAMESPACE__ . '\\' : '') . self::$reportClassMap[$reportType];
     }
 
     /**
