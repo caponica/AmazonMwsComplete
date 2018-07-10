@@ -13,6 +13,8 @@ abstract class BaseMwsReport {
     private static $reportClassMap = [
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN                      => 'ReportFbaInventoryAfn',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_AFN_BY_COUNTRY           => 'ReportFbaInventoryAfnByCountry',
+        MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_DAILY            => 'ReportFbaInventoryHistoryDaily',
+        MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_MONTHLY          => 'ReportFbaInventoryHistoryMonthly',
         MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW               => 'ReportFbaPaymentsFeePreview',
         MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
         MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
