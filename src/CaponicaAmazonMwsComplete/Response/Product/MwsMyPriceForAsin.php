@@ -52,25 +52,11 @@ class MwsMyPriceForAsin {
 
     const FEEDBACK_COUNT_AMAZON = 270000;
 
-    /** @var string $asin */
-    public $asin;
-    /** @var string $sellerSku */
-    public $sellerSku;
-    /** @var string $currency */
-    public $currency;
-    /** @var float $landedPrice */
-    public $landedPrice;
-    /** @var float $listingPrice */
-    public $listingPrice;
-    /** @var float $shipping */
-    public $shippingPrice;
-    /** @var float $regularPrice */
-    public $regularPrice;
-    /** @var string $channel */
-    public $channel;
+    /** @var array $offers */
+    public $offers;
 
     public function __construct(\MarketplaceWebServiceProducts_Model_GetMyPriceForASINResult $mpfa) {
-        $this->asin = $mpfa->getASIN();
+
         /** @var \MarketplaceWebServiceProducts_Model_Product $product */
         $product = $mpfa->getProduct();
         /** @var  \MarketplaceWebServiceProducts_Model_OffersList $offerList */
@@ -80,20 +66,26 @@ class MwsMyPriceForAsin {
         $offers = $offerList->getOffer();
 
         foreach ($offers as $offer) {
-            $this->channel = $offer->getFulfillmentChannel();
-            $this->sellerSku = $offer->getSellerSKU();
-
-            /** @var \MarketplaceWebServiceProducts_Model_PriceType $buyingPrice */
-            $buyingPrice = $offer->getBuyingPrice();
-            $this->landedPrice = $buyingPrice->getLandedPrice()->getAmount();
-            $this->listingPrice = $buyingPrice->getListingPrice()->getAmount();
-            $this->shippingPrice = $buyingPrice->getShipping()->getAmount();
 
             /** @var \MarketplaceWebServiceProducts_Model_MoneyType $regularPriceType */
+
             $regularPriceType = $offer->getRegularPrice();
-            $this->regularPrice = $regularPriceType->getAmount();
-            $this->currency = $regularPriceType->getCurrencyCode();
-            break;  // There should only be one offer, since we're looking up our own pricing for an ASIN
+
+            /** @var \MarketplaceWebServiceProducts_Model_PriceType $buyingPrice */
+
+            $buyingPrice = $offer->getBuyingPrice();
+
+            $this->offers[$mpfa->getASIN()][] = [
+                'sellerSku' => $offer->getSellerSKU(), 
+                'currency' => $regularPriceType->getCurrencyCode(),
+                'landedPrice' => $buyingPrice->getLandedPrice()->getAmount(),
+                'listingPrice' => $buyingPrice->getListingPrice()->getAmount(),
+                'shippingPrice' => $buyingPrice->getShipping()->getAmount(),
+                'regularPrice' => $regularPriceType->getAmount(),
+                'channel' => $offer->getFulfillmentChannel()
+            ];
+
+            // There may be multiple own offers for the same asin
         }
     }
 }
