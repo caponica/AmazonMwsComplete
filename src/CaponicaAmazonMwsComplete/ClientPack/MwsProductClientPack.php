@@ -45,6 +45,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const PARAM_SELLER_ID                       = 'SellerId';
     const PARAM_SELLER_SKU                      = 'SellerSKU';
     const PARAM_SELLER_SKU_LIST                 = 'SellerSKUList';
+    const PARAM_FEES_ESTIMATE_REQUEST_LIST      = 'FeesEstimateRequestList';
 
     const QUERY_CONTEXT_ALL                     = 'All';
     const QUERY_CONTEXT_APPAREL                 = 'Apparel';
@@ -104,6 +105,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const METHOD_LIST_MATCHING_PRODUCTS             = 'listMatchingProducts';
     const METHOD_GET_MATCHING_PRODUCTS              = 'getMatchingProduct';
     const METHOD_GET_MATCHING_PRODUCTS_FOR_ID       = 'getMatchingProductForId';
+    const METHOD_GET_MY_FEES_ESTIMATE               = 'getMyFeesEstimate';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -307,6 +309,22 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_MATCHING_PRODUCTS, $options);
     }
 
+    /**
+     * @param array $feesEstimateRequestList Array of FeeEstimateRequest Objects
+     *
+     * @throws \MarketplaceWebServiceProducts_Exception
+     *
+     * @return \MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse
+     */
+    public function callGetMyFeesEstimate($feesEstimateRequestList)
+    {
+        $options = $this->signArray([
+            self::PARAM_FEES_ESTIMATE_REQUEST_LIST => ['FeesEstimateRequest' => $feesEstimateRequestList],
+        ]);
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MY_FEES_ESTIMATE, $options);
+    }
+
     // ###################################################
     // # ThrottleAwareClientPackInterface implementation #
     // ###################################################
@@ -320,6 +338,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
                 self::METHOD_GET_MATCHING_PRODUCTS              => [20, 2,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID       => [20, 5,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_LIST_MATCHING_PRODUCTS             => [20, 0.2],
+                self::METHOD_GET_MY_FEES_ESTIMATE               => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
             ]
         );
     }
