@@ -16,18 +16,20 @@ class MwsClientPoolConfig {
     const PARAM_AMAZON_SITE = 'amazon_site';
     const PARAM_SELLER_ID   = 'seller_id';
 
-    const SITE_CANADA    = 'CA';
-    const SITE_MEXICO    = 'MX';
-    const SITE_USA       = 'US';
-    const SITE_GERMANY   = 'DE';
-    const SITE_SPAIN     = 'ES';
-    const SITE_FRANCE    = 'FR';
-    const SITE_ITALY     = 'IT';
-    const SITE_UK        = 'UK';
-    const SITE_CHINA     = 'CN';
-    const SITE_INDIA     = 'IN';
-    const SITE_JAPAN     = 'JP';
-    const SITE_AUSTRALIA = 'AU';
+    const SITE_CANADA       = 'CA';
+    const SITE_MEXICO       = 'MX';
+    const SITE_USA          = 'US';
+    const SITE_GERMANY      = 'DE';
+    const SITE_SPAIN        = 'ES';
+    const SITE_FRANCE       = 'FR';
+    const SITE_ITALY        = 'IT';
+    const SITE_UK           = 'UK';
+    const SITE_BRAZIL       = 'BR';
+    const SITE_CHINA        = 'CN';
+    const SITE_INDIA        = 'IN';
+    const SITE_JAPAN        = 'JP';
+    const SITE_AUSTRALIA    = 'AU';
+    const SITE_TURKEY       = 'TR';
 
     const CONFIG_KEY_SERVICE_URL            = 'ServiceURL';
     const CONFIG_KEY_USER_AGENT             = 'UserAgent';
@@ -60,17 +62,20 @@ class MwsClientPoolConfig {
     }
     public static function getDomainSuffixes() {
         return [
-            self::SITE_CANADA   => 'ca',
-            self::SITE_MEXICO   => 'com.mx',
-            self::SITE_USA      => 'com',
-            self::SITE_GERMANY  => 'de',
-            self::SITE_SPAIN    => 'es',
-            self::SITE_FRANCE   => 'fr',
-            self::SITE_ITALY    => 'it',
-            self::SITE_UK       => 'co.uk',
-            self::SITE_CHINA    => 'cn',
-            self::SITE_INDIA    => 'in',
-            self::SITE_JAPAN    => 'co.jp',
+            self::SITE_CANADA       => 'ca',
+            self::SITE_MEXICO       => 'com.mx',
+            self::SITE_USA          => 'com',
+            self::SITE_GERMANY      => 'de',
+            self::SITE_SPAIN        => 'es',
+            self::SITE_FRANCE       => 'fr',
+            self::SITE_ITALY        => 'it',
+            self::SITE_UK           => 'co.uk',
+            self::SITE_BRAZIL       => 'com.br',
+            self::SITE_CHINA        => 'cn',
+            self::SITE_INDIA        => 'in',
+            self::SITE_JAPAN        => 'co.jp',
+            self::SITE_AUSTRALIA    => 'com.au',
+            self::SITE_TURKEY       => 'com.tr',
         ];
     }
 
@@ -132,27 +137,31 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE,
             self::SITE_ITALY,
             self::SITE_UK,
+            self::SITE_BRAZIL,
             self::SITE_CHINA,
             self::SITE_INDIA,
             self::SITE_JAPAN,
             self::SITE_AUSTRALIA,
+            self::SITE_TURKEY,
         ];
     }
 
     private function getMwsEndpoints() {
         return [
-            self::SITE_CANADA    => 'https://mws.amazonservices.ca',
-            self::SITE_MEXICO    => 'https://mws.amazonservices.com.mx',
-            self::SITE_USA       => 'https://mws.amazonservices.com',
-            self::SITE_GERMANY   => 'https://mws-eu.amazonservices.com',
-            self::SITE_SPAIN     => 'https://mws-eu.amazonservices.com',
-            self::SITE_FRANCE    => 'https://mws-eu.amazonservices.com',
-            self::SITE_ITALY     => 'https://mws-eu.amazonservices.com',
-            self::SITE_UK        => 'https://mws-eu.amazonservices.com',
-            self::SITE_CHINA     => 'https://mws.amazonservices.com.cn',
-            self::SITE_INDIA     => 'https://mws.amazonservices.in',
-            self::SITE_JAPAN     => 'https://mws.amazonservices.jp',
-            self::SITE_AUSTRALIA => 'https://mws.amazonservices.com.au',
+            self::SITE_CANADA       => 'https://mws.amazonservices.ca',
+            self::SITE_MEXICO       => 'https://mws.amazonservices.com.mx',
+            self::SITE_USA          => 'https://mws.amazonservices.com',
+            self::SITE_GERMANY      => 'https://mws-eu.amazonservices.com',
+            self::SITE_SPAIN        => 'https://mws-eu.amazonservices.com',
+            self::SITE_FRANCE       => 'https://mws-eu.amazonservices.com',
+            self::SITE_ITALY        => 'https://mws-eu.amazonservices.com',
+            self::SITE_UK           => 'https://mws-eu.amazonservices.com',
+            self::SITE_BRAZIL       => 'https://mws.amazonservices.com',
+            self::SITE_CHINA        => 'https://mws.amazonservices.com.cn',
+            self::SITE_INDIA        => 'https://mws.amazonservices.in',
+            self::SITE_JAPAN        => 'https://mws.amazonservices.jp',
+            self::SITE_AUSTRALIA    => 'https://mws.amazonservices.com.au',
+            self::SITE_TURKEY       => 'https://mws.services.amazon.com.tr',
         ];
     }
     private function getMwsEndpoint($amazonSite) {
@@ -173,10 +182,12 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE    => 'A13V1IB3VIYZZH',
             self::SITE_ITALY     => 'APJ6JRA9NG5V4',
             self::SITE_UK        => 'A1F83G8C2ARO7P',
+            self::SITE_BRAZIL    => 'A2Q3Y263D00KWC',
             self::SITE_CHINA     => 'AAHKV2X7AFYLW',
             self::SITE_INDIA     => 'A21TJRUUN4KGV',
             self::SITE_JAPAN     => 'A1VC38T7YXB528',
             self::SITE_AUSTRALIA => 'A39IBJ37TRP1C6',
+            self::SITE_TURKEY    => 'A33AVAJ2PDY3EV',
         ];
     }
     /*
@@ -192,10 +203,12 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE    => 'A1ZFFQZ3HTUKT9',
             self::SITE_ITALY     => 'A62U237T8HV6N',
             self::SITE_UK        => 'AZMDEXL2RVFNN',
+            self::SITE_BRAZIL    => null,
             self::SITE_CHINA     => null,
             self::SITE_INDIA     => null,
             self::SITE_JAPAN     => null,
             self::SITE_AUSTRALIA => null,
+            self::SITE_TURKEY    => null,
         ];
     }
 
