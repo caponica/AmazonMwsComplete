@@ -26,6 +26,7 @@ final class PotentialMatch {
     private $title;
     private $weightPounds;
     private $smallImage;
+    private $isAdultProduct;
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
@@ -142,6 +143,9 @@ final class PotentialMatch {
             }
             if (!empty($attributes->SmallImage)) {
                 $this->smallImage = $this->extractSmallImageFromAttributes($attributes);
+            }
+            if (!empty($attributes->IsAdultProduct)) {
+                $this->isAdultProduct = $attributes->IsAdultProduct->__toString();
             }
         } else {
             echo "\nTrying XML based attribute search";
@@ -535,6 +539,13 @@ final class PotentialMatch {
     public function getSecondaryCats()
     {
         return $this->secondaryCats;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsAdultProduct()
+    {
+        return $this->isAdultProduct;
     }
     
 }
