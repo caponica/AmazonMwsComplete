@@ -190,4 +190,17 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
     public function getThrottleManager() {
         return $this->throttleManager;
     }
+
+    /**
+     * Request any FBA function
+     * @param string $method
+     * @param array $requestArray
+     * @return mixed
+     * @throws \Exception
+     */
+    public function callRawRequest(string $method, array $requestArray)
+    {
+        $requestArray = $this->signArray($requestArray);
+        return CaponicaClientPack::throttledCall($this, $method, $requestArray);
+    }
 }
