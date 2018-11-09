@@ -79,7 +79,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             self::PARAM_SELLER_ORDER_ID     => $sellerFulfillmentOrderId,
         ];
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_ORDER, $requestArray);
     }
 
@@ -130,7 +130,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             $requestArray[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailListWithMemberKey;
         }
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_CREATE_ORDER, $requestArray);
     }
 
@@ -168,7 +168,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             $requestArray[self::PARAM_INCLUDE_SCHEDULED_PREVIEW] = $includeScheduledDelivery;
         }
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_PREVIEW, $requestArray);
     }
 
