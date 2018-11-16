@@ -4,8 +4,14 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\AmazonClient\MwsFinanceClient;
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 
 class MwsFinanceClientPack extends MwsFinanceClient {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
+
+    const SERVICE_NAME = 'Finances';
+
     const PARAM_AMAZON_ORDER_ID                     = 'AmazonOrderId';
     const PARAM_FINANCIAL_EVENT_GROUP_ID            = 'FinancialEventGroupId';
     const PARAM_FINANCIAL_EVENT_GROUP_STARTED_AFTER = 'FinancialEventGroupStartedAfter';
@@ -41,19 +47,6 @@ class MwsFinanceClientPack extends MwsFinanceClient {
             $poolConfig->getApplicationVersion(),
             $poolConfig->getConfigForFinance($this->getServiceUrlSuffix())
         );
-    }
-
-    private function getServiceUrlSuffix() {
-        return '/Finances/' . self::SERVICE_VERSION;
-    }
-
-    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
-    private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
     }
 
     // ##################################################

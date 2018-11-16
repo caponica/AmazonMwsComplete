@@ -4,8 +4,11 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsFeedAndReportClient;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 
 class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
+    use SignsRequestArray;
+
     // Product And Inventory feeds
     const FEED_TYPE_PAI_IMAGES                          = '_POST_PRODUCT_IMAGE_DATA_';
     const FEED_TYPE_PAI_INVENTORY                       = '_POST_INVENTORY_AVAILABILITY_DATA_';
@@ -179,15 +182,6 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
 
     private function getServiceUrlSuffix() {
         return '/';
-    }
-
-    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
-    private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
     }
 
     // ##################################################

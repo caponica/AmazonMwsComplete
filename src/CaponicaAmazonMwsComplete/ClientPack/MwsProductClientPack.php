@@ -4,6 +4,8 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Product\PotentialMatch;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestLogCollection;
@@ -15,6 +17,10 @@ use CaponicaAmazonMwsComplete\Service\LoggerService;
 use Psr\Log\LoggerInterface;
 
 class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClientPackInterface {
+    use SignsRequestArray, ProvidesServiceUrlSuffix { SignsRequestArray::signArray as baseSignArray; }
+
+    const SERVICE_NAME = 'Products';
+
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
 
@@ -133,18 +139,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         );
     }
 
-    private function getServiceUrlSuffix() {
-        return '/Products/' . self::SERVICE_VERSION;
-    }
-
     // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
     private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
         $requestArray[self::PARAM_MARKETPLACE_ID] = $this->marketplaceId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
+
+        return $this->baseSignArray($requestArray);
     }
 
     // ##################################################

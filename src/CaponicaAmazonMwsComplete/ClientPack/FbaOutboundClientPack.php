@@ -4,12 +4,18 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\FbaOutboundClient;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Outbound\Address;
 use CaponicaAmazonMwsComplete\Domain\Outbound\CreateFulfillmentOrderItem;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 
 class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareClientPackInterface {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
+
+    const SERVICE_NAME = 'FulfillmentOutboundShipment';
+
     const PARAM_MARKETPLACE_ID                          = 'MarketplaceId';
     const PARAM_MERCHANT                                = 'SellerId';
     const PARAM_SELLER_ID                               = 'SellerId';   // Alias for PARAM_MERCHANT
@@ -56,19 +62,6 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             $poolConfig->getApplicationName(),
             $poolConfig->getApplicationVersion()
         );
-    }
-
-    private function getServiceUrlSuffix() {
-        return '/FulfillmentOutboundShipment/' . self::SERVICE_VERSION;
-    }
-
-    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
-    private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
     }
 
     // ##################################################
