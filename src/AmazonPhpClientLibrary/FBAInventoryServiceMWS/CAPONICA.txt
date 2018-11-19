@@ -7,6 +7,3 @@ Client.php has been modified to use:
         ini_set('default_charset', 'UTF-8');
     }
 for better PHP compatibility
-
-
-ResponseHeaderMetadata.php has been updated to fix a duplicated parameter ($quotaMax appears twice, but the second should be $quotaRemaining)

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-10-19
- * Generated: Wed Oct 19 08:37:58 PDT 2016
+ * Library Version: 2016-01-01
+ * Generated: Wed Sep 12 07:08:09 PDT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
 {
 
     const SERVICE_VERSION = '2010-10-01';
-    const MWS_CLIENT_VERSION = '2016-10-19';
+    const MWS_CLIENT_VERSION = '2016-01-01';
 
     /** @var string */
     private  $_awsAccessKeyId = null;

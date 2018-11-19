@@ -49,10 +49,18 @@
                     <CurrencyCode>String</CurrencyCode>
                     <Amount>String</Amount>
                 </ShippingDiscount>
+                <ShippingDiscountTax>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>String</Amount>
+                </ShippingDiscountTax>
                 <PromotionDiscount>
                     <CurrencyCode>String</CurrencyCode>
                     <Amount>String</Amount>
                 </PromotionDiscount>
+                <PromotionDiscountTax>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>String</Amount>
+                </PromotionDiscountTax>
                 <PromotionIds>
                     <PromotionId>String</PromotionId>
                 </PromotionIds>
@@ -86,6 +94,8 @@
                     <Model>String</Model>
                     <ResponsibleParty>String</ResponsibleParty>
                 </TaxCollection>
+                <SerialNumberRequired>true</SerialNumberRequired>
+                <IsTransparency>true</IsTransparency>
             </OrderItem>
         </OrderItems>
     </ListOrderItemsByNextTokenResult>

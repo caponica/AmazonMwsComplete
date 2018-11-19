@@ -9,6 +9,9 @@
                 <Item>
                     <OrderItemId>String</OrderItemId>
                     <Quantity>1</Quantity>
+                    <transparencyCodeList>
+                        <member>String</member>
+                    </transparencyCodeList>
                 </Item>
             </ItemList>
             <ShipFromAddress>

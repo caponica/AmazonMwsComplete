@@ -11,6 +11,4 @@ for better PHP compatibility
 
 Model.php has been modified to enable storing/retrieving the raw XML from the response
 
-GetLowestOfferListingsForASINResponse, GetMatchingProductForIdResponse, ListMatchingProductsResponse has been modified to stash the raw XML response
-
-ResponseHeaderMetadata.php has been updated to fix a duplicated parameter ($quotaMax appears twice, but the second should be $quotaRemaining)
+GetLowestOfferListingsForASINResponse, GetMatchingProductForIdResponse, ListMatchingProductsResponse have been modified to stash the raw XML response

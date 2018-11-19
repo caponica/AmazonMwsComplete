@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -14,7 +14,7 @@
  * @package  FBA Inventory Service MWS
  * @version  2010-10-01
  * Library Version: 2014-09-30
- * Generated: Wed May 04 17:14:15 UTC 2016
+ * Generated: Tue Sep 11 14:38:40 PDT 2018
  */
 
 class FBAInventoryServiceMWS_Model_ResponseHeaderMetadata {

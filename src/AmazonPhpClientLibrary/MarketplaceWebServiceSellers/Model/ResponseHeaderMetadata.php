@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -14,7 +14,7 @@
  * @package  Marketplace Web Service Sellers
  * @version  2011-07-01
  * Library Version: 2015-06-18
- * Generated: Thu Jun 18 20:37:51 GMT 2015
+ * Generated: Wed Sep 12 08:12:03 PDT 2018
  */
 
 class MarketplaceWebServiceSellers_Model_ResponseHeaderMetadata {
