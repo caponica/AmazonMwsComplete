@@ -19,6 +19,7 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
         MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
         MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFbaSalesAllByLastUpdateFlatFile',
+        MwsFeedAndReportClientPack::REPORT_FBA_CONCESSION_RETURNS                 => 'ReportFbaReturns',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_ADJUSTMENTS              => 'ReportFbaInventoryAdjustments',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_EVENT_DETAIL             => 'ReportFbaInventoryEventDetail',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_RECEIVED                 => 'ReportFbaInventoryReceived',

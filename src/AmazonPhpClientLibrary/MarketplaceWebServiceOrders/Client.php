@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2018-01-31
- * Generated: Tue Jan 30 16:03:22 PST 2018
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 22:40:38 UTC 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
 {
 
     const SERVICE_VERSION = '2013-09-01';
-    const MWS_CLIENT_VERSION = '2018-01-31';
+    const MWS_CLIENT_VERSION = '2018-10-31';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -320,6 +320,9 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
         }
         if ($request->isSetTFMShipmentStatus()) {
             $parameters['TFMShipmentStatus'] =  $request->getTFMShipmentStatus();
+        }
+        if ($request->isSetEasyShipShipmentStatus()) {
+            $parameters['EasyShipShipmentStatus'] =  $request->getEasyShipShipmentStatus();
         }
 
         return $parameters;

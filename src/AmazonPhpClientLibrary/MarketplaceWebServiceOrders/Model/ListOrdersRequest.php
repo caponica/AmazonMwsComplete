@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2018-01-31
- * Generated: Tue Jan 30 16:03:22 PST 2018
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 22:40:38 UTC 2018
  */
 
 /**
@@ -44,6 +44,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>SellerOrderId: string</li>
  * <li>MaxResultsPerPage: int</li>
  * <li>TFMShipmentStatus: array</li>
+ * <li>EasyShipShipmentStatus: array</li>
  *
  * </ul>
  */
@@ -67,6 +68,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'SellerOrderId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'MaxResultsPerPage' => array('FieldValue' => null, 'FieldType' => 'int'),
     'TFMShipmentStatus' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Status'),
+    'EasyShipShipmentStatus' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Status'),
     );
     parent::__construct($data);
     }
@@ -801,6 +803,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
         foreach (func_get_args() as $TFMShipmentStatus)
         {
             $this->_fields['TFMShipmentStatus']['FieldValue'][] = $TFMShipmentStatus;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the EasyShipShipmentStatus property.
+     *
+     * @return List<String> EasyShipShipmentStatus.
+     */
+    public function getEasyShipShipmentStatus()
+    {
+        if ($this->_fields['EasyShipShipmentStatus']['FieldValue'] == null)
+        {
+            $this->_fields['EasyShipShipmentStatus']['FieldValue'] = array();
+        }
+        return $this->_fields['EasyShipShipmentStatus']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the EasyShipShipmentStatus property.
+     *
+     * @param array easyShipShipmentStatus
+     * @return this instance
+     */
+    public function setEasyShipShipmentStatus($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['EasyShipShipmentStatus']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear EasyShipShipmentStatus.
+     */
+    public function unsetEasyShipShipmentStatus()
+    {
+        $this->_fields['EasyShipShipmentStatus']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if EasyShipShipmentStatus is set.
+     *
+     * @return true if EasyShipShipmentStatus is set.
+     */
+    public function isSetEasyShipShipmentStatus()
+    {
+                return !empty($this->_fields['EasyShipShipmentStatus']['FieldValue']);
+            }
+
+    /**
+     * Add values for EasyShipShipmentStatus, return this.
+     *
+     * @param easyShipShipmentStatus
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withEasyShipShipmentStatus()
+    {
+        foreach (func_get_args() as $EasyShipShipmentStatus)
+        {
+            $this->_fields['EasyShipShipmentStatus']['FieldValue'][] = $EasyShipShipmentStatus;
         }
         return $this;
     }

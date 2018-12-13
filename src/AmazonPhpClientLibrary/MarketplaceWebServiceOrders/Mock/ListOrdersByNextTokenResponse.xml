@@ -24,6 +24,7 @@
                     <County>String</County>
                     <District>String</District>
                     <StateOrRegion>String</StateOrRegion>
+                    <Municipality>String</Municipality>
                     <PostalCode>String</PostalCode>
                     <CountryCode>String</CountryCode>
                     <Phone>String</Phone>
@@ -65,6 +66,7 @@
                 <ShipmentServiceLevelCategory>String</ShipmentServiceLevelCategory>
                 <ShippedByAmazonTFM>true</ShippedByAmazonTFM>
                 <TFMShipmentStatus>String</TFMShipmentStatus>
+                <EasyShipShipmentStatus>String</EasyShipShipmentStatus>
                 <CbaDisplayableShippingLabel>String</CbaDisplayableShippingLabel>
                 <OrderType>String</OrderType>
                 <EarliestShipDate>1969-07-21T02:56:03Z</EarliestShipDate>
@@ -77,6 +79,8 @@
                 <IsPremiumOrder>true</IsPremiumOrder>
                 <ReplacedOrderId>String</ReplacedOrderId>
                 <IsReplacementOrder>true</IsReplacementOrder>
+                <PromiseResponseDueDate>1969-07-21T02:56:03Z</PromiseResponseDueDate>
+                <IsEstimatedShipDateSet>true</IsEstimatedShipDateSet>
             </Order>
         </Orders>
     </ListOrdersByNextTokenResult>

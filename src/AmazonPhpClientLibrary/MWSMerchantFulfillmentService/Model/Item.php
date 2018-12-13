@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2016-03-30
- * Generated: Fri Nov 11 06:01:18 PST 2016
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 23:32:33 UTC 2018
  */
 
 /**
@@ -32,6 +32,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * 
  * <li>OrderItemId: string</li>
  * <li>Quantity: int</li>
+ * <li>transparencyCodeList: array</li>
  *
  * </ul>
  */
@@ -43,6 +44,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     $this->_fields = array (
     'OrderItemId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Quantity' => array('FieldValue' => null, 'FieldType' => 'int'),
+    'transparencyCodeList' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'member'),
     );
     parent::__construct($data);
     }
@@ -136,6 +138,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withQuantity($value)
     {
         $this->setQuantity($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the transparencyCodeList property.
+     *
+     * @return List<String> transparencyCodeList.
+     */
+    public function gettransparencyCodeList()
+    {
+        if ($this->_fields['transparencyCodeList']['FieldValue'] == null)
+        {
+            $this->_fields['transparencyCodeList']['FieldValue'] = array();
+        }
+        return $this->_fields['transparencyCodeList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the transparencyCodeList property.
+     *
+     * @param array transparencyCodeList
+     * @return this instance
+     */
+    public function settransparencyCodeList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['transparencyCodeList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear transparencyCodeList.
+     */
+    public function unsettransparencyCodeList()
+    {
+        $this->_fields['transparencyCodeList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if transparencyCodeList is set.
+     *
+     * @return true if transparencyCodeList is set.
+     */
+    public function isSettransparencyCodeList()
+    {
+                return !empty($this->_fields['transparencyCodeList']['FieldValue']);
+            }
+
+    /**
+     * Add values for transparencyCodeList, return this.
+     *
+     * @param transparencyCodeList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withtransparencyCodeList()
+    {
+        foreach (func_get_args() as $transparencyCodeList)
+        {
+            $this->_fields['transparencyCodeList']['FieldValue'][] = $transparencyCodeList;
+        }
         return $this;
     }
 

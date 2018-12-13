@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2018-01-31
- * Generated: Tue Jan 30 16:03:22 PST 2018
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 22:40:38 UTC 2018
  */
 
 /**
@@ -38,6 +38,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>County: string</li>
  * <li>District: string</li>
  * <li>StateOrRegion: string</li>
+ * <li>Municipality: string</li>
  * <li>PostalCode: string</li>
  * <li>CountryCode: string</li>
  * <li>Phone: string</li>
@@ -59,6 +60,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'County' => array('FieldValue' => null, 'FieldType' => 'string'),
     'District' => array('FieldValue' => null, 'FieldType' => 'string'),
     'StateOrRegion' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'Municipality' => array('FieldValue' => null, 'FieldType' => 'string'),
     'PostalCode' => array('FieldValue' => null, 'FieldType' => 'string'),
     'CountryCode' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Phone' => array('FieldValue' => null, 'FieldType' => 'string'),
@@ -432,6 +434,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withStateOrRegion($value)
     {
         $this->setStateOrRegion($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the Municipality property.
+     *
+     * @return String Municipality.
+     */
+    public function getMunicipality()
+    {
+        return $this->_fields['Municipality']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the Municipality property.
+     *
+     * @param string municipality
+     * @return this instance
+     */
+    public function setMunicipality($value)
+    {
+        $this->_fields['Municipality']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if Municipality is set.
+     *
+     * @return true if Municipality is set.
+     */
+    public function isSetMunicipality()
+    {
+                return !is_null($this->_fields['Municipality']['FieldValue']);
+            }
+
+    /**
+     * Set the value of Municipality, return this.
+     *
+     * @param municipality
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withMunicipality($value)
+    {
+        $this->setMunicipality($value);
         return $this;
     }
 
