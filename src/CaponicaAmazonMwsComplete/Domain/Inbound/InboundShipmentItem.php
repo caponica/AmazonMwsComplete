@@ -42,7 +42,7 @@ final class InboundShipmentItem implements Arrayable
         $this->condition       = $condition;
         $this->quantity        = $quantity;
         $this->quantityInCase  = $quantityInCase;
-        $this->prepDetailsList = $prepDetailsList;
+        $this->prepDetailsList = $prepDetailsList->toArray();
     }
 
     public function getSellerSku()

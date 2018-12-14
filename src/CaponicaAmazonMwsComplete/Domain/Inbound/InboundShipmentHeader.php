@@ -81,7 +81,7 @@ final class InboundShipmentHeader implements Arrayable
     {
         $header = [
             self::PARAM_SHIPMENT_NAME                     => $this->shipmentName,
-            self::PARAM_SHIP_FROM_ADDRESS                 => $this->fromAddress,
+            self::PARAM_SHIP_FROM_ADDRESS                 => $this->fromAddress->toArray(),
             self::PARAM_DESTINATION_FULFILLMENT_CENTER_ID => $this->destinationId,
             self::PARAM_LABEL_PREP_PREFERENCE             => $this->labelPreference,
             self::PARAM_ARE_CASES_REQUIRED                => $this->casesRequired,
