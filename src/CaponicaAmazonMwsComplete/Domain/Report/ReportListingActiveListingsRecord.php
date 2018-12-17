@@ -59,7 +59,15 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
 
     /** Alias to fit IdentifiableStockRecordInterface */
     public function getAsin() {
-        return $this->productId;
+        if (!empty($this->asin1)) {
+            return $this->asin1;
+        }
+        if ($this->productId) {
+            if (strlen($this->productId) === 10) {
+                return $this->productId;
+            }
+        }
+        return null;
     }
 
     public function isFulfilledByAmazon() {
