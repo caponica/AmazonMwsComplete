@@ -10,6 +10,7 @@ use CaponicaAmazonMwsComplete\Domain\Inbound\Address;
 use CaponicaAmazonMwsComplete\Domain\Inbound\AsinList;
 use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentHeader;
 use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentItemList;
+use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentPlanRequestItemList;
 use CaponicaAmazonMwsComplete\Domain\Inbound\SellerSkuList;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
@@ -142,11 +143,11 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
      * non-sortable) it may be necessary to create multiple shipments (one for each
      * of the shipment groups returned).
      *
-     * @param Address                 $shipFromAddress
-     * @param string                  $shipToCountryCode
-     * @param InboundShipmentItemList $itemList
-     * @param string|null             $shipToCountrySubdivisionCode
-     * @param string|null             $labelPrepPreference
+     * @param Address                            $shipFromAddress
+     * @param string                             $shipToCountryCode
+     * @param InboundShipmentPlanRequestItemList $itemList
+     * @param string|null                        $shipToCountrySubdivisionCode
+     * @param string|null                        $labelPrepPreference
      *
      * @throws Exception
      *
@@ -154,7 +155,7 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
      */
     public function callCreateInboundShipmentPlan(Address $shipFromAddress,
         $shipToCountryCode,
-        InboundShipmentItemList $itemList,
+        InboundShipmentPlanRequestItemList $itemList,
         $shipToCountrySubdivisionCode = null,
         $labelPrepPreference = null)
     {
