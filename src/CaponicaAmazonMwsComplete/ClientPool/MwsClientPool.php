@@ -96,7 +96,7 @@ class MwsClientPool {
      */
     public function getFbaInboundClientPack() {
         if(empty($this->fbaInboundClientPack)) {
-            $this->fbaInboundClientPack = new FbaInboundClientPack($this->config);
+            $this->fbaInboundClientPack = new FbaInboundClientPack($this->config, $this->logger);
         }
         return $this->fbaInboundClientPack;
     }

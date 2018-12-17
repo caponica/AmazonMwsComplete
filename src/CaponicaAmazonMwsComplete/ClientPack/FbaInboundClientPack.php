@@ -13,6 +13,7 @@ use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentItemList;
 use CaponicaAmazonMwsComplete\Domain\Inbound\SellerSkuList;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
 use DateTime;
 use Exception;
 use FBAInboundServiceMWS_Model_CreateInboundShipmentPlanResponse;
@@ -22,6 +23,7 @@ use FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextTokenResponse;
 use FBAInboundServiceMWS_Model_ListInboundShipmentsByNextTokenResponse;
 use FBAInboundServiceMWS_Model_ListInboundShipmentsResponse;
 use FBAInboundServiceMWS_Model_UpdateInboundShipmentResponse;
+use Psr\Log\LoggerInterface;
 
 class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClientPackInterface
 {
@@ -80,17 +82,20 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
      */
     protected $authToken = null;
 
-
     /**
      * @var ThrottledRequestManager
      */
     private $throttleManager;
 
-    public function __construct(MwsClientPoolConfig $poolConfig)
+    /** @var LoggerInterface */
+    protected $logger;
+
+    public function __construct(MwsClientPoolConfig $poolConfig, LoggerInterface $logger = null)
     {
         $this->marketplaceId = $poolConfig->getMarketplaceId();
         $this->sellerId      = $poolConfig->getSellerId();
         $this->authToken     = $poolConfig->getAuthToken();
+        $this->logger        = $logger;
 
         $this->initThrottleManager();
 
@@ -418,5 +423,24 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
         $requestArray = $this->signArray($requestArray);
 
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_INBOUND_GUIDANCE_FOR_ASIN, $requestArray);
+    }
+
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed  $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return void
+     */
+    protected function logMessage($message, $level, $context = [])
+    {
+        if ($this->logger) {
+            // Use the internal logger for logging.
+            $this->logger->log($level, $message, $context);
+        } else {
+            LoggerService::logMessage($message, $level, $context);
+        }
     }
 }
