@@ -12,6 +12,7 @@ use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentHeader;
 use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentItemList;
 use CaponicaAmazonMwsComplete\Domain\Inbound\InboundShipmentPlanRequestItemList;
 use CaponicaAmazonMwsComplete\Domain\Inbound\SellerSkuList;
+use CaponicaAmazonMwsComplete\Domain\Inbound\TransportDetailInput;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Service\LoggerService;
@@ -51,6 +52,9 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
     const PARAM_SELLER_SKU_LIST = 'SellerSKUList';
     const PARAM_ASIN_LIST = 'ASINList';
     const PARAM_NEXT_TOKEN = 'NextToken';
+    const PARAM_IS_PARTNERED = 'IsPartnered';
+    const PARAM_SHIPMENT_TYPE = 'ShipmentType';
+    const PARAM_TRANSPORT_DETAILS = 'TransportDetails';
 
     const METHOD_CREATE_INBOUND_SHIPMENT_PLAN = 'createInboundShipmentPlan';
     const METHOD_CREATE_INBOUND_SHIPMENT = 'createInboundShipment';
@@ -61,6 +65,8 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
     const METHOD_LIST_INBOUND_SHIPMENT_ITEMS_BY_NEXT_TOKEN = 'listInboundShipmentItemsByNextToken';
     const METHOD_GET_INBOUND_GUIDANCE_FOR_SKU = 'getInboundGuidanceForSKU';
     const METHOD_GET_INBOUND_GUIDANCE_FOR_ASIN = 'getInboundGuidanceForASIN';
+    const METHOD_PUT_TRANSPORT_CONTENT = 'putTransportContent';
+    const METHOD_GET_TRANSPORT_CONTENT = 'getTransportContent';
 
     /**
      * The MWS MarketplaceID string used in API connections.
@@ -424,6 +430,48 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
         $requestArray = $this->signArray($requestArray);
 
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_INBOUND_GUIDANCE_FOR_ASIN, $requestArray);
+    }
+
+    /**
+     * @param string               $shipmentId
+     * @param bool                 $isPartnered
+     * @param string               $shipmentType
+     * @param TransportDetailInput $transportDetailInput
+     *
+     * @throws Exception
+     *
+     * @return \FBAInboundServiceMWS_Model_PutTransportContentResponse
+     */
+    public function callPutTransportContent($shipmentId, $isPartnered, $shipmentType, TransportDetailInput $transportDetailInput)
+    {
+        $requestArray = [
+            self::PARAM_SHIPMENT_ID       => $shipmentId,
+            self::PARAM_IS_PARTNERED      => $isPartnered,
+            self::PARAM_SHIPMENT_TYPE     => $shipmentType,
+            self::PARAM_TRANSPORT_DETAILS => $transportDetailInput->toArray(),
+        ];
+
+        $requestArray = $this->signArray($requestArray);
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_PUT_TRANSPORT_CONTENT, $requestArray);
+    }
+
+    /**
+     * @param string $shipmentId
+     *
+     * @throws Exception
+     *
+     * @return \FBAInboundServiceMWS_Model_GetTransportContentResponse
+     */
+    public function callGetTransportContent($shipmentId)
+    {
+        $requestArray = [
+            self::PARAM_SHIPMENT_ID       => $shipmentId
+        ];
+
+        $requestArray = $this->signArray($requestArray);
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_TRANSPORT_CONTENT, $requestArray);
     }
 
     /**
