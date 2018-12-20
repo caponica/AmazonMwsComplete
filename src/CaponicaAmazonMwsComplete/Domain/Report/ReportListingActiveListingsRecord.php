@@ -62,10 +62,8 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         if (!empty($this->asin1)) {
             return $this->asin1;
         }
-        if ($this->productId) {
-            if (strlen($this->productId) === 10) {
-                return $this->productId;
-            }
+        if ($this->productIdType===self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
+            return $this->productId;
         }
         return null;
     }
