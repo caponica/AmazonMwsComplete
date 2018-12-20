@@ -73,19 +73,19 @@ class TransportDetailInput implements Arrayable
         $data = [];
 
         if ($this->partneredSmallParcelData instanceof PartneredSmallParcelDataInput) {
-            $data[self::PARAM_PARTNERED_SMALL_PARCEL_DATA] = $this->partneredSmallParcelData;
+            $data[self::PARAM_PARTNERED_SMALL_PARCEL_DATA] = $this->partneredSmallParcelData->toArray();
         }
 
         if ($this->nonPartneredSmallParcelData instanceof NonPartneredSmallParcelDataInput) {
-            $data[self::PARAM_NON_PARTNERED_SMALL_PARCEL_DATA] = $this->nonPartneredSmallParcelData;
+            $data[self::PARAM_NON_PARTNERED_SMALL_PARCEL_DATA] = $this->nonPartneredSmallParcelData->toArray();
         }
 
         if ($this->partneredLtlData instanceof PartneredLtlDataInput) {
-            $data[self::PARAM_PARTNERED_LTL_DATA] = $this->partneredLtlData;
+            $data[self::PARAM_PARTNERED_LTL_DATA] = $this->partneredLtlData->toArray();
         }
 
         if ($this->nonPartneredLtlData instanceof NonPartneredLtlDataInput) {
-            $data[self::PARAM_NON_PARTNERED_LTL_DATA] = $this->nonPartneredLtlData;
+            $data[self::PARAM_NON_PARTNERED_LTL_DATA] = $this->nonPartneredLtlData->toArray();
         }
 
         return $data;
