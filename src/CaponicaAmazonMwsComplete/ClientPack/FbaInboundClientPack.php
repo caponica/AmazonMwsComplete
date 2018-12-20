@@ -130,6 +130,8 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
             self::METHOD_LIST_INBOUND_SHIPMENT_ITEMS_BY_NEXT_TOKEN => [null, null, null, self::METHOD_LIST_INBOUND_SHIPMENT_ITEMS],
             self::METHOD_GET_INBOUND_GUIDANCE_FOR_SKU              => [200, 200],
             self::METHOD_GET_INBOUND_GUIDANCE_FOR_ASIN             => [200, 200],
+            self::METHOD_PUT_TRANSPORT_CONTENT                     => [30, 2],
+            self::METHOD_GET_TRANSPORT_CONTENT                     => [30, 2],
         ]);
     }
 
