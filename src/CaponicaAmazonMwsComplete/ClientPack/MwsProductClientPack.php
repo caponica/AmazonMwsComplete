@@ -555,6 +555,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $lolObjectsForThisAsin = [];
             /** @var \MarketplaceWebServiceProducts_Model_Product $lolProduct */
             $lolProduct = $lolResult->getProduct();
+            if (empty($lolProduct)) {
+                $this->logMessage("No Product found in LOL Result:", LoggerService::ERROR);
+                $this->logMessage(print_r($lolResult, true), LoggerService::DEBUG);
+                return null;
+            }
             $lolProductAsin = $lolProduct->getIdentifiers()->getMarketplaceASIN()->getASIN();
             /** @var \MarketplaceWebServiceProducts_Model_LowestOfferListingList $lolList */
             $lolList = $lolProduct->getLowestOfferListings();
