@@ -18,6 +18,9 @@
     },
 
     "autoload": {
-        "psr-0": { "CaponicaAmazonMwsComplete\\": "src/" }
+        "psr-0": {
+            "CaponicaAmazonMwsComplete\\": "src/",
+            "": "src/AmazonPhpClientLibrary/"
+        }
     }
 }
