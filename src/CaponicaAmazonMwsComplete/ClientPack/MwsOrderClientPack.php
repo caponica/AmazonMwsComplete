@@ -4,10 +4,16 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\AmazonClient\MwsOrderClient;
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 
 class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPackInterface {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
+
+    const SERVICE_NAME = 'Orders';
+
     const PARAM_AMAZON_ORDER_IDS                = 'AmazonOrderId';
     const PARAM_CREATED_AFTER                   = 'CreatedAfter';
     const PARAM_CREATED_BEFORE                  = 'CreatedBefore';
@@ -64,19 +70,6 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             $poolConfig->getApplicationVersion(),
             $poolConfig->getConfigForOrder($this->getServiceUrlSuffix())
         );
-    }
-
-    private function getServiceUrlSuffix() {
-        return '/Orders/' . self::SERVICE_VERSION;
-    }
-
-    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
-    private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
     }
 
     // ##################################################

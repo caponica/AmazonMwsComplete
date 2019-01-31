@@ -4,12 +4,18 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\FbaOutboundClient;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Outbound\Address;
 use CaponicaAmazonMwsComplete\Domain\Outbound\CreateFulfillmentOrderItem;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 
 class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareClientPackInterface {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
+
+    const SERVICE_NAME = 'FulfillmentOutboundShipment';
+
     const PARAM_MARKETPLACE_ID                          = 'MarketplaceId';
     const PARAM_MERCHANT                                = 'SellerId';
     const PARAM_SELLER_ID                               = 'SellerId';   // Alias for PARAM_MERCHANT
@@ -58,19 +64,6 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
         );
     }
 
-    private function getServiceUrlSuffix() {
-        return '/FulfillmentOutboundShipment/' . self::SERVICE_VERSION;
-    }
-
-    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
-    private function signArray($requestArray = []) {
-        $requestArray[self::PARAM_SELLER_ID] = $this->sellerId;
-        if ($this->authToken) {
-            $requestArray[self::PARAM_MWS_AUTH_TOKEN] = $this->authToken;
-        }
-        return $requestArray;
-    }
-
     // ##################################################
     // #      basic wrappers for API calls go here      #
     // ##################################################
@@ -79,7 +72,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             self::PARAM_SELLER_ORDER_ID     => $sellerFulfillmentOrderId,
         ];
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_ORDER, $requestArray);
     }
 
@@ -130,7 +123,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             $requestArray[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailListWithMemberKey;
         }
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_CREATE_ORDER, $requestArray);
     }
 
@@ -168,7 +161,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
             $requestArray[self::PARAM_INCLUDE_SCHEDULED_PREVIEW] = $includeScheduledDelivery;
         }
 
-        $this->signArray($requestArray);
+        $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_PREVIEW, $requestArray);
     }
 

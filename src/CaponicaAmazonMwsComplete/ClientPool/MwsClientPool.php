@@ -9,6 +9,8 @@
 
 namespace CaponicaAmazonMwsComplete\ClientPool;
 
+use CaponicaAmazonMwsComplete\ClientPack\FbaInboundClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\FbaInventoryClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
@@ -33,9 +35,17 @@ class MwsClientPool {
      */
     protected $orderClientPack;
     /**
+     * @var FbaInventoryClientPack
+     */
+    protected $fbaInventoryClientPack;
+    /**
      * @var FbaOutboundClientPack
      */
     protected $fbaOutboundClientPack;
+    /**
+     * @var FbaInboundClientPack
+     */
+    protected $fbaInboundClientPack;
     /**
      * @var MwsProductClientPack
      */
@@ -62,6 +72,16 @@ class MwsClientPool {
     }
 
     /**
+     * @return FbaInventoryClientPack
+     */
+    public function getFbaInventoryClientPack() {
+        if(empty($this->fbaInventoryClientPack)) {
+            $this->fbaInventoryClientPack = new FbaInventoryClientPack($this->config);
+        }
+        return $this->fbaInventoryClientPack;
+    }
+
+    /**
      * @return FbaOutboundClientPack
      */
     public function getFbaOutboundClientPack() {
@@ -69,6 +89,16 @@ class MwsClientPool {
             $this->fbaOutboundClientPack = new FbaOutboundClientPack($this->config);
         }
         return $this->fbaOutboundClientPack;
+    }
+
+    /**
+     * @return FbaInboundClientPack
+     */
+    public function getFbaInboundClientPack() {
+        if(empty($this->fbaInboundClientPack)) {
+            $this->fbaInboundClientPack = new FbaInboundClientPack($this->config, $this->logger);
+        }
+        return $this->fbaInboundClientPack;
     }
 
     /**
