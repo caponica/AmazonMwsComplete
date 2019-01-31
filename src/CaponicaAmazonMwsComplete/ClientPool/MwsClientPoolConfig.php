@@ -208,7 +208,7 @@ class MwsClientPoolConfig {
             self::SITE_INDIA     => null,
             self::SITE_JAPAN     => null,
             self::SITE_AUSTRALIA => null,
-            self::SITE_TURKEY    => null,
+            self::SITE_TURKEY    => 'A33AVAJ2PDY3EV',
         ];
     }
 
