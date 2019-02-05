@@ -10,7 +10,7 @@ final class TransportContentWeight implements Arrayable
     const VALUE_UNIT_KILOS = 'kilograms';
 
     const PARAM_UNIT = 'Unit';
-    const PARAM_WEIGHT = 'Weight';
+    const PARAM_VALUE = 'Value';
 
     /**
      * @var string
@@ -20,18 +20,18 @@ final class TransportContentWeight implements Arrayable
     /**
      * @var int
      */
-    private $weight;
+    private $value;
 
     /**
      * TransportContentWeight constructor.
      *
      * @param string $unit One of 'pounds' or 'kilograms'
-     * @param int    $weight
+     * @param int    $value
      */
-    public function __construct($unit, $weight)
+    public function __construct($unit, $value)
     {
         $this->unit   = $unit;
-        $this->weight = $weight;
+        $this->value = $value;
     }
 
     /**
@@ -42,8 +42,8 @@ final class TransportContentWeight implements Arrayable
     public function toArray()
     {
         return [
-            self::PARAM_UNIT   => $this->unit,
-            self::PARAM_WEIGHT => $this->weight,
+            self::PARAM_UNIT  => $this->unit,
+            self::PARAM_VALUE => $this->value,
         ];
     }
 }
