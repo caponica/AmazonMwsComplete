@@ -27,6 +27,11 @@ final class PotentialMatch {
     private $weightPounds;
     private $smallImage;
     private $isAdultProduct;
+    private $isVariation;
+    private $isParent;
+    private $isChild;
+    private $parentAsin;
+
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
@@ -60,7 +65,7 @@ final class PotentialMatch {
             }
         }
 
-        // The parser cannot calculate attribute sets, so we need to do it manually:
+        //The parser cannot calculate attribute sets, so we need to do it manually:
         $attributes = null;
 
         $attributesAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
@@ -82,6 +87,31 @@ final class PotentialMatch {
                 }
             }
         }
+
+        // lets extract relationships
+
+        $relationships = null;
+
+        $relationshipsAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+
+        if (false!==$relationshipsAppearAfter) {
+            $relationshipsOffset = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START, $relationshipsAppearAfter);
+            if (false !== $relationshipsOffset) {
+                $relationshipsOffsetEnd = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END, $relationshipsOffset);
+                if (false !== $relationshipsOffset) {
+                    $processedXml = substr(
+                        $rawXml,
+                        $relationshipsOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
+                        $relationshipsOffsetEnd - $relationshipsOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
+                    );
+                    $processedXml = str_replace('ns2:', '', $processedXml);
+                    $relationships = new \SimpleXMLElement(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START . $processedXml . MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END);
+
+                    $relationshipsOffset = $relationshipsOffsetEnd;
+                }
+            }
+        }
+
         if (!empty($attributes)) {
 
             if (!empty($attributes->ListPrice->Amount)) {
@@ -186,6 +216,20 @@ final class PotentialMatch {
                 $this->setFieldIfBasicValueExists($elementgroups, $xmlKey);
             }
         }
+
+        if (!empty($relationships)) {
+            $this->isVariation = true;
+
+            if (isset($relationships->VariationChild)) {
+                $this->isParent = true;
+            }
+            if (isset($relationships->VariationParent)) {
+                $this->isChild = true;
+                $this->parentAsin = $relationships->VariationParent->Identifiers->MarketplaceASIN->ASIN->__toString();
+            }
+
+        }
+
         if (!empty($potentialMatch)) {
             $potentialMatches[] = $potentialMatch;
         }
@@ -547,5 +591,32 @@ final class PotentialMatch {
     {
         return $this->isAdultProduct;
     }
-    
+    /**
+     * @return mixed
+     */
+    public function getIsVariation()
+    {
+        return $this->isVariation;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsParent()
+    {
+        return $this->isParent;
+    }    
+    /**
+     * @return mixed
+     */
+    public function getIsChild()
+    {
+        return $this->isChild;
+    }     
+    /**
+     * @return mixed
+     */
+    public function getParentAsin()
+    {
+        return $this->parentAsin;
+    }         
 }

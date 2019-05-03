@@ -13,6 +13,9 @@ use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
 
 class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClientPackInterface {
+    const RELATIONSHIPS_SET_MARKER_START    = '<Relationships>';
+    const RELATIONSHIPS_SET_MARKER_END      = '</Relationships>';
+
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
 
