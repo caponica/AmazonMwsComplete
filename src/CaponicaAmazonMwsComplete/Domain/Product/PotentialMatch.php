@@ -31,6 +31,7 @@ final class PotentialMatch {
     private $isParent;
     private $isChild;
     private $parentAsin;
+    private $childrenCount;
 
 
     /**
@@ -222,6 +223,7 @@ final class PotentialMatch {
 
             if (isset($relationships->VariationChild)) {
                 $this->isParent = true;
+                $this->childrenCount = count($relationships->VariationChild);
             }
             if (isset($relationships->VariationParent)) {
                 $this->isChild = true;
@@ -619,4 +621,11 @@ final class PotentialMatch {
     {
         return $this->parentAsin;
     }         
+    /**
+     * @return mixed
+     */
+    public function getChildrenCount()
+    {
+        return $this->childrenCount;
+    }        
 }
