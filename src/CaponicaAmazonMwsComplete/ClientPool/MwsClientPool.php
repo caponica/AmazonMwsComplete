@@ -9,12 +9,14 @@
 
 namespace CaponicaAmazonMwsComplete\ClientPool;
 
+use CaponicaAmazonMwsComplete\ClientPack\FbaInboundClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\FbaInventoryClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
-use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
-use CaponicaAmazonMwsComplete\ClientPack\FbaOutboundClientPack;
-use CaponicaAmazonMwsComplete\ClientPack\MwsMerchantClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use Psr\Log\LoggerInterface;
 
 class MwsClientPool {
     // $channelId can be used to stash an id that your code uses to reference this Client Pool's Amazon site
@@ -29,27 +31,74 @@ class MwsClientPool {
      */
     protected $financeClientPack;
     /**
-     * @var MwsProductClientPack
-     */
-    protected $productClientPack;
-    /**
      * @var MwsOrderClientPack
      */
-    protected $orderClientPack;  
+    protected $orderClientPack;
+    /**
+     * @var FbaInventoryClientPack
+     */
+    protected $fbaInventoryClientPack;
     /**
      * @var FbaOutboundClientPack
      */
     protected $fbaOutboundClientPack;
-
     /**
-     * @var MwsMerchantClientPack
+     * @var FbaInboundClientPack
      */
-    protected $MwsMerchantClientPack;
+    protected $fbaInboundClientPack;
+    /**
+     * @var MwsProductClientPack
+     */
+    protected $productClientPack;
 
+    /** @var MwsClientPoolConfig */
     protected $config;
 
-    public function setConfig($config = []) {
-        $this->config = new MwsClientPoolConfig($config);
+    /** @var LoggerInterface */
+    protected $logger;
+
+    /**
+     * MwsClientPool constructor.
+     *
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
+
+    public function setConfig($config=[], $siteCode=null) {
+        $this->config = new MwsClientPoolConfig($config, $siteCode);
+    }
+
+    /**
+     * @return FbaInventoryClientPack
+     */
+    public function getFbaInventoryClientPack() {
+        if(empty($this->fbaInventoryClientPack)) {
+            $this->fbaInventoryClientPack = new FbaInventoryClientPack($this->config);
+        }
+        return $this->fbaInventoryClientPack;
+    }
+
+    /**
+     * @return FbaOutboundClientPack
+     */
+    public function getFbaOutboundClientPack() {
+        if(empty($this->fbaOutboundClientPack)) {
+            $this->fbaOutboundClientPack = new FbaOutboundClientPack($this->config);
+        }
+        return $this->fbaOutboundClientPack;
+    }
+
+    /**
+     * @return FbaInboundClientPack
+     */
+    public function getFbaInboundClientPack() {
+        if(empty($this->fbaInboundClientPack)) {
+            $this->fbaInboundClientPack = new FbaInboundClientPack($this->config, $this->logger);
+        }
+        return $this->fbaInboundClientPack;
     }
 
     /**
@@ -63,11 +112,21 @@ class MwsClientPool {
     }
 
     /**
+     * @return MwsOrderClientPack
+     */
+    public function getOrderClientPack() {
+        if(empty($this->orderClientPack)) {
+            $this->orderClientPack = new MwsOrderClientPack($this->config);
+        }
+        return $this->orderClientPack;
+    }
+
+    /**
      * @return MwsProductClientPack
      */
     public function getProductClientPack() {
         if(empty($this->productClientPack)) {
-            $this->productClientPack = new MwsProductClientPack($this->config);
+            $this->productClientPack = new MwsProductClientPack($this->config, $this->logger);
         }
         return $this->productClientPack;
     }
@@ -82,46 +141,19 @@ class MwsClientPool {
         return $this->feedAndReportClientPack;
     }
 
-    /**
-     * @return MwsOrderClientPack
-     */
-    public function getOrderClientPack() {
-        if(empty($this->orderClientPack)) {
-            $this->orderClientPack = new MwsOrderClientPack($this->config);
-        }
-        return $this->orderClientPack;
-    }
-
-    /**
-     * @return FbaOutboundClientPack
-     */
-    public function getFbaOutboundClientPack() {
-        if(empty($this->fbaOutboundClientPack)) {
-            $this->fbaOutboundClientPack = new FbaOutboundClientPack($this->config);
-        }
-        return $this->fbaOutboundClientPack;
-    }
-
-    /**
-     * @return MwsMerchantClientPack
-     */
-    public function getMerchantClientPack() {
-        if(empty($this->MwsMerchantClientPack)) {
-            $this->MwsMerchantClientPack = new MwsMerchantClientPack($this->config);
-        }
-        return $this->MwsMerchantClientPack;
-    }
-
     public function setChannelId($value) {
         return $this->channelId = $value;
     }
     public function getChannelId() {
         return $this->channelId;
     }
-//    public function getMarketplaceId() {
-//        return $this->config....marketplaceId;
-//    }
-//    public function getSellerId() {
-//        return $this->config...sellerId;
-//    }
+    public function getAmazonSite() {
+        return $this->config->getAmazonSite();
+    }
+    public function getMarketplaceId() {
+        return $this->config->getMarketplaceId();
+    }
+    public function getSellerId() {
+        return $this->config->getSellerId();
+    }
 }
