@@ -105,4 +105,17 @@ class MwsOrderClientPack extends MwsOrderClient {
 
         return $this->listOrderItems($parameters);
     }
+    public function callGetOrder($amazonOrderId) {
+        $parameters = [
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_SELLER_ID => $this->sellerId,
+            self::PARAM_MERCHANT  => $this->sellerId,
+            self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
+            self::PARAM_AMAZON_ORDER_ID => $amazonOrderId,
+            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
+        ];
+
+        return $this->getOrder($parameters);
+    }
+
 }
