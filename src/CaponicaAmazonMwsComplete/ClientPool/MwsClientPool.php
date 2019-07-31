@@ -16,6 +16,7 @@ use CaponicaAmazonMwsComplete\ClientPack\MwsFeedAndReportClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsFinanceClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsOrderClientPack;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use CaponicaAmazonMwsComplete\ClientPack\MwsMerchantClientPack;
 use Psr\Log\LoggerInterface;
 
 class MwsClientPool {
@@ -46,6 +47,10 @@ class MwsClientPool {
      * @var FbaInboundClientPack
      */
     protected $fbaInboundClientPack;
+    /**
+     * @var MwsMerchantClientPack
+     */
+    protected $MwsMerchantClientPack;    
     /**
      * @var MwsProductClientPack
      */
@@ -79,6 +84,16 @@ class MwsClientPool {
             $this->fbaInventoryClientPack = new FbaInventoryClientPack($this->config);
         }
         return $this->fbaInventoryClientPack;
+    }
+    
+    /**
+     * @return MwsMerchantClientPack
+     */
+    public function getMerchantClientPack() {
+        if(empty($this->MwsMerchantClientPack)) {
+            $this->MwsMerchantClientPack = new MwsMerchantClientPack($this->config);
+        }
+        return $this->MwsMerchantClientPack;
     }
 
     /**

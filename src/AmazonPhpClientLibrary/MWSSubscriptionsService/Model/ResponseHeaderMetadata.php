@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Subscriptions Service
  * @version  2013-07-01
- * Library Version: 2015-06-18
- * Generated: Thu Jun 18 19:27:20 GMT 2015
+ * Library Version: 2013-11-01
+ * Generated: Tue Oct 02 08:13:42 PDT 2018
  */
 
 class MWSSubscriptionsService_Model_ResponseHeaderMetadata {
@@ -29,12 +29,12 @@ class MWSSubscriptionsService_Model_ResponseHeaderMetadata {
   private $metadata = array();
 
   public function __construct($requestId = null, $responseContext = null, $timestamp = null,
-                              $quotaMax = null, $quotaMax = null, $quotaResetsAt = null) {
+                              $quotaMax = null, $quotaRemaining = null, $quotaResetsAt = null) {
     $this->metadata[self::REQUEST_ID] = $requestId;
     $this->metadata[self::RESPONSE_CONTEXT] = $responseContext;
     $this->metadata[self::TIMESTAMP] = $timestamp;
     $this->metadata[self::QUOTA_MAX] = $quotaMax;
-    $this->metadata[self::QUOTA_REMAINING] = $quotaMax;
+    $this->metadata[self::QUOTA_REMAINING] = $quotaRemaining;
     $this->metadata[self::QUOTA_RESETS_AT] = $quotaResetsAt;
   }
 

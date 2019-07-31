@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Subscriptions Service
  * @version  2013-07-01
- * Library Version: 2015-06-18
- * Generated: Thu Jun 18 19:27:20 GMT 2015
+ * Library Version: 2013-11-01
+ * Generated: Tue Oct 02 08:13:42 PDT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MWSSubscriptionsService_Client implements MWSSubscriptionsService_Interfac
 {
 
     const SERVICE_VERSION = '2013-07-01';
-    const MWS_CLIENT_VERSION = '2015-06-18';
+    const MWS_CLIENT_VERSION = '2013-11-01';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -599,9 +599,13 @@ class MWSSubscriptionsService_Client implements MWSSubscriptionsService_Interfac
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (PHP_VERSION_ID < 50600) {
+            iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        } else {
+            ini_set('default_charset', 'UTF-8');
+        }
 
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;

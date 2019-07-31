@@ -4,53 +4,56 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\FbaOutboundClient;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
+use CaponicaAmazonMwsComplete\Domain\Outbound\Address;
+use CaponicaAmazonMwsComplete\Domain\Outbound\CreateFulfillmentOrderItem;
+use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
+use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 
+class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareClientPackInterface {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
 
-class FbaOutboundClientPack extends FbaOutboundClient {
-    const PARAM_SELLER_ID                               = 'SellerId';
-    const PARAM_MWS_AUTH_TOKEN                          = 'MWSAuthToken';
-    const PARAM_SELLER_FULFILLMENT_ORDER_ID             = 'SellerFulfillmentOrderId';
-    const PARAM_DISPLAYABLE_ORDER_ID                    = 'DisplayableOrderId';
-    const PARAM_DISPLAYABLE_ORDER_DATETIME              = 'DisplayableOrderDateTime';
-    const PARAM_DISPLAYABLE_ORDER_COMMENT               = 'DisplayableOrderComment';
-    const PARAM_SHIPPING_SPEED_CATEGORY                 = 'ShippingSpeedCategory';
-    const PARAM_SHIPPING_SPEED_STANDARD                 = 'Standard';
-    const PARAM_SHIPPING_SPEED_EXPEDITED                = 'Expedited';
-    const PARAM_SHIPPING_SPEED_PRIORITY                 = 'Priority';
-    const PARAM_DESTINATION_ADDRESS                     = 'DestinationAddress';
-    const PARAM_ADDRESS                                 = 'Address';
-    const PARAM_DESTINATION_ADDRESS_NAME                = 'Name';
-    const PARAM_DESTINATION_ADDRESS_LINE1               = 'Line1';
-    const PARAM_DESTINATION_ADDRESS_LINE2               = 'Line2';
-    const PARAM_DESTINATION_ADDRESS_LINE3               = 'Line3';
-    const PARAM_DESTINATION_ADDRESS_STATE_OR_PROVINCE_CODE = 'StateOrProvinceCode';
-    const PARAM_DESTINATION_ADDRESS_POSTAL_CODE         = 'PostalCode';
-    const PARAM_DESTINATION_ADDRESS_CITY                = 'City';
-    const PARAM_DESTINATION_ADDRESS_COUNTRY_CODE        = 'CountryCode';
-    const PARAM_NOTIFICATION_EMAIL_LIST                 = 'NotificationEmailList';
+    const SERVICE_NAME = 'FulfillmentOutboundShipment';
 
+    const PARAM_MARKETPLACE_ID                          = 'MarketplaceId';
+    const PARAM_MERCHANT                                = 'SellerId';
+    const PARAM_SELLER_ID                               = 'SellerId';   // Alias for PARAM_MERCHANT
     const PARAM_ITEMS                                   = 'Items';
-    const PARAM_ITEMS_SELLER_SKU                        = 'SellerSKU';
-    const PARAM_ITEMS_SELLER_FULFILLMENT_ORDER_ITEM_ID  = 'SellerFulfillmentOrderItemId';
-    const PARAM_ITEMS_QUANTITY                          = 'Quantity';
-    const PARAM_ITEMS_GIFT_MESSAGE                      = 'GiftMessage';
-    const PARAM_ITEMS_DISPLAYABLE_COMMENT               = 'DisplayableComment';
-    const PARAM_ITEMS_FULFILLMENT_NETWORK_SKU           = 'FulfillmentNetworkSKU';
-    const PARAM_ITEMS_PER_UNIT_DECLARED_VALUE           = 'PerUnitDeclaredValue';
-    const PARAM_ITEMS_PER_UNIT_PRICE                    = 'PerUnitPrice';
-    const PARAM_ITEMS_PER_UNIT_TAX                      = 'PerUnitTax';
+    const PARAM_INCLUDE_COD_PREVIEW                     = 'IncludeCODFulfillmentPreview';
+    const PARAM_INCLUDE_SCHEDULED_PREVIEW               = 'IncludeDeliveryWindows';
+    const PARAM_DESTINATION_ADDRESS                     = 'DestinationAddress';
+    const PARAM_DISPLAYABLE_ORDER_COMMENT               = 'DisplayableOrderComment';
+    const PARAM_DISPLAYABLE_ORDER_DATETIME              = 'DisplayableOrderDateTime';
+    const PARAM_DISPLAYABLE_ORDER_ID                    = 'DisplayableOrderId';
+    const PARAM_MWS_AUTH_TOKEN                          = 'MWSAuthToken';
+    const PARAM_NOTIFICATION_EMAIL_LIST                 = 'NotificationEmailList';
+    const PARAM_SHIPPING_SPEED_CATEGORIES               = 'ShippingSpeedCategories';
+    const PARAM_SHIPPING_SPEED_CATEGORY                 = 'ShippingSpeedCategory';
+    const PARAM_SELLER_ORDER_ID                         = 'SellerFulfillmentOrderId';
 
+    const SHIPPING_SPEED_STANDARD                       = 'Standard';
+    const SHIPPING_SPEED_EXPEDITED                      = 'Expedited';
+    const SHIPPING_SPEED_PRIORITY                       = 'Priority';
+    const SHIPPING_SPEED_SCHEDULED                      = 'ScheduledDelivery';
+
+    const METHOD_CREATE_ORDER               = 'createFulfillmentOrder';
+    const METHOD_GET_FULFILLMENT_ORDER      = 'getFulfillmentOrder';
+    const METHOD_GET_FULFILLMENT_PREVIEW    = 'getFulfillmentPreview';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
     /** @var string $sellerId           The MWS SellerID string used in API connections */
     protected $sellerId;
+    /** @var string $authToken          MWSAuthToken, only needed when working with (3rd party) client accounts which provide an Auth Token */
+    protected $authToken = null;
 
     public function __construct(MwsClientPoolConfig $poolConfig) {
-
-        $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
+        $this->marketplaceId    = $poolConfig->getMarketplaceId();
         $this->sellerId         = $poolConfig->getSellerId();
-        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
+        $this->authToken        = $poolConfig->getAuthToken();
+
+        $this->initThrottleManager();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -58,215 +61,126 @@ class FbaOutboundClientPack extends FbaOutboundClient {
             $poolConfig->getConfigForOrder($this->getServiceUrlSuffix()),
             $poolConfig->getApplicationName(),
             $poolConfig->getApplicationVersion()
-            
         );
     }
 
-    private function getServiceUrlSuffix() {
-        return '/FulfillmentOutboundShipment';
-    }
     // ##################################################
     // #      basic wrappers for API calls go here      #
-    // ##################################################    
-
+    // ##################################################
     public function callGetFulfillmentOrder($sellerFulfillmentOrderId) {
+        $requestArray = [
+            self::PARAM_SELLER_ORDER_ID     => $sellerFulfillmentOrderId,
+        ];
 
-        $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
-        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
-
-        if (!empty($sellerFulfillmentOrderId)) {
-            $parameters[self::PARAM_SELLER_FULFILLMENT_ORDER_ID] = $sellerFulfillmentOrderId;
-        }
-        
-        return $this->getFulfillmentOrder($parameters);
+        $requestArray = $this->signArray($requestArray);
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_ORDER, $requestArray);
     }
 
-    public function callCreateFulfillmentOrder($sellerFulfillmentOrderId, $displayableOrderId, $displayableOrderDatetime,$displayableOrderComment,$shippingSpeed,$destinationAddressName,$destinationAddressLine1,$destinationAddressLine2='',$destinationAddressLine3='',$destinationAddressCity,$destinationAddressStateCode,$destinationAddressPostalCode,$destinationAddressCountryCode,$notificationEmail, $items) {
+    /**
+     * @param string $sellerOrderId
+     * @param string $displayableOrderId
+     * @param \DateTime $displayableOrderDatetime
+     * @param string $displayableOrderComment
+     * @param string $shippingSpeed
+     * @param Address $destinationAddress
+     * @param CreateFulfillmentOrderItem[] $items
+     * @param null $notificationEmails
+     * @return mixed
+     */
+    public function callCreateFulfillmentOrder($sellerOrderId, $displayableOrderId
+        , \DateTime $displayableOrderDatetime, $displayableOrderComment, $shippingSpeed
+        , Address $destinationAddress, $items, $notificationEmails=null
+    ) {
+        $requestArray = [
+            self::PARAM_MARKETPLACE_ID              => $this->marketplaceId,
+            self::PARAM_SELLER_ORDER_ID             => $sellerOrderId,
+            self::PARAM_DISPLAYABLE_ORDER_ID        => $displayableOrderId,
+            self::PARAM_DISPLAYABLE_ORDER_DATETIME  => $displayableOrderDatetime->format('c'),
+            self::PARAM_DISPLAYABLE_ORDER_COMMENT   => $displayableOrderComment,
+            self::PARAM_SHIPPING_SPEED_CATEGORY     => $shippingSpeed,
+            self::PARAM_DESTINATION_ADDRESS         => $destinationAddress->getArray(),
+        ];
 
-        $address = [];
-        $itemsMember = [];
-        $notificationEmailMember = [];
+        $itemList = [];
+        foreach ($items as $item) {
+            $itemList[] = $item->getArray();
+        }
+        $itemListWithMemberKey = ['member'];
+        $itemListWithMemberKey['member'] = $itemList;
+        $requestArray[self::PARAM_ITEMS] = $itemListWithMemberKey;
 
-        if (!empty($items)) {
-            foreach ($items as $item) {
-
-                if (!empty($item['sellerSku'])) {
-                    $itemMember[self::PARAM_ITEMS_SELLER_SKU] = $item['sellerSku'];
+        if (!empty($notificationEmails)) {
+            $notificationEmailList = [];
+            if (is_array($notificationEmails)) {
+                foreach ($notificationEmails as $notificationEmail) {
+                    $notificationEmailList[] = $notificationEmail;
                 }
-                if (!empty($item['sellerFulfillmentOrderItemId'])) {
-                    $itemMember[self::PARAM_ITEMS_SELLER_FULFILLMENT_ORDER_ITEM_ID] = $item['sellerFulfillmentOrderItemId'];
-                }
-                if (!empty($item['quantity'])) {
-                    $itemMember[self::PARAM_ITEMS_QUANTITY] = $item['quantity'];
-                }
-                if (!empty($item['giftMessage'])) {
-                    $itemMember[self::PARAM_ITEMS_GIFT_MESSAGE] = $item['giftMessage'];
-                }
-                if (!empty($item['displayableComment'])) {
-                    $itemMember[self::PARAM_ITEMS_DISPLAYABLE_COMMENT] = $item['displayableComment'];
-                }
-                if (!empty($item['fulfillmentNetworkSku'])) {
-                    $itemMember[self::PARAM_ITEMS_FULFILLMENT_NETWORK_SKU] = $item['fulfillmentNetworkSku'];
-                }
-                if (!empty($item['perUnitDeclaredValue'])) {
-                    $itemMember[self::PARAM_ITEMS_PER_UNIT_DECLARED_VALUE] = ['CurrencyCode' => 'USD', 'Value' => $item['perUnitDeclaredValue']];
-                }
-                if (!empty($item['perUnitTax'])) {
-                    $itemMember[self::PARAM_ITEMS_PER_UNIT_TAX] = ['CurrencyCode' => 'USD', 'Value' => $item['perUnitTax']];
-                }
-
-                $itemsMember['member'][] = $itemMember;
-
+            } else {
+                $notificationEmailList = explode(';',$notificationEmails);
             }
-        }
-        if (!empty($notificationEmail)) {
-
-            foreach ($notificationEmail as $email) {
-                $notificationEmailMember['member'][] = $email;
-            }
-            
+            $notificationEmailListWithMemberKey = ['member'];
+            $notificationEmailListWithMemberKey['member'] = $notificationEmailList;
+            $requestArray[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailListWithMemberKey;
         }
 
-        if (!empty($destinationAddressName)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_NAME] = $destinationAddressName;
-        }
-        if (!empty($destinationAddressLine1)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE1] = $destinationAddressLine1;
-        }
-        if (!empty($destinationAddressLine2)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE2] = $destinationAddressLine2;
-        }
-        if (!empty($destinationAddressLine3)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE3] = $destinationAddressLine3;
-        }
-        if (!empty($destinationAddressCity)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_CITY] = $destinationAddressCity;
-        }
-        if (!empty($destinationAddressStateCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_STATE_OR_PROVINCE_CODE] = $destinationAddressStateCode;
-        }
-        if (!empty($destinationAddressPostalCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_POSTAL_CODE] = $destinationAddressPostalCode;
-        }
-        if (!empty($destinationAddressCountryCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_COUNTRY_CODE] = $destinationAddressCountryCode;
-        }
-
-        if (!empty($sellerFulfillmentOrderId)) {
-            $parameters[self::PARAM_SELLER_FULFILLMENT_ORDER_ID] = $sellerFulfillmentOrderId;
-        }
-        if (!empty($displayableOrderId)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_ID] = $displayableOrderId;
-        }
-        if (!empty($displayableOrderDatetime)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_DATETIME] = $displayableOrderDatetime;
-        }
-        if (!empty($displayableOrderComment)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_COMMENT] = $displayableOrderComment;
-        }
-        if (!empty($shippingSpeed)) {
-            $parameters[self::PARAM_SHIPPING_SPEED_CATEGORY] = $shippingSpeed;
-        }
-
-        $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
-        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
-        $parameters[self::PARAM_DESTINATION_ADDRESS] = $address;
-        $parameters[self::PARAM_NOTIFICATION_EMAIL_LIST] = $notificationEmailMember;
-        $parameters[self::PARAM_ITEMS] = $itemsMember;
-
-        return $this->createFulfillmentOrder($parameters);
-    }
-    public function callGetFulfillmentPreview($sellerFulfillmentOrderId, $displayableOrderId, $displayableOrderDatetime,$displayableOrderComment,$shippingSpeed,$destinationAddressName,$destinationAddressLine1,$destinationAddressLine2='',$destinationAddressLine3='',$destinationAddressCity,$destinationAddressStateCode,$destinationAddressPostalCode,$destinationAddressCountryCode,$items) {
-
-
-        $address = [];
-        $itemsMember = [];
-
-        if (!empty($items)) {
-            foreach ($items as $item) {
-
-                if (!empty($item['sellerSku'])) {
-                    $itemMember[self::PARAM_ITEMS_SELLER_SKU] = $item['sellerSku'];
-                }
-                if (!empty($item['sellerFulfillmentOrderItemId'])) {
-                    $itemMember[self::PARAM_ITEMS_SELLER_FULFILLMENT_ORDER_ITEM_ID] = $item['sellerFulfillmentOrderItemId'];
-                }
-                if (!empty($item['quantity'])) {
-                    $itemMember[self::PARAM_ITEMS_QUANTITY] = $item['quantity'];
-                }
-                if (!empty($item['giftMessage'])) {
-                    $itemMember[self::PARAM_ITEMS_GIFT_MESSAGE] = $item['giftMessage'];
-                }
-                if (!empty($item['displayableComment'])) {
-                    $itemMember[self::PARAM_ITEMS_DISPLAYABLE_COMMENT] = $item['displayableComment'];
-                }
-                if (!empty($item['fulfillmentNetworkSku'])) {
-                    $itemMember[self::PARAM_ITEMS_FULFILLMENT_NETWORK_SKU] = $item['fulfillmentNetworkSku'];
-                }
-                if (!empty($item['perUnitDeclaredValue'])) {
-                    $itemMember[self::PARAM_ITEMS_PER_UNIT_DECLARED_VALUE] = ['CurrencyCode' => 'USD', 'Value' => $item['perUnitDeclaredValue']];
-                }
-                if (!empty($item['perUnitTax'])) {
-                    $itemMember[self::PARAM_ITEMS_PER_UNIT_TAX] = ['CurrencyCode' => 'USD', 'Value' => $item['perUnitTax']];
-                }
-
-                $itemsMember['member'][] = $itemMember;
-
-            }
-        }
-
-
-
-
-        if (!empty($destinationAddressName)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_NAME] = $destinationAddressName;
-        }
-        if (!empty($destinationAddressLine1)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE1] = $destinationAddressLine1;
-        }
-        if (!empty($destinationAddressLine2)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE2] = $destinationAddressLine2;
-        }
-        if (!empty($destinationAddressLine3)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_LINE3] = $destinationAddressLine3;
-        }
-        if (!empty($destinationAddressCity)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_CITY] = $destinationAddressCity;
-        }
-        if (!empty($destinationAddressStateCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_STATE_OR_PROVINCE_CODE] = $destinationAddressStateCode;
-        }
-        if (!empty($destinationAddressPostalCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_POSTAL_CODE] = $destinationAddressPostalCode;
-        }
-        if (!empty($destinationAddressCountryCode)) {
-            $address[self::PARAM_DESTINATION_ADDRESS_COUNTRY_CODE] = $destinationAddressCountryCode;
-        }
-
-        if (!empty($sellerFulfillmentOrderId)) {
-            $parameters[self::PARAM_SELLER_FULFILLMENT_ORDER_ID] = $sellerFulfillmentOrderId;
-        }
-        if (!empty($displayableOrderId)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_ID] = $displayableOrderId;
-        }
-        if (!empty($displayableOrderDatetime)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_DATETIME] = $displayableOrderDatetime;
-        }
-        if (!empty($displayableOrderComment)) {
-            $parameters[self::PARAM_DISPLAYABLE_ORDER_COMMENT] = $displayableOrderComment;
-        }
-        if (!empty($shippingSpeed)) {
-            $parameters[self::PARAM_SHIPPING_SPEED_CATEGORY] = $shippingSpeed;
-        }
-
-        $parameters[self::PARAM_SELLER_ID] = $this->sellerId;
-        $parameters[self::PARAM_MWS_AUTH_TOKEN] = $this->mwsAuthToken;
-        $parameters[self::PARAM_ADDRESS] = $address;
-        $parameters[self::PARAM_ITEMS] = $itemsMember;
-
-        return $this->getFulfillmentPreview($parameters);
-
-
+        $requestArray = $this->signArray($requestArray);
+        return CaponicaClientPack::throttledCall($this, self::METHOD_CREATE_ORDER, $requestArray);
     }
 
+    /**
+     * @param Address $destinationAddress
+     * @param CreateFulfillmentOrderItem[] $items
+     * @param string $shippingSpeeds
+     * @param boolean $includeCOD
+     * @param boolean $includeScheduledDelivery
+     * @return mixed
+     */
+    public function callGetFulfillmentPreview(Address $destinationAddress, $items
+        , $shippingSpeeds=null, $includeCOD=null, $includeScheduledDelivery=null
+    ) {
+        $requestArray = [
+            self::PARAM_MARKETPLACE_ID              => $this->marketplaceId,
+            self::PARAM_DESTINATION_ADDRESS         => $destinationAddress->getArray(),
+        ];
+
+        $itemList = [];
+        foreach ($items as $item) {
+            $itemList[] = $item->getArray();
+        }
+        $itemListWithMemberKey = ['member'];
+        $itemListWithMemberKey['member'] = $itemList;
+        $requestArray[self::PARAM_ITEMS] = $itemListWithMemberKey;
+
+        if (!empty($shippingSpeeds)) {
+            $requestArray[self::PARAM_SHIPPING_SPEED_CATEGORIES] = $shippingSpeeds;
+        }
+        if (isset($includeCOD)) {
+            $requestArray[self::PARAM_INCLUDE_COD_PREVIEW] = $includeCOD;
+        }
+        if (isset($includeScheduledDelivery)) {
+            $requestArray[self::PARAM_INCLUDE_SCHEDULED_PREVIEW] = $includeScheduledDelivery;
+        }
+
+        $requestArray = $this->signArray($requestArray);
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_FULFILLMENT_PREVIEW, $requestArray);
+    }
+
+    // ###################################################
+    // # ThrottleAwareClientPackInterface implementation #
+    // ###################################################
+    private $throttleManager;
+
+    public function initThrottleManager() {
+        $this->throttleManager = new ThrottledRequestManager(
+            [
+                self::METHOD_CREATE_ORDER               => [30, 2],
+                self::METHOD_GET_FULFILLMENT_ORDER      => [30, 2],
+                self::METHOD_GET_FULFILLMENT_PREVIEW    => [30, 2],
+            ]
+        );
+    }
+
+    public function getThrottleManager() {
+        return $this->throttleManager;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2015-09-03
- * Generated: Thu Sep 03 17:55:25 GMT 2015
+ * Library Version: 2018-03-22
+ * Generated: Thu Mar 15 07:12:28 GMT 2018
  */
 
 /**
@@ -154,10 +154,14 @@ abstract class MWSFinancesService_Model
                             }
                         }
                     } else {
-                        $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
-                        if ($element->length == 1) {
-                            $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
-                        }
+                       if ($fieldType[0] == ".") {
+                           $element = $xpath->query("./text()", $dom);
+                       } else {
+                            $element = $xpath->query("./*[local-name()='$fieldName']/text()", $dom);
+                       }
+                       if ($element->length == 1) {
+                                $this->_fields[$fieldName]['FieldValue'] = $element->item(0)->data;
+                       }
                     }
 
                     $attribute = $xpath->query("./@$fieldName", $dom);
@@ -350,6 +354,8 @@ abstract class MWSFinancesService_Model
                         $xml .= ">";
                         $xml .= $fieldValue->_toXMLFragment();
                         $xml .= "</$fieldName>";
+                    } else if($fieldType[0] == ".") {
+                         $xml .= $this->_escapeXML($fieldValue);
                     } else if($fieldType[0] != "@") {
                         $xml .= "<$fieldName>";
                         $xml .= $this->_escapeXML($fieldValue);

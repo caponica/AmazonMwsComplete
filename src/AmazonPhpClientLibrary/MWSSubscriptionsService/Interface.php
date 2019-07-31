@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Subscriptions Service
  * @version  2013-07-01
- * Library Version: 2015-06-18
- * Generated: Thu Jun 18 19:27:20 GMT 2015
+ * Library Version: 2013-11-01
+ * Generated: Tue Oct 02 08:13:42 PDT 2018
  */
 
 interface  MWSSubscriptionsService_Interface

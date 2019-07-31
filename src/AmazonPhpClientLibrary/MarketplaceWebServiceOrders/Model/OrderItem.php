@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2015-09-24
- * Generated: Fri Sep 25 20:06:28 GMT 2015
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 22:40:38 UTC 2018
  */
 
 /**
@@ -36,6 +36,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>Title: string</li>
  * <li>QuantityOrdered: int</li>
  * <li>QuantityShipped: int</li>
+ * <li>ProductInfo: MarketplaceWebServiceOrders_Model_ProductInfoDetail</li>
  * <li>PointsGranted: MarketplaceWebServiceOrders_Model_PointsGrantedDetail</li>
  * <li>ItemPrice: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>ShippingPrice: MarketplaceWebServiceOrders_Model_Money</li>
@@ -44,10 +45,13 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ShippingTax: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>GiftWrapTax: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>ShippingDiscount: MarketplaceWebServiceOrders_Model_Money</li>
+ * <li>ShippingDiscountTax: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>PromotionDiscount: MarketplaceWebServiceOrders_Model_Money</li>
+ * <li>PromotionDiscountTax: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>PromotionIds: array</li>
  * <li>CODFee: MarketplaceWebServiceOrders_Model_Money</li>
  * <li>CODFeeDiscount: MarketplaceWebServiceOrders_Model_Money</li>
+ * <li>IsGift: bool</li>
  * <li>GiftMessageText: string</li>
  * <li>GiftWrapLevel: string</li>
  * <li>InvoiceData: MarketplaceWebServiceOrders_Model_InvoiceData</li>
@@ -58,6 +62,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ScheduledDeliveryEndDate: string</li>
  * <li>PriceDesignation: string</li>
  * <li>BuyerCustomizedInfo: MarketplaceWebServiceOrders_Model_BuyerCustomizedInfoDetail</li>
+ * <li>TaxCollection: MarketplaceWebServiceOrders_Model_TaxCollection</li>
+ * <li>SerialNumberRequired: bool</li>
+ * <li>IsTransparency: bool</li>
  *
  * </ul>
  */
@@ -73,6 +80,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'Title' => array('FieldValue' => null, 'FieldType' => 'string'),
     'QuantityOrdered' => array('FieldValue' => null, 'FieldType' => 'int'),
     'QuantityShipped' => array('FieldValue' => null, 'FieldType' => 'int'),
+    'ProductInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_ProductInfoDetail'),
     'PointsGranted' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_PointsGrantedDetail'),
     'ItemPrice' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'ShippingPrice' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
@@ -81,10 +89,13 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ShippingTax' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'GiftWrapTax' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'ShippingDiscount' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
+    'ShippingDiscountTax' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'PromotionDiscount' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
+    'PromotionDiscountTax' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'PromotionIds' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'PromotionId'),
     'CODFee' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
     'CODFeeDiscount' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_Money'),
+    'IsGift' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'GiftMessageText' => array('FieldValue' => null, 'FieldType' => 'string'),
     'GiftWrapLevel' => array('FieldValue' => null, 'FieldType' => 'string'),
     'InvoiceData' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_InvoiceData'),
@@ -95,6 +106,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ScheduledDeliveryEndDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'PriceDesignation' => array('FieldValue' => null, 'FieldType' => 'string'),
     'BuyerCustomizedInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_BuyerCustomizedInfoDetail'),
+    'TaxCollection' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_TaxCollection'),
+    'SerialNumberRequired' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'IsTransparency' => array('FieldValue' => null, 'FieldType' => 'bool'),
     );
     parent::__construct($data);
     }
@@ -372,6 +386,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withQuantityShipped($value)
     {
         $this->setQuantityShipped($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ProductInfo property.
+     *
+     * @return ProductInfoDetail ProductInfo.
+     */
+    public function getProductInfo()
+    {
+        return $this->_fields['ProductInfo']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ProductInfo property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_ProductInfoDetail productInfo
+     * @return this instance
+     */
+    public function setProductInfo($value)
+    {
+        $this->_fields['ProductInfo']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ProductInfo is set.
+     *
+     * @return true if ProductInfo is set.
+     */
+    public function isSetProductInfo()
+    {
+                return !is_null($this->_fields['ProductInfo']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ProductInfo, return this.
+     *
+     * @param productInfo
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withProductInfo($value)
+    {
+        $this->setProductInfo($value);
         return $this;
     }
 
@@ -744,6 +804,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
+     * Get the value of the ShippingDiscountTax property.
+     *
+     * @return Money ShippingDiscountTax.
+     */
+    public function getShippingDiscountTax()
+    {
+        return $this->_fields['ShippingDiscountTax']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ShippingDiscountTax property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_Money shippingDiscountTax
+     * @return this instance
+     */
+    public function setShippingDiscountTax($value)
+    {
+        $this->_fields['ShippingDiscountTax']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ShippingDiscountTax is set.
+     *
+     * @return true if ShippingDiscountTax is set.
+     */
+    public function isSetShippingDiscountTax()
+    {
+                return !is_null($this->_fields['ShippingDiscountTax']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ShippingDiscountTax, return this.
+     *
+     * @param shippingDiscountTax
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withShippingDiscountTax($value)
+    {
+        $this->setShippingDiscountTax($value);
+        return $this;
+    }
+
+    /**
      * Get the value of the PromotionDiscount property.
      *
      * @return Money PromotionDiscount.
@@ -786,6 +892,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withPromotionDiscount($value)
     {
         $this->setPromotionDiscount($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the PromotionDiscountTax property.
+     *
+     * @return Money PromotionDiscountTax.
+     */
+    public function getPromotionDiscountTax()
+    {
+        return $this->_fields['PromotionDiscountTax']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PromotionDiscountTax property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_Money promotionDiscountTax
+     * @return this instance
+     */
+    public function setPromotionDiscountTax($value)
+    {
+        $this->_fields['PromotionDiscountTax']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if PromotionDiscountTax is set.
+     *
+     * @return true if PromotionDiscountTax is set.
+     */
+    public function isSetPromotionDiscountTax()
+    {
+                return !is_null($this->_fields['PromotionDiscountTax']['FieldValue']);
+            }
+
+    /**
+     * Set the value of PromotionDiscountTax, return this.
+     *
+     * @param promotionDiscountTax
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withPromotionDiscountTax($value)
+    {
+        $this->setPromotionDiscountTax($value);
         return $this;
     }
 
@@ -942,6 +1094,62 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withCODFeeDiscount($value)
     {
         $this->setCODFeeDiscount($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of IsGift.
+     *
+     * @return true if IsGift is set to true.
+     */
+    public function isIsGift()
+    {
+        return !is_null($this->_fields['IsGift']['FieldValue']) && $this->_fields['IsGift']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsGift property.
+     *
+     * @return Boolean IsGift.
+     */
+    public function getIsGift()
+    {
+        return $this->_fields['IsGift']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsGift property.
+     *
+     * @param bool isGift
+     * @return this instance
+     */
+    public function setIsGift($value)
+    {
+        $this->_fields['IsGift']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsGift is set.
+     *
+     * @return true if IsGift is set.
+     */
+    public function isSetIsGift()
+    {
+                return !is_null($this->_fields['IsGift']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsGift, return this.
+     *
+     * @param isGift
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsGift($value)
+    {
+        $this->setIsGift($value);
         return $this;
     }
 
@@ -1402,6 +1610,164 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withBuyerCustomizedInfo($value)
     {
         $this->setBuyerCustomizedInfo($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the TaxCollection property.
+     *
+     * @return TaxCollection TaxCollection.
+     */
+    public function getTaxCollection()
+    {
+        return $this->_fields['TaxCollection']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the TaxCollection property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_TaxCollection taxCollection
+     * @return this instance
+     */
+    public function setTaxCollection($value)
+    {
+        $this->_fields['TaxCollection']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if TaxCollection is set.
+     *
+     * @return true if TaxCollection is set.
+     */
+    public function isSetTaxCollection()
+    {
+                return !is_null($this->_fields['TaxCollection']['FieldValue']);
+            }
+
+    /**
+     * Set the value of TaxCollection, return this.
+     *
+     * @param taxCollection
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withTaxCollection($value)
+    {
+        $this->setTaxCollection($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of SerialNumberRequired.
+     *
+     * @return true if SerialNumberRequired is set to true.
+     */
+    public function isSerialNumberRequired()
+    {
+        return !is_null($this->_fields['SerialNumberRequired']['FieldValue']) && $this->_fields['SerialNumberRequired']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the SerialNumberRequired property.
+     *
+     * @return Boolean SerialNumberRequired.
+     */
+    public function getSerialNumberRequired()
+    {
+        return $this->_fields['SerialNumberRequired']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the SerialNumberRequired property.
+     *
+     * @param bool serialNumberRequired
+     * @return this instance
+     */
+    public function setSerialNumberRequired($value)
+    {
+        $this->_fields['SerialNumberRequired']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if SerialNumberRequired is set.
+     *
+     * @return true if SerialNumberRequired is set.
+     */
+    public function isSetSerialNumberRequired()
+    {
+                return !is_null($this->_fields['SerialNumberRequired']['FieldValue']);
+            }
+
+    /**
+     * Set the value of SerialNumberRequired, return this.
+     *
+     * @param serialNumberRequired
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withSerialNumberRequired($value)
+    {
+        $this->setSerialNumberRequired($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of IsTransparency.
+     *
+     * @return true if IsTransparency is set to true.
+     */
+    public function isIsTransparency()
+    {
+        return !is_null($this->_fields['IsTransparency']['FieldValue']) && $this->_fields['IsTransparency']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsTransparency property.
+     *
+     * @return Boolean IsTransparency.
+     */
+    public function getIsTransparency()
+    {
+        return $this->_fields['IsTransparency']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsTransparency property.
+     *
+     * @param bool isTransparency
+     * @return this instance
+     */
+    public function setIsTransparency($value)
+    {
+        $this->_fields['IsTransparency']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsTransparency is set.
+     *
+     * @return true if IsTransparency is set.
+     */
+    public function isSetIsTransparency()
+    {
+                return !is_null($this->_fields['IsTransparency']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsTransparency, return this.
+     *
+     * @param isTransparency
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsTransparency($value)
+    {
+        $this->setIsTransparency($value);
         return $this;
     }
 

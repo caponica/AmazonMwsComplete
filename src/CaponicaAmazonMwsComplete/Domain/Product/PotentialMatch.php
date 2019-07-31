@@ -2,6 +2,8 @@
 
 namespace CaponicaAmazonMwsComplete\Domain\Product;
 use CaponicaAmazonMwsComplete\ClientPack\MwsProductClientPack;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+use Psr\Log\LoggerInterface;
 
 /**
  * Attempt to convert a raw MarketplaceWebServiceProducts_Model_Product into something more workable
@@ -22,24 +24,19 @@ final class PotentialMatch {
     private $publisher;
     private $rank;
     private $rankCat;
-    private $secondaryCats;
     private $title;
     private $weightPounds;
-    private $smallImage;
-    private $isAdultProduct;
-    private $isVariation;
-    private $isParent;
-    private $isChild;
-    private $parentAsin;
-    private $childrenCount;
-
+    /** @var LoggerInterface */
+    protected $logger;
 
     /**
      * @param \MarketplaceWebServiceProducts_Model_Product $product
-     * @param string $rawXml            Raw XML from the Amazon response
-     * @throws \InvalidArgumentException
+     * @param string                                       $rawXml Raw XML from the Amazon response
+     * @param LoggerInterface|null                         $logger
      */
-    public function __construct($product, $rawXml) {
+    public function __construct($product, $rawXml, LoggerInterface $logger = null) {
+        $this->logger = $logger;
+
         /** @var \MarketplaceWebServiceProducts_Model_IdentifierType $idType */
         $idType = $product->getIdentifiers();
         if ($idType->isSetMarketplaceASIN()) {
@@ -60,17 +57,17 @@ final class PotentialMatch {
                     $this->rank = $salesRank->getRank();
                     $this->rankCat = $salesRank->getProductCategoryId();
                 } else {
-
-                    $this->secondaryCats[] = ['rank' => $salesRank->getRank(), 'rankCat' => $salesRank->getProductCategoryId()];
+                    //$this->logMessage(
+                    //    ">>Found Secondary Rank: #".$salesRank->getRank()." in ".$salesRank->getProductCategoryId()." for asin {$this->asin}",
+                    //    LoggerService::DEBUG
+                    //);
                 }
             }
         }
 
-        //The parser cannot calculate attribute sets, so we need to do it manually:
+        // The parser cannot calculate attribute sets, so we need to do it manually:
         $attributes = null;
-
         $attributesAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
-
         if (false!==$attributesAppearAfter) {
             $attributeOffset = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_START, $attributesAppearAfter);
             if (false !== $attributeOffset) {
@@ -88,32 +85,8 @@ final class PotentialMatch {
                 }
             }
         }
-
-        // lets extract relationships
-
-        $relationships = null;
-
-        $relationshipsAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
-
-        if (false!==$relationshipsAppearAfter) {
-            $relationshipsOffset = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START, $relationshipsAppearAfter);
-            if (false !== $relationshipsOffset) {
-                $relationshipsOffsetEnd = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END, $relationshipsOffset);
-                if (false !== $relationshipsOffset) {
-                    $processedXml = substr(
-                        $rawXml,
-                        $relationshipsOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
-                        $relationshipsOffsetEnd - $relationshipsOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
-                    );
-                    $processedXml = str_replace('ns2:', '', $processedXml);
-                    $relationships = new \SimpleXMLElement(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START . $processedXml . MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END);
-
-                    $relationshipsOffset = $relationshipsOffsetEnd;
-                }
-            }
-        }
-
         if (!empty($attributes)) {
+            $this->logMessage("Trying manual string based attribute search", LoggerService::DEBUG);
 
             if (!empty($attributes->ListPrice->Amount)) {
                 $this->listPrice = $attributes->ListPrice->Amount->__toString();
@@ -172,14 +145,8 @@ final class PotentialMatch {
             if (!empty($attributes->Title)) {
                 $this->title = $attributes->Title->__toString();
             }
-            if (!empty($attributes->SmallImage)) {
-                $this->smallImage = $this->extractSmallImageFromAttributes($attributes);
-            }
-            if (!empty($attributes->IsAdultProduct)) {
-                $this->isAdultProduct = $attributes->IsAdultProduct->__toString();
-            }
         } else {
-            echo "\nTrying XML based attribute search";
+            $this->logMessage("Trying XML based attribute search", LoggerService::DEBUG);
 
             /** @var \MarketplaceWebServiceProducts_Model_AttributeSetList $asl */
             $asl = $product->getAttributeSets();
@@ -217,21 +184,6 @@ final class PotentialMatch {
                 $this->setFieldIfBasicValueExists($elementgroups, $xmlKey);
             }
         }
-
-        if (!empty($relationships)) {
-            $this->isVariation = true;
-
-            if (isset($relationships->VariationChild)) {
-                $this->isParent = true;
-                $this->childrenCount = count($relationships->VariationChild);
-            }
-            if (isset($relationships->VariationParent)) {
-                $this->isChild = true;
-                $this->parentAsin = $relationships->VariationParent->Identifiers->MarketplaceASIN->ASIN->__toString();
-            }
-
-        }
-
         if (!empty($potentialMatch)) {
             $potentialMatches[] = $potentialMatch;
         }
@@ -252,6 +204,25 @@ final class PotentialMatch {
             round((float)$this->dimensions['L'], 1),
             round((float)$this->dimensions['H'], 1),
         ];
+    }
+
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed  $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return void
+     */
+    protected function logMessage($message, $level, $context = [])
+    {
+        if ($this->logger) {
+            // Use the internal logger for logging.
+            $this->logger->log($level, $message, $context);
+        } else {
+            LoggerService::logMessage($message, $level, $context);
+        }
     }
 
     // ###################################################################
@@ -425,18 +396,6 @@ final class PotentialMatch {
         }
         return $dimensions;
     }
-    private function extractSmallImageFromAttributes($productAttributes) {
-        $smallImage = [];
-        if (!empty($productAttributes->SmallImage)) {
-            $smallImage = [
-                'URL' => $productAttributes->SmallImage->URL->__toString(),
-                'Height' => $productAttributes->SmallImage->Height->__toString(),
-                'Width' => $productAttributes->SmallImage->Width->__toString(),
-            ];
-
-        }
-        return $smallImage;
-    }
     private function extractWeightFromAttributes($productAttributes) {
         $weight = 0;
         if (!empty($productAttributes->Weight)) {
@@ -572,60 +531,4 @@ final class PotentialMatch {
     {
         return $this->weightPounds;
     }
-    /**
-     * @return String
-     */
-    public function getSmallImage()
-    {
-        return $this->smallImage;
-    }
-    /**
-     * @return mixed
-     */
-    public function getSecondaryCats()
-    {
-        return $this->secondaryCats;
-    }
-    /**
-     * @return mixed
-     */
-    public function getIsAdultProduct()
-    {
-        return $this->isAdultProduct;
-    }
-    /**
-     * @return mixed
-     */
-    public function getIsVariation()
-    {
-        return $this->isVariation;
-    }
-    /**
-     * @return mixed
-     */
-    public function getIsParent()
-    {
-        return $this->isParent;
-    }    
-    /**
-     * @return mixed
-     */
-    public function getIsChild()
-    {
-        return $this->isChild;
-    }     
-    /**
-     * @return mixed
-     */
-    public function getParentAsin()
-    {
-        return $this->parentAsin;
-    }         
-    /**
-     * @return mixed
-     */
-    public function getChildrenCount()
-    {
-        return $this->childrenCount;
-    }        
 }

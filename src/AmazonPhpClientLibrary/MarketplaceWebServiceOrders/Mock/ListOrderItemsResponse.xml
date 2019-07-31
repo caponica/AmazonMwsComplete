@@ -11,6 +11,9 @@
                 <Title>String</Title>
                 <QuantityOrdered>1</QuantityOrdered>
                 <QuantityShipped>1</QuantityShipped>
+                <ProductInfo>
+                    <NumberOfItems>1</NumberOfItems>
+                </ProductInfo>
                 <PointsGranted>
                     <PointsNumber>1</PointsNumber>
                     <PointsMonetaryValue>
@@ -46,10 +49,18 @@
                     <CurrencyCode>String</CurrencyCode>
                     <Amount>String</Amount>
                 </ShippingDiscount>
+                <ShippingDiscountTax>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>String</Amount>
+                </ShippingDiscountTax>
                 <PromotionDiscount>
                     <CurrencyCode>String</CurrencyCode>
                     <Amount>String</Amount>
                 </PromotionDiscount>
+                <PromotionDiscountTax>
+                    <CurrencyCode>String</CurrencyCode>
+                    <Amount>String</Amount>
+                </PromotionDiscountTax>
                 <PromotionIds>
                     <PromotionId>String</PromotionId>
                 </PromotionIds>
@@ -61,6 +72,7 @@
                     <CurrencyCode>String</CurrencyCode>
                     <Amount>String</Amount>
                 </CODFeeDiscount>
+                <IsGift>true</IsGift>
                 <GiftMessageText>String</GiftMessageText>
                 <GiftWrapLevel>String</GiftWrapLevel>
                 <InvoiceData>
@@ -78,6 +90,12 @@
                 <BuyerCustomizedInfo>
                     <CustomizedURL>String</CustomizedURL>
                 </BuyerCustomizedInfo>
+                <TaxCollection>
+                    <Model>String</Model>
+                    <ResponsibleParty>String</ResponsibleParty>
+                </TaxCollection>
+                <SerialNumberRequired>true</SerialNumberRequired>
+                <IsTransparency>true</IsTransparency>
             </OrderItem>
         </OrderItems>
     </ListOrderItemsResult>

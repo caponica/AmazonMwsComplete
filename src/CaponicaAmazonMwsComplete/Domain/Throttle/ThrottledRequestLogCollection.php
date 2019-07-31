@@ -2,6 +2,8 @@
 
 namespace CaponicaAmazonMwsComplete\Domain\Throttle;
 
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+
 final class ThrottledRequestLogCollection {
     const RESTORE_BASIS_REQUEST = 'request';
     const RESTORE_BASIS_WEIGHT  = 'weight';
@@ -34,6 +36,17 @@ final class ThrottledRequestLogCollection {
             } elseif (count($this->logs) > $this->maximumRequestQuota) {
                 $this->weightCapacity -= $weight;
             }
+        }
+    }
+
+    public function exhaustRequestQuota($apiMethod) {
+        $slotsToFill = $this->maximumRequestQuota - count($this->logs);
+        if ($slotsToFill <= 0) {
+            return;
+        }
+        for ($i=1; $i<=$slotsToFill; ++$i) {
+            LoggerService::logMessage("Adding fake entry #{$i} to Throttle log to fill a slot", LoggerService::DEBUG);
+            $this->addLog($apiMethod);
         }
     }
 

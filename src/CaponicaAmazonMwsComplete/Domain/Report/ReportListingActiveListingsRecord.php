@@ -28,37 +28,44 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
     const WILL_SHIP_UK_EUROPE_AND_NORTH_AMERICA = 5;
     const WILL_SHIP_WORLDWIDE                   = 6;
 
-    private $itemName;
-    private $itemDescription;
-    private $listingId;
-    private $sellerSku;
-    private $price;
-    private $quantity;
-    private $openDate;
-    private $imageUrl;
-    private $itemIsMarketplace;
-    private $productIdType;
-    private $zshopShippingFee;
-    private $itemNote;
-    private $itemCondition;
-    private $zshopCategory1;
-    private $zshopBrowsePath;
-    private $zshopStorefrontFeature;
-    private $asin1;
-    private $asin2;
-    private $asin3;
-    private $willShipInternationally;
-    private $expeditedShipping;
-    private $zshopBoldface;
-    private $productId;
-    private $bidForFeaturedPlacement;
-    private $addDelete;
-    private $pendingQuantity;
-    private $fulfillmentChannel;
+    protected $itemName;
+    protected $itemDescription;
+    protected $listingId;
+    protected $sellerSku;
+    protected $price;
+    protected $quantity;
+    protected $openDate;
+    protected $imageUrl;
+    protected $itemIsMarketplace;
+    protected $productIdType;
+    protected $zshopShippingFee;
+    protected $itemNote;
+    protected $itemCondition;
+    protected $zshopCategory1;
+    protected $zshopBrowsePath;
+    protected $zshopStorefrontFeature;
+    protected $asin1;
+    protected $asin2;
+    protected $asin3;
+    protected $willShipInternationally;
+    protected $expeditedShipping;
+    protected $zshopBoldface;
+    protected $productId;
+    protected $bidForFeaturedPlacement;
+    protected $addDelete;
+    protected $pendingQuantity;
+    protected $fulfillmentChannel;
+    protected $merchantShippingGroup;
 
     /** Alias to fit IdentifiableStockRecordInterface */
     public function getAsin() {
-        return $this->asin1;
+        if (!empty($this->asin1)) {
+            return $this->asin1;
+        }
+        if ($this->productIdType===self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
+            return $this->productId;
+        }
+        return null;
     }
 
     public function isFulfilledByAmazon() {
@@ -98,6 +105,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         $this->addDelete                = $fieldArray[24];
         $this->pendingQuantity          = $fieldArray[25];
         $this->fulfillmentChannel       = $fieldArray[26];
+        $this->merchantShippingGroup    = $fieldArray[27];
     }
 
     public function getItemName() {
@@ -206,5 +214,9 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
 
     public function getFulfillmentChannel() {
         return $this->fulfillmentChannel;
+    }
+
+    public function getMerchantShippingGroup() {
+        return $this->merchantShippingGroup;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2015-09-24
- * Generated: Fri Sep 25 20:06:28 GMT 2015
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 22:40:38 UTC 2018
  */
 
 /**
@@ -45,12 +45,16 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>NumberOfItemsUnshipped: int</li>
  * <li>PaymentExecutionDetail: array</li>
  * <li>PaymentMethod: string</li>
+ * <li>PaymentMethodDetails: array</li>
  * <li>MarketplaceId: string</li>
  * <li>BuyerEmail: string</li>
  * <li>BuyerName: string</li>
+ * <li>BuyerCounty: string</li>
+ * <li>BuyerTaxInfo: MarketplaceWebServiceOrders_Model_BuyerTaxInfo</li>
  * <li>ShipmentServiceLevelCategory: string</li>
  * <li>ShippedByAmazonTFM: bool</li>
  * <li>TFMShipmentStatus: string</li>
+ * <li>EasyShipShipmentStatus: string</li>
  * <li>CbaDisplayableShippingLabel: string</li>
  * <li>OrderType: string</li>
  * <li>EarliestShipDate: string</li>
@@ -61,6 +65,10 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>PurchaseOrderNumber: string</li>
  * <li>IsPrime: bool</li>
  * <li>IsPremiumOrder: bool</li>
+ * <li>ReplacedOrderId: string</li>
+ * <li>IsReplacementOrder: bool</li>
+ * <li>PromiseResponseDueDate: string</li>
+ * <li>IsEstimatedShipDateSet: bool</li>
  *
  * </ul>
  */
@@ -85,12 +93,16 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'NumberOfItemsUnshipped' => array('FieldValue' => null, 'FieldType' => 'int'),
     'PaymentExecutionDetail' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebServiceOrders_Model_PaymentExecutionDetailItem'), 'ListMemberName' => 'PaymentExecutionDetailItem'),
     'PaymentMethod' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'PaymentMethodDetails' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'PaymentMethodDetail'),
     'MarketplaceId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'BuyerEmail' => array('FieldValue' => null, 'FieldType' => 'string'),
     'BuyerName' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'BuyerCounty' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'BuyerTaxInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_BuyerTaxInfo'),
     'ShipmentServiceLevelCategory' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShippedByAmazonTFM' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'TFMShipmentStatus' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'EasyShipShipmentStatus' => array('FieldValue' => null, 'FieldType' => 'string'),
     'CbaDisplayableShippingLabel' => array('FieldValue' => null, 'FieldType' => 'string'),
     'OrderType' => array('FieldValue' => null, 'FieldType' => 'string'),
     'EarliestShipDate' => array('FieldValue' => null, 'FieldType' => 'string'),
@@ -101,6 +113,10 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'PurchaseOrderNumber' => array('FieldValue' => null, 'FieldType' => 'string'),
     'IsPrime' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'IsPremiumOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'ReplacedOrderId' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'IsReplacementOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'PromiseResponseDueDate' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'IsEstimatedShipDateSet' => array('FieldValue' => null, 'FieldType' => 'bool'),
     );
     parent::__construct($data);
     }
@@ -814,6 +830,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
+     * Get the value of the PaymentMethodDetails property.
+     *
+     * @return List<String> PaymentMethodDetails.
+     */
+    public function getPaymentMethodDetails()
+    {
+        if ($this->_fields['PaymentMethodDetails']['FieldValue'] == null)
+        {
+            $this->_fields['PaymentMethodDetails']['FieldValue'] = array();
+        }
+        return $this->_fields['PaymentMethodDetails']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PaymentMethodDetails property.
+     *
+     * @param array paymentMethodDetails
+     * @return this instance
+     */
+    public function setPaymentMethodDetails($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['PaymentMethodDetails']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear PaymentMethodDetails.
+     */
+    public function unsetPaymentMethodDetails()
+    {
+        $this->_fields['PaymentMethodDetails']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if PaymentMethodDetails is set.
+     *
+     * @return true if PaymentMethodDetails is set.
+     */
+    public function isSetPaymentMethodDetails()
+    {
+                return !empty($this->_fields['PaymentMethodDetails']['FieldValue']);
+            }
+
+    /**
+     * Add values for PaymentMethodDetails, return this.
+     *
+     * @param paymentMethodDetails
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withPaymentMethodDetails()
+    {
+        foreach (func_get_args() as $PaymentMethodDetails)
+        {
+            $this->_fields['PaymentMethodDetails']['FieldValue'][] = $PaymentMethodDetails;
+        }
+        return $this;
+    }
+
+    /**
      * Get the value of the MarketplaceId property.
      *
      * @return String MarketplaceId.
@@ -948,6 +1028,98 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withBuyerName($value)
     {
         $this->setBuyerName($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the BuyerCounty property.
+     *
+     * @return String BuyerCounty.
+     */
+    public function getBuyerCounty()
+    {
+        return $this->_fields['BuyerCounty']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the BuyerCounty property.
+     *
+     * @param string buyerCounty
+     * @return this instance
+     */
+    public function setBuyerCounty($value)
+    {
+        $this->_fields['BuyerCounty']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if BuyerCounty is set.
+     *
+     * @return true if BuyerCounty is set.
+     */
+    public function isSetBuyerCounty()
+    {
+                return !is_null($this->_fields['BuyerCounty']['FieldValue']);
+            }
+
+    /**
+     * Set the value of BuyerCounty, return this.
+     *
+     * @param buyerCounty
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withBuyerCounty($value)
+    {
+        $this->setBuyerCounty($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the BuyerTaxInfo property.
+     *
+     * @return BuyerTaxInfo BuyerTaxInfo.
+     */
+    public function getBuyerTaxInfo()
+    {
+        return $this->_fields['BuyerTaxInfo']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the BuyerTaxInfo property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_BuyerTaxInfo buyerTaxInfo
+     * @return this instance
+     */
+    public function setBuyerTaxInfo($value)
+    {
+        $this->_fields['BuyerTaxInfo']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if BuyerTaxInfo is set.
+     *
+     * @return true if BuyerTaxInfo is set.
+     */
+    public function isSetBuyerTaxInfo()
+    {
+                return !is_null($this->_fields['BuyerTaxInfo']['FieldValue']);
+            }
+
+    /**
+     * Set the value of BuyerTaxInfo, return this.
+     *
+     * @param buyerTaxInfo
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withBuyerTaxInfo($value)
+    {
+        $this->setBuyerTaxInfo($value);
         return $this;
     }
 
@@ -1096,6 +1268,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withTFMShipmentStatus($value)
     {
         $this->setTFMShipmentStatus($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the EasyShipShipmentStatus property.
+     *
+     * @return String EasyShipShipmentStatus.
+     */
+    public function getEasyShipShipmentStatus()
+    {
+        return $this->_fields['EasyShipShipmentStatus']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the EasyShipShipmentStatus property.
+     *
+     * @param string easyShipShipmentStatus
+     * @return this instance
+     */
+    public function setEasyShipShipmentStatus($value)
+    {
+        $this->_fields['EasyShipShipmentStatus']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if EasyShipShipmentStatus is set.
+     *
+     * @return true if EasyShipShipmentStatus is set.
+     */
+    public function isSetEasyShipShipmentStatus()
+    {
+                return !is_null($this->_fields['EasyShipShipmentStatus']['FieldValue']);
+            }
+
+    /**
+     * Set the value of EasyShipShipmentStatus, return this.
+     *
+     * @param easyShipShipmentStatus
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withEasyShipShipmentStatus($value)
+    {
+        $this->setEasyShipShipmentStatus($value);
         return $this;
     }
 
@@ -1586,6 +1804,210 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withIsPremiumOrder($value)
     {
         $this->setIsPremiumOrder($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ReplacedOrderId property.
+     *
+     * @return String ReplacedOrderId.
+     */
+    public function getReplacedOrderId()
+    {
+        return $this->_fields['ReplacedOrderId']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ReplacedOrderId property.
+     *
+     * @param string replacedOrderId
+     * @return this instance
+     */
+    public function setReplacedOrderId($value)
+    {
+        $this->_fields['ReplacedOrderId']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ReplacedOrderId is set.
+     *
+     * @return true if ReplacedOrderId is set.
+     */
+    public function isSetReplacedOrderId()
+    {
+                return !is_null($this->_fields['ReplacedOrderId']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ReplacedOrderId, return this.
+     *
+     * @param replacedOrderId
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withReplacedOrderId($value)
+    {
+        $this->setReplacedOrderId($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of IsReplacementOrder.
+     *
+     * @return true if IsReplacementOrder is set to true.
+     */
+    public function isIsReplacementOrder()
+    {
+        return !is_null($this->_fields['IsReplacementOrder']['FieldValue']) && $this->_fields['IsReplacementOrder']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsReplacementOrder property.
+     *
+     * @return Boolean IsReplacementOrder.
+     */
+    public function getIsReplacementOrder()
+    {
+        return $this->_fields['IsReplacementOrder']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsReplacementOrder property.
+     *
+     * @param bool isReplacementOrder
+     * @return this instance
+     */
+    public function setIsReplacementOrder($value)
+    {
+        $this->_fields['IsReplacementOrder']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsReplacementOrder is set.
+     *
+     * @return true if IsReplacementOrder is set.
+     */
+    public function isSetIsReplacementOrder()
+    {
+                return !is_null($this->_fields['IsReplacementOrder']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsReplacementOrder, return this.
+     *
+     * @param isReplacementOrder
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsReplacementOrder($value)
+    {
+        $this->setIsReplacementOrder($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the PromiseResponseDueDate property.
+     *
+     * @return XMLGregorianCalendar PromiseResponseDueDate.
+     */
+    public function getPromiseResponseDueDate()
+    {
+        return $this->_fields['PromiseResponseDueDate']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the PromiseResponseDueDate property.
+     *
+     * @param string promiseResponseDueDate
+     * @return this instance
+     */
+    public function setPromiseResponseDueDate($value)
+    {
+        $this->_fields['PromiseResponseDueDate']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if PromiseResponseDueDate is set.
+     *
+     * @return true if PromiseResponseDueDate is set.
+     */
+    public function isSetPromiseResponseDueDate()
+    {
+                return !is_null($this->_fields['PromiseResponseDueDate']['FieldValue']);
+            }
+
+    /**
+     * Set the value of PromiseResponseDueDate, return this.
+     *
+     * @param promiseResponseDueDate
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withPromiseResponseDueDate($value)
+    {
+        $this->setPromiseResponseDueDate($value);
+        return $this;
+    }
+
+    /**
+     * Check the value of IsEstimatedShipDateSet.
+     *
+     * @return true if IsEstimatedShipDateSet is set to true.
+     */
+    public function isIsEstimatedShipDateSet()
+    {
+        return !is_null($this->_fields['IsEstimatedShipDateSet']['FieldValue']) && $this->_fields['IsEstimatedShipDateSet']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsEstimatedShipDateSet property.
+     *
+     * @return Boolean IsEstimatedShipDateSet.
+     */
+    public function getIsEstimatedShipDateSet()
+    {
+        return $this->_fields['IsEstimatedShipDateSet']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsEstimatedShipDateSet property.
+     *
+     * @param bool isEstimatedShipDateSet
+     * @return this instance
+     */
+    public function setIsEstimatedShipDateSet($value)
+    {
+        $this->_fields['IsEstimatedShipDateSet']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsEstimatedShipDateSet is set.
+     *
+     * @return true if IsEstimatedShipDateSet is set.
+     */
+    public function isSetIsEstimatedShipDateSet()
+    {
+                return !is_null($this->_fields['IsEstimatedShipDateSet']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsEstimatedShipDateSet, return this.
+     *
+     * @param isEstimatedShipDateSet
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsEstimatedShipDateSet($value)
+    {
+        $this->setIsEstimatedShipDateSet($value);
         return $this;
     }
 

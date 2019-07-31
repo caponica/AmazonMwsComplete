@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Recommendations Section Service
  * @version  2013-04-01
- * Library Version: 2015-06-18
- * Generated: Thu Jun 18 19:29:34 GMT 2015
+ * Library Version: 2014-10-01
+ * Generated: Wed Sep 12 07:35:28 PDT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MWSRecommendationsSectionService_Client implements MWSRecommendationsSecti
 {
 
     const SERVICE_VERSION = '2013-04-01';
-    const MWS_CLIENT_VERSION = '2015-06-18';
+    const MWS_CLIENT_VERSION = '2014-10-01';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -270,9 +270,13 @@ class MWSRecommendationsSectionService_Client implements MWSRecommendationsSecti
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (PHP_VERSION_ID < 50600) {
+            iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        } else {
+            ini_set('default_charset', 'UTF-8');
+        }
 
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;

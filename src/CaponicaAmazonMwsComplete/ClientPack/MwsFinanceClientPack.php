@@ -4,13 +4,20 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\AmazonClient\MwsFinanceClient;
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 
 class MwsFinanceClientPack extends MwsFinanceClient {
+    use SignsRequestArray, ProvidesServiceUrlSuffix;
+
+    const SERVICE_NAME = 'Finances';
+
     const PARAM_AMAZON_ORDER_ID                     = 'AmazonOrderId';
     const PARAM_FINANCIAL_EVENT_GROUP_ID            = 'FinancialEventGroupId';
     const PARAM_FINANCIAL_EVENT_GROUP_STARTED_AFTER = 'FinancialEventGroupStartedAfter';
     const PARAM_FINANCIAL_EVENT_GROUP_STARTED_BEFORE= 'FinancialEventGroupStartedBefore';
     const PARAM_MAX_RESULTS_PER_PAGE                = 'MaxResultsPerPage';
+    const PARAM_MWS_AUTH_TOKEN                      = 'MWSAuthToken';
     const PARAM_NEXT_TOKEN                          = 'NextToken';
     const PARAM_POSTED_BEFORE                       = 'PostedBefore';
     const PARAM_POSTED_AFTER                        = 'PostedAfter';
@@ -25,10 +32,13 @@ class MwsFinanceClientPack extends MwsFinanceClient {
     protected $marketplaceId;
     /** @var string $sellerId           The MWS SellerID string used in API connections */
     protected $sellerId;
+    /** @var string $authToken          MWSAuthToken, only needed when working with (3rd party) client accounts which provide an Auth Token */
+    protected $authToken = null;
 
     public function __construct(MwsClientPoolConfig $poolConfig) {
-        $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
+        $this->marketplaceId    = $poolConfig->getMarketplaceId();
         $this->sellerId         = $poolConfig->getSellerId();
+        $this->authToken        = $poolConfig->getAuthToken();
 
         parent::__construct(
             $poolConfig->getAccessKey(),
@@ -39,16 +49,11 @@ class MwsFinanceClientPack extends MwsFinanceClient {
         );
     }
 
-    private function getServiceUrlSuffix() {
-        return '/Finances/' . self::SERVICE_VERSION;
-    }
-
-
     // ##################################################
     // #      basic wrappers for API calls go here      #
     // ##################################################
     public function callGetServiceStatus() {
-        $requestArray = [];
+        $requestArray = $this->signArray();
         return $this->getServiceStatus($requestArray);
     }
 
@@ -66,7 +71,6 @@ class MwsFinanceClientPack extends MwsFinanceClient {
             $endDate = $endDate->format('c');
         }
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_FINANCIAL_EVENT_GROUP_STARTED_AFTER => $startDate,
         ];
         if (!empty($endDate)) {
@@ -75,6 +79,8 @@ class MwsFinanceClientPack extends MwsFinanceClient {
         if (!empty($maxPerPage)) {
             $requestArray[self::PARAM_MAX_RESULTS_PER_PAGE] = $maxPerPage;
         }
+
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEventGroups($requestArray);
     }
 
@@ -84,9 +90,9 @@ class MwsFinanceClientPack extends MwsFinanceClient {
      */
     public function callListFinancialEventGroupsByNextToken($nextToken) {
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_NEXT_TOKEN => $nextToken,
         ];
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEventGroupsByNextToken($requestArray);
     }
 
@@ -97,12 +103,12 @@ class MwsFinanceClientPack extends MwsFinanceClient {
      */
     public function callListFinancialEventsFilteredByOrderId($orderId, $maxPerPage=null) {
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_AMAZON_ORDER_ID => $orderId,
         ];
         if (!empty($maxPerPage)) {
             $requestArray[self::PARAM_MAX_RESULTS_PER_PAGE] = $maxPerPage;
         }
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEvents($requestArray);
     }
     /**
@@ -112,12 +118,12 @@ class MwsFinanceClientPack extends MwsFinanceClient {
      */
     public function callListFinancialEventsFilteredByEventGroup($financialEventGroup, $maxPerPage=null) {
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_FINANCIAL_EVENT_GROUP_ID => $financialEventGroup,
         ];
         if (!empty($maxPerPage)) {
             $requestArray[self::PARAM_MAX_RESULTS_PER_PAGE] = $maxPerPage;
         }
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEvents($requestArray);
     }
     /**
@@ -135,7 +141,6 @@ class MwsFinanceClientPack extends MwsFinanceClient {
             $endDate = $endDate->format('c');
         }
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_POSTED_AFTER => $startDate,
         ];
         if (!empty($endDate)) {
@@ -144,6 +149,7 @@ class MwsFinanceClientPack extends MwsFinanceClient {
         if (!empty($maxPerPage)) {
             $requestArray[self::PARAM_MAX_RESULTS_PER_PAGE] = $maxPerPage;
         }
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEvents($requestArray);
     }
 
@@ -153,9 +159,9 @@ class MwsFinanceClientPack extends MwsFinanceClient {
      */
     public function callListFinancialEventsByNextToken($nextToken) {
         $requestArray = [
-            self::PARAM_SELLER_ID => $this->sellerId,
             self::PARAM_NEXT_TOKEN => $nextToken,
         ];
+        $requestArray = $this->signArray($requestArray);
         return $this->listFinancialEventsByNextToken($requestArray);
     }
 }

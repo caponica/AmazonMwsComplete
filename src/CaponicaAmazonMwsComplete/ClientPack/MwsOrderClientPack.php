@@ -1,15 +1,19 @@
 <?php
 
 namespace CaponicaAmazonMwsComplete\ClientPack;
+
 use CaponicaAmazonMwsComplete\AmazonClient\MwsOrderClient;
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
 use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
+
 class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPackInterface {
     use SignsRequestArray, ProvidesServiceUrlSuffix;
+
     const SERVICE_NAME = 'Orders';
+
     const PARAM_AMAZON_ORDER_IDS                = 'AmazonOrderId';
     const PARAM_CREATED_AFTER                   = 'CreatedAfter';
     const PARAM_CREATED_BEFORE                  = 'CreatedBefore';
@@ -22,6 +26,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const PARAM_SELLER_ID                       = 'SellerId';   // Alias for PARAM_MERCHANT
     const PARAM_NEXT_TOKEN                      = 'NextToken';
     const PARAM_ORDER_STATUS_LIST               = 'OrderStatus';
+
     const STATUS_PENDING_AVAILABILITY           = 'PendingAvailability';
     const STATUS_PENDING                        = 'Pending';
     const STATUS_UNSHIPPED                      = 'Unshipped';
@@ -30,14 +35,17 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     const STATUS_INVOICE_UNCONFIRMED            = 'InvoiceUnconfirmed';
     const STATUS_CANCELED                       = 'Canceled';
     const STATUS_UNFULFILLABLE                  = 'Unfulfillable';
+
     const METHOD_GET_ORDER                      = 'getOrder';
     const METHOD_LIST_ORDERS                    = 'listOrders';
     const METHOD_LIST_ORDERS_BY_NEXT_TOKEN      = 'listOrdersByNextToken';
     const METHOD_LIST_ORDER_ITEMS               = 'listOrderItems';
     const METHOD_LIST_ORDER_ITEMS_BY_NEXT_TOKEN = 'listOrderItemsByNextToken';
+
     const OPTION_MARKETPLACE_ONLY_AMAZON        = 'AMZ';
     const OPTION_MARKETPLACE_ONLY_NON_AMAZON    = 'MCF';
     const OPTION_MARKETPLACE_ALL                = 'ALL';
+
     /** @var string $marketplaceId              The MWS MarketplaceID string used in API connections (for Amazon orders) */
     protected $marketplaceId;
     /** @var string $nonAmazonMarketplaceId     The MWS MarketplaceID string used in API connections (for MCF orders) */
@@ -46,12 +54,15 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
     protected $sellerId;
     /** @var string $authToken          MWSAuthToken, only needed when working with (3rd party) client accounts which provide an Auth Token */
     protected $authToken = null;
+
     public function __construct(MwsClientPoolConfig $poolConfig) {
         $this->marketplaceId            = $poolConfig->getMarketplaceId();
         $this->nonAmazonMarketplaceId   = $poolConfig->getNonAmazonMarketplaceId();
         $this->sellerId                 = $poolConfig->getSellerId();
         $this->authToken                = $poolConfig->getAuthToken();
+
         $this->initThrottleManager();
+
         parent::__construct(
             $poolConfig->getAccessKey(),
             $poolConfig->getSecretKey(),
@@ -60,6 +71,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             $poolConfig->getConfigForOrder($this->getServiceUrlSuffix())
         );
     }
+
     // ##################################################
     // #      basic wrappers for API calls go here      #
     // ##################################################
@@ -67,9 +79,11 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
         if (is_string($amazonOrderIds)) {
             $amazonOrderIds = explode(',', $amazonOrderIds);
         }
+
         $requestArray = [
             self::PARAM_AMAZON_ORDER_IDS    => $amazonOrderIds,
         ];
+
         $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_ORDER, $requestArray);
     }
@@ -79,9 +93,11 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             self::PARAM_CREATED_AFTER       => $dateFrom->format('c'),
             self::PARAM_CREATED_BEFORE      => $dateTo->format('c'),
         ];
+
         if (!empty($orderStatusArray)) {
             $requestArray[self::PARAM_ORDER_STATUS_LIST] = $orderStatusArray;
         }
+
         $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
     }
@@ -90,9 +106,11 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             self::PARAM_MARKETPLACE_ID      => $this->convertMarketplaceOptionIntoArray($marketplaceOption),
             self::PARAM_LAST_UPDATED_AFTER  => $dateSince->format('c'),
         ];
+
         if (!empty($orderStatusArray)) {
             $requestArray[self::PARAM_ORDER_STATUS_LIST] = $orderStatusArray;
         }
+
         $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
     }
@@ -102,9 +120,11 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             self::PARAM_LAST_UPDATED_AFTER  => $dateSince->format('c'),
             self::PARAM_LAST_UPDATED_BEFORE => $dateUntil->format('c'),
         ];
+
         if (!empty($orderStatusArray)) {
             $requestArray[self::PARAM_ORDER_STATUS_LIST] = $orderStatusArray;
         }
+
         $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS, $requestArray);
     }
@@ -112,21 +132,29 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
         $requestArray = [
             self::PARAM_NEXT_TOKEN          => $nextToken,
         ];
+
         $requestArray = $this->signArray($requestArray);
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDERS_BY_NEXT_TOKEN, $requestArray);
     }
+
     public function callListOrderItems($amazonOrderId)
     {
         $requestArray = [self::PARAM_AMAZON_ORDER_IDS => $amazonOrderId];
+
         $requestArray = $this->signArray($requestArray);
+
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDER_ITEMS, $requestArray);
     }
+
     public function callListOrderItemsByNextToken($nextToken)
     {
         $requestArray = [self::PARAM_NEXT_TOKEN => $nextToken];
+
         $requestArray = $this->signArray($requestArray);
+
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_ORDER_ITEMS_BY_NEXT_TOKEN, $requestArray);
     }
+
     private function convertMarketplaceOptionIntoArray($marketplaceOption) {
         if (empty($marketplaceOption) || self::OPTION_MARKETPLACE_ONLY_AMAZON === $marketplaceOption) {
             return $this->marketplaceId;
@@ -139,10 +167,12 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
         }
         throw new \InvalidArgumentException('Unknown MarketplaceOption: ' . $marketplaceOption);
     }
+
     // ###################################################
     // # ThrottleAwareClientPackInterface implementation #
     // ###################################################
     private $throttleManager;
+
     public function initThrottleManager() {
         $this->throttleManager = new ThrottledRequestManager(
             [
@@ -154,6 +184,7 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
             ]
         );
     }
+
     public function getThrottleManager() {
         return $this->throttleManager;
     }

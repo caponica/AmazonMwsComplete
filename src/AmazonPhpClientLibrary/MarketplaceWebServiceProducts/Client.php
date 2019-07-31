@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Products
  * @version  2011-10-01
- * Library Version: 2016-06-01
- * Generated: Mon Jun 13 10:07:56 PDT 2016
+ * Library Version: 2017-03-22
+ * Generated: Thu Oct 11 10:46:02 PDT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MarketplaceWebServiceProducts_Client implements MarketplaceWebServiceProdu
 {
 
     const SERVICE_VERSION = '2011-10-01';
-    const MWS_CLIENT_VERSION = '2016-06-01';
+    const MWS_CLIENT_VERSION = '2017-03-22';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -416,12 +416,8 @@ class MarketplaceWebServiceProducts_Client implements MarketplaceWebServiceProdu
         $httpResponse = $this->_invoke($parameters);
 
         require_once (dirname(__FILE__) . '/Model/GetMatchingProductResponse.php');
-        
         $response = MarketplaceWebServiceProducts_Model_GetMatchingProductResponse::fromXML($httpResponse['ResponseBody']);
-
         $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
-        $response->setRawXml($httpResponse['ResponseBody']);
-
         return $response;
     }
 
@@ -900,10 +896,13 @@ class MarketplaceWebServiceProducts_Client implements MarketplaceWebServiceProdu
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
-
+        if (PHP_VERSION_ID < 50600) {
+            iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        } else {
+            ini_set('default_charset', 'UTF-8');
+        }
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;
         if (!is_null($config)) $this->_config = array_merge($this->_config, $config);

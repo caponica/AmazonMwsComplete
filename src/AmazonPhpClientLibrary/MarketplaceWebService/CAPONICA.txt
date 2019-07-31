@@ -1,0 +1,22 @@
+Client.php has been modified to use:
+    if (PHP_VERSION_ID < 50600) {
+        iconv_set_encoding('output_encoding', 'UTF-8');
+        iconv_set_encoding('input_encoding', 'UTF-8');
+        iconv_set_encoding('internal_encoding', 'UTF-8');
+    } else {
+        ini_set('default_charset', 'UTF-8');
+    }
+for better PHP compatibility
+
+
+Client.php and Mock.php has been modified to use:
+"require_once (dirname(__FILE__) ..." instead of  "require_once ('MarketplaceWebService/...')"
+
+
+Model::fromDOMElement() has been modified to use:
+dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR
+as a prefix before loading files basedon $fieldType
+
+
+All Model files (under Model/...) have been modified to use:
+"require_once (dirname(__FILE__) ..." instead of  "require_once ('MarketplaceWebService/...')"

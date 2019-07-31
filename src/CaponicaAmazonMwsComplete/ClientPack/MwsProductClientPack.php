@@ -4,6 +4,8 @@ namespace CaponicaAmazonMwsComplete\ClientPack;
 
 use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsProductClient;
+use CaponicaAmazonMwsComplete\Concerns\ProvidesServiceUrlSuffix;
+use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 use CaponicaAmazonMwsComplete\Domain\Product\PotentialMatch;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottleAwareClientPackInterface;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestLogCollection;
@@ -11,10 +13,13 @@ use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
+use CaponicaAmazonMwsComplete\Service\LoggerService;
+use Psr\Log\LoggerInterface;
 
 class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClientPackInterface {
-    const RELATIONSHIPS_SET_MARKER_START    = '<Relationships>';
-    const RELATIONSHIPS_SET_MARKER_END      = '</Relationships>';
+    use SignsRequestArray, ProvidesServiceUrlSuffix { SignsRequestArray::signArray as baseSignArray; }
+
+    const SERVICE_NAME = 'Products';
 
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
@@ -40,12 +45,13 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const PARAM_ID_TYPE                         = 'IdType';
     const PARAM_ITEM_CONDITION                  = 'ItemCondition';
     const PARAM_MARKETPLACE_ID                  = 'MarketplaceId';
+    const PARAM_MWS_AUTH_TOKEN                  = 'MWSAuthToken';
     const PARAM_QUERY                           = 'Query';
     const PARAM_QUERY_CONTEXT_ID                = 'QueryContextId';
     const PARAM_SELLER_ID                       = 'SellerId';
     const PARAM_SELLER_SKU                      = 'SellerSKU';
     const PARAM_SELLER_SKU_LIST                 = 'SellerSKUList';
-    const PARAM_MWS_AUTH_TOKEN = 'MWSAuthToken';
+    const PARAM_FEES_ESTIMATE_REQUEST_LIST      = 'FeesEstimateRequestList';
 
     const QUERY_CONTEXT_ALL                     = 'All';
     const QUERY_CONTEXT_APPAREL                 = 'Apparel';
@@ -105,16 +111,22 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const METHOD_LIST_MATCHING_PRODUCTS             = 'listMatchingProducts';
     const METHOD_GET_MATCHING_PRODUCTS              = 'getMatchingProduct';
     const METHOD_GET_MATCHING_PRODUCTS_FOR_ID       = 'getMatchingProductForId';
+    const METHOD_GET_MY_FEES_ESTIMATE               = 'getMyFeesEstimate';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
     /** @var string $sellerId           The MWS SellerID string used in API connections */
     protected $sellerId;
+    /** @var string $authToken          MWSAuthToken, only needed when working with (3rd party) client accounts which provide an Auth Token */
+    protected $authToken = null;
+    /** @var LoggerInterface */
+    protected $logger;
 
-    public function __construct(MwsClientPoolConfig $poolConfig) {
-        $this->marketplaceId    = $poolConfig->getMarketplaceId($poolConfig->getAmazonSite());
+    public function __construct(MwsClientPoolConfig $poolConfig, LoggerInterface $logger = null) {
+        $this->marketplaceId    = $poolConfig->getMarketplaceId();
         $this->sellerId         = $poolConfig->getSellerId();
-        $this->mwsAuthToken     = $poolConfig->getMwsAuthToken();
+        $this->authToken        = $poolConfig->getAuthToken();
+        $this->logger           = $logger;
 
         $this->initThrottleManager();
 
@@ -127,10 +139,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         );
     }
 
-    private function getServiceUrlSuffix() {
-        return '/Products/' . self::SERVICE_VERSION;
-    }
+    // 'Sign' the request by adding SellerId and MWSAuthToken (if used)
+    private function signArray($requestArray = []) {
+        $requestArray[self::PARAM_MARKETPLACE_ID] = $this->marketplaceId;
 
+        return $this->baseSignArray($requestArray);
+    }
 
     // ##################################################
     // #      basic wrappers for API calls go here      #
@@ -141,12 +155,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function callGetCompetitivePricingForASIN($asin) {
         $options = [
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asin),
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asin) ? count($asin) : 1;
+
+        $options = $this->signArray($options);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_COMPETITIVE_PRICING_FOR_ASIN, $options, $weight);
     }
     /**
@@ -154,12 +167,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetCompetitivePricingForSKUResponse
      */
     public function callGetCompetitivePricingForSKU($skuList) {
-        return $this->getCompetitivePricingForSKU([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getCompetitivePricingForSKU($options);
     }
     /**
      * @param string|array $asinList    One or more ASINs to lookup
@@ -168,13 +179,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function callGetLowestOfferListingsForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         $options = [
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asinList) ? count($asinList) : 1;
+
+        $options = $this->signArray($options);
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_LOWEST_OFFER_LISTINGS_FOR_ASIN, $options, $weight);
     }
     /**
@@ -183,13 +193,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForSKUResponse
      */
     public function callGetLowestOfferListingsForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
-        return $this->getLowestOfferListingsForSKU([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getLowestOfferListingsForSKU($options);
     }
     /**
      * @param string $asin              A single ASIN to lookup
@@ -197,13 +205,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetLowestPricedOffersForASINResponse
      */
     public function callGetLowestPricedOffersForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
-        return $this->getLowestPricedOffersForASIN([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_ASIN            => $asin,
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getLowestPricedOffersForASIN($options);
     }
     /**
      * @param string $sku               A single SKU to lookup
@@ -211,27 +217,24 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetLowestPricedOffersForSKUResponse
      */
     public function callGetLowestPricedOffersForSKU($sku, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
-        return $this->getLowestPricedOffersForSKU([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_SELLER_SKU      => $sku,
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getLowestPricedOffersForSKU($options);
     }
     /**
      * @param string|array $asinList    One or more ASINs to lookup
      * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductResponse
      */
     public function callGetMatchingProduct($asinList) {
-        $parameters = [
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = [
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
         $weight = is_array($asinList) ? count($asinList) : 1;
-        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS, $parameters, $weight);
+
+        $options = $this->signArray($options);
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS, $options, $weight);
     }
     /**
      * @param string $idType            The IdType of the IDs to look up, one of the ID_TYPE_XYZ values
@@ -239,13 +242,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetMatchingProductForIdResponse
      */
     public function callGetMatchingProductForId($idType, $idList) {
-        $options = [
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_ID_TYPE         => $idType,
             self::PARAM_ID_LIST         => array('Id' => $idList),
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
-        ];
+        ]);
         $weight = is_array($idList) ? count($idList) : 1;
         return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID, $options, $weight);
     }
@@ -255,13 +255,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetMyPriceForASINResponse
      */
     public function callGetMyPriceForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
-        return $this->getMyPriceForASIN([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_ASIN_LIST       => array('ASIN' => $asinList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getMyPriceForASIN($options);
     }
     /**
      * @param string|array $skuList     One or more SKUs to lookup
@@ -269,37 +267,31 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      * @return \MarketplaceWebServiceProducts_Model_GetMyPriceForSKUResponse
      */
     public function callGetMyPriceForSKU($skuList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
-        return $this->getMyPriceForSKU([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_SELLER_SKU_LIST => array('SellerSKU' => $skuList),
             self::PARAM_ITEM_CONDITION  => $itemCondition,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getMyPriceForSKU($options);
     }
     /**
      * @param string $asin              A single ASIN to lookup
      * @return \MarketplaceWebServiceProducts_Model_GetProductCategoriesForASINResponse
      */
     public function callGetProductCategoriesForASIN($asin) {
-        return $this->getProductCategoriesForASIN([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_ASIN            => $asin,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getProductCategoriesForASIN($options);
     }
     /**
      * @param string $sku               A single SKU to lookup
      * @return \MarketplaceWebServiceProducts_Model_GetProductCategoriesForSKUResponse
      */
     public function callGetProductCategoriesForSKU($sku) {
-        return $this->getProductCategoriesForSKU([
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+        $options = $this->signArray([
             self::PARAM_SELLER_SKU      => $sku,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ]);
+        return $this->getProductCategoriesForSKU($options);
     }
 
     /**
@@ -309,13 +301,27 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function callListMatchingProducts($query, $queryContext = null) {
         $options = [
-            self::PARAM_SELLER_ID       => $this->sellerId,
-            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
             self::PARAM_QUERY           => $query,
             self::PARAM_QUERY_CONTEXT_ID => $queryContext,
-            self::PARAM_MWS_AUTH_TOKEN => $this->mwsAuthToken
         ];
+        $options = $this->signArray($options);
         return CaponicaClientPack::throttledCall($this, self::METHOD_LIST_MATCHING_PRODUCTS, $options);
+    }
+
+    /**
+     * @param array $feesEstimateRequestList Array of FeeEstimateRequest Objects
+     *
+     * @throws \MarketplaceWebServiceProducts_Exception
+     *
+     * @return \MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse
+     */
+    public function callGetMyFeesEstimate($feesEstimateRequestList)
+    {
+        $options = $this->signArray([
+            self::PARAM_FEES_ESTIMATE_REQUEST_LIST => ['FeesEstimateRequest' => $feesEstimateRequestList],
+        ]);
+
+        return CaponicaClientPack::throttledCall($this, self::METHOD_GET_MY_FEES_ESTIMATE, $options);
     }
 
     // ###################################################
@@ -331,6 +337,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
                 self::METHOD_GET_MATCHING_PRODUCTS              => [20, 2,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_GET_MATCHING_PRODUCTS_FOR_ID       => [20, 5,  ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
                 self::METHOD_LIST_MATCHING_PRODUCTS             => [20, 0.2],
+                self::METHOD_GET_MY_FEES_ESTIMATE               => [20, 10, ThrottledRequestLogCollection::RESTORE_BASIS_WEIGHT],
             ]
         );
     }
@@ -348,7 +355,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrievePotentialEanMatchesOnAmazon($eans) {
         if (empty($eans)) {
-            echo "\nNo EANs to search for.";
+            $this->logMessage("No EANs to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -359,11 +366,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResponse = $this->callGetMatchingProductForId(self::ID_TYPE_EAN, $eans);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($eans);
+                $this->logMessage(
+                    "There was a problem with the search\nTerms searched: ".print_r($eans, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -374,12 +382,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
             $searchTerm = $mwsProductResultsForOneSearchTerm->getId();
             if (empty($searchTerm)) {
-                echo "\nEmpty search term in results";
+                $this->logMessage("Empty search term in results", LoggerService::DEBUG);
                 continue;
             }
 
             if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
-                echo "\nError for search term $searchTerm: " . $error->getMessage();
+                $this->logMessage("Error for search term $searchTerm: ".$error->getMessage(), LoggerService::WARNING);
                 continue;
             }
 
@@ -396,7 +404,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveProductsByAsins($asins) {
         if (empty($asins)) {
-            echo "\nNo ASINs to search for.";
+            $this->logMessage("No ASINs to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -407,11 +415,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResponse = $this->callGetMatchingProduct($asins);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)\nSleeping for 5 seconds...", LoggerService::INFO);
+                sleep(5);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($asins);
+                $this->logMessage("There was a problem with the search\nTerms searched:".print_r($asins, true), LoggerService::INFO);
             }
             $this->debugException($e);
             return null;
@@ -423,19 +430,19 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
             $searchTerm = $mwsProductResultsForOneSearchTerm->getASIN();
             if (empty($searchTerm)) {
-                echo "\nEmpty ASIN in results";
+                $this->logMessage("Empty ASIN in results", LoggerService::DEBUG);
                 continue;
             }
 
             if ($error = $mwsProductResultsForOneSearchTerm->getError()) {
-                echo "\nError for ASIN $searchTerm: " . $error->getMessage();
+                $this->logMessage("Error for ASIN $searchTerm: ".$error->getMessage(), LoggerService::WARNING);
                 continue;
             }
 
             /** @var \MarketplaceWebServiceProducts_Model_Product $mwsProduct */
             $mwsProduct = $mwsProductResultsForOneSearchTerm->getProduct();
 
-            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml());
+            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml(), $this->logger);
         }
 
         return $productsByAsin;
@@ -447,7 +454,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrievePotentialMatchesOnAmazon($searchTerm, $searchContext=null) {
         if (empty($searchTerm)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -456,11 +463,9 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $searchResult = $this->callListMatchingProducts($searchTerm, $searchContext);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem with the search";
-                echo "\nTerms searched:";
-                print_r($searchTerm);
+                $this->logMessage("There was a problem with the search\nTerms searched:".print_r($searchTerm, true), LoggerService::ERROR);
             }
             $this->debugException($e);
             return null;
@@ -482,7 +487,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveCompetitivePricingForASIN($asinList) {
         if (empty($asinList)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -491,10 +496,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $mwsResponse = $this->callGetCompetitivePricingForASIN($asinList);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem finding competitive pricing for ASIN list:";
-                print_r($asinList);
+                $this->logMessage(
+                    "There was a problem finding competitive pricing for ASIN list:".print_r($asinList, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -519,7 +526,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveLowestOfferListingsForASIN($asinList, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         if (empty($asinList)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -528,10 +535,12 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $lolResponse = $this->callGetLowestOfferListingsForASIN($asinList, $itemCondition);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled (twice)";
+                $this->logMessage("The request was throttled (twice)", LoggerService::ERROR);
             } else {
-                echo "\nThere was a problem finding lowest offers for ASIN list:";
-                print_r($asinList);
+                $this->logMessage(
+                    "There was a problem finding lowest offers for ASIN list:".print_r($asinList, true),
+                    LoggerService::ERROR
+                );
             }
             $this->debugException($e);
             return null;
@@ -545,6 +554,11 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $lolObjectsForThisAsin = [];
             /** @var \MarketplaceWebServiceProducts_Model_Product $lolProduct */
             $lolProduct = $lolResult->getProduct();
+            if (empty($lolProduct)) {
+                $this->logMessage("No Product found in LOL Result:", LoggerService::ERROR);
+                $this->logMessage(print_r($lolResult, true), LoggerService::DEBUG);
+                return null;
+            }
             $lolProductAsin = $lolProduct->getIdentifiers()->getMarketplaceASIN()->getASIN();
             /** @var \MarketplaceWebServiceProducts_Model_LowestOfferListingList $lolList */
             $lolList = $lolProduct->getLowestOfferListings();
@@ -567,7 +581,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
      */
     public function retrieveMyPriceForASIN($asin, $itemCondition = self::ITEM_CONDITION_TEXT_NEW) {
         if (empty($asin)) {
-            echo "\nNo terms to search for.";
+            $this->logMessage("No terms to search for.", LoggerService::DEBUG);
             return null;
         }
 
@@ -576,10 +590,10 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $mpfaResponse = $this->callGetMyPriceForASIN($asin, $itemCondition);
         } catch (\MarketplaceWebServiceProducts_Exception $e) {
             if ('RequestThrottled' == $e->getErrorCode()) {
-                echo "\nThe request was throttled";
+                $this->logMessage("The request was throttled", LoggerService::ERROR);
                 sleep(2);
             } else {
-                echo "\nThere was a problem with looking up ASIN $asin";
+                $this->logMessage("There was a problem with looking up ASIN $asin", LoggerService::ERROR);
             }
             $this->debugException($e);
             return null;
@@ -595,22 +609,41 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $mpfaObjects;
     }
 
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed  $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return void
+     */
+    protected function logMessage($message, $level, $context = [])
+    {
+        if ($this->logger) {
+            // Use the internal logger for logging.
+            $this->logger->log($level, $message, $context);
+        } else {
+            LoggerService::logMessage($message, $level, $context);
+        }
+    }
+
     private function convertMwsProductListIntoPotentialMatchesArray(\MarketplaceWebServiceProducts_Model_ProductList $mwsProductList, $rawXml) {
         $potentialMatches = [];
 
         /** @var \MarketplaceWebServiceProducts_Model_Product[] $productArray */
         $productArray = $mwsProductList->getProduct();
         if (empty($productArray)) {
-            echo "\nNo results were found for the search term";
+            $this->logMessage("No results were found for the search term", LoggerService::DEBUG);
             return null;
         }
 
         foreach ($productArray as $product) {
             try {
-                $potentialMatch = new PotentialMatch($product, $rawXml);
+                $potentialMatch = new PotentialMatch($product, $rawXml, $this->logger);
                 $potentialMatches[] = $potentialMatch;
             } catch (\InvalidArgumentException $e) {
-                print_r($e); // @todo - better way to debug an exception
+                $this->logMessage($e->getMessage(), LoggerService::ERROR);
                 return null;
             }
         }
@@ -618,11 +651,15 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
         return $potentialMatches;
     }
     private function debugException(\MarketplaceWebServiceProducts_Exception $e) {
-        echo "\nException details:";
-        echo "\nCode:    " . $e->getErrorCode();
-        echo "\nError:   " . $e->getErrorMessage();
-        echo "\nMessage: " . $e->getMessage();
-        echo "\nXML:     " . $e->getXML();
-        echo "\nHeaders: " . $e->getResponseHeaderMetadata();
+        $this->logMessage(
+            "Exception details:".
+            "\nCode:    ".$e->getErrorCode().
+            "\nError:   ".$e->getErrorMessage().
+            "\nMessage: ".$e->getMessage().
+            "\nXML:     ".$e->getXML().
+            "\nHeaders: ".$e->getResponseHeaderMetadata()
+            ,
+            LoggerService::ERROR
+        );
     }
 }

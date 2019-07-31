@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Products
  * @version  2011-10-01
- * Library Version: 2016-06-01
- * Generated: Mon Jun 13 10:07:56 PDT 2016
+ * Library Version: 2017-03-22
+ * Generated: Thu Oct 11 10:46:02 PDT 2018
  */
 
 /**
@@ -219,7 +219,9 @@ require_once (dirname(__FILE__) . '/../Model.php');
         $xpath = new DOMXPath($dom);
         $response = $xpath->query("//*[local-name()='GetLowestOfferListingsForASINResponse']");
         if ($response->length == 1) {
-            return new MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASINResponse(($response->item(0))); 
+            $mwsResponse = new MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASINResponse(($response->item(0)));
+            $mwsResponse->setRawXml($xml); // Caponica addition to save the raw XML in case you want to custom parse it later
+            return $mwsResponse;
         } else {
             throw new Exception ("Unable to construct MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASINResponse from provided XML. 
                                   Make sure that GetLowestOfferListingsForASINResponse is a root element");

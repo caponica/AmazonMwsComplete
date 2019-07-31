@@ -1,0 +1,14 @@
+Client.php has been modified to use:
+    if (PHP_VERSION_ID < 50600) {
+        iconv_set_encoding('output_encoding', 'UTF-8');
+        iconv_set_encoding('input_encoding', 'UTF-8');
+        iconv_set_encoding('internal_encoding', 'UTF-8');
+    } else {
+        ini_set('default_charset', 'UTF-8');
+    }
+for better PHP compatibility
+
+
+Model.php has been modified to enable storing/retrieving the raw XML from the response
+
+GetLowestOfferListingsForASINResponse, GetMatchingProductForIdResponse, ListMatchingProductsResponse have been modified to stash the raw XML response

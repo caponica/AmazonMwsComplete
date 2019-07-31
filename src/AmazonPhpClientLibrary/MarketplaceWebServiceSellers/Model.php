@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -11,16 +11,16 @@
  *******************************************************************************
  * PHP Version 5
  * @category Amazon
- * @package  FBA Outbound Service MWS
- * @version  2010-10-01
- * Library Version: 2016-10-19
- * Generated: Wed Oct 19 08:37:58 PDT 2016
+ * @package  Marketplace Web Service Sellers
+ * @version  2011-07-01
+ * Library Version: 2015-06-18
+ * Generated: Wed Sep 12 08:12:03 PDT 2018
  */
 
 /**
- * FBAOutboundServiceMWS_Model - base class for all model classes
+ * MarketplaceWebServiceSellers_Model - base class for all model classes
  */
-abstract class FBAOutboundServiceMWS_Model
+abstract class MarketplaceWebServiceSellers_Model
 {
 
     /** @var array */
@@ -298,7 +298,7 @@ abstract class FBAOutboundServiceMWS_Model
         $xml = "";
         foreach ($this->_fields as $fieldName => $field) {
             $fieldValue = $field['FieldValue'];
-            if (!is_null($fieldValue) && $field['FieldType'] != "FBAOutboundServiceMWS_Model_ResponseHeaderMetadata") {
+            if (!is_null($fieldValue) && $field['FieldType'] != "MarketplaceWebServiceSellers_Model_ResponseHeaderMetadata") {
                 $fieldType = $field['FieldType'];
                 if (is_array($fieldType)) {
                     if ($fieldType[0] == "object") {
@@ -399,7 +399,7 @@ abstract class FBAOutboundServiceMWS_Model
      */
     private function _isComplexType ($fieldType) 
     {
-        return preg_match("/^FBAOutboundServiceMWS_/", $fieldType);
+        return preg_match("/^MarketplaceWebServiceSellers_/", $fieldType);
     }
 
    /**
