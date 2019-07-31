@@ -13,11 +13,26 @@
     ],
 
     "require": {
-        "php": ">=5.3.2"
+        "php": ">=5.6.21",
+        "psr/log": "^1.0.1"
     },
 
     "autoload": {
-        "psr-0": { "CaponicaAmazonMwsComplete\\": "src/" }
+        "psr-0": {
+            "CaponicaAmazonMwsComplete\\": "src/",
+            "FBAInboundServiceMWS_": "src/AmazonPhpClientLibrary/",
+            "FBAInventoryServiceMWS_": "src/AmazonPhpClientLibrary/",
+            "FBAOutboundServiceMWS_": "src/AmazonPhpClientLibrary/",
+            "MarketplaceWebService_": "src/AmazonPhpClientLibrary/",
+            "MarketplaceWebServiceOrders_": "src/AmazonPhpClientLibrary/",
+            "MarketplaceWebServiceProducts_": "src/AmazonPhpClientLibrary/",
+            "MarketplaceWebServiceSellers_": "src/AmazonPhpClientLibrary/",
+            "MWSCartService_": "src/AmazonPhpClientLibrary/",
+            "MWSCustomerService_": "src/AmazonPhpClientLibrary/",
+            "MWSFinancesService_": "src/AmazonPhpClientLibrary/",
+            "MWSMerchantFulfillmentService_": "src/AmazonPhpClientLibrary/",
+            "MWSRecommendationsSectionService_": "src/AmazonPhpClientLibrary/",
+            "MWSSubscriptionsService_": "src/AmazonPhpClientLibrary/"
+        }
     }
 }
-

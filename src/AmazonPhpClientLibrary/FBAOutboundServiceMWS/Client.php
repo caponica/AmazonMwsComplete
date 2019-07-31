@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Outbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-02-01
- * Generated: Fri Jan 08 13:26:48 PST 2016
+ * Library Version: 2016-01-01
+ * Generated: Wed Sep 12 07:08:09 PDT 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
 {
 
     const SERVICE_VERSION = '2010-10-01';
-    const MWS_CLIENT_VERSION = '2016-02-01';
+    const MWS_CLIENT_VERSION = '2016-01-01';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -264,6 +264,69 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
 
 
     /**
+     * Create Fulfillment Return
+     * Requests a return of one or more items that were 
+     *   originally fulfilled by SI. The client must look at
+     *   the item/authorization list details in the response
+     *   to determine what was accepted. All accepted returned 
+     *   items will be returned as a list in ReturnItemList. 
+     *   All non-returnable items are return as a list in InvalidReturnItemList. 
+     *   Both lists will always be returned as part of the response. If all 
+     *   items are accepted for return InvalidReturnItemList will be empty. If all 
+     *   the items are invalid for a return, ReturnItemList will be empty. 
+     *   If all the items are invalid for a return, ReturnItemList will be empty.
+     *
+     * @param mixed $request array of parameters for FBAOutboundServiceMWS_Model_CreateFulfillmentReturn request or FBAOutboundServiceMWS_Model_CreateFulfillmentReturn object itself
+     * @see FBAOutboundServiceMWS_Model_CreateFulfillmentReturnRequest
+     * @return FBAOutboundServiceMWS_Model_CreateFulfillmentReturnResponse
+     *
+     * @throws FBAOutboundServiceMWS_Exception
+     */
+    public function createFulfillmentReturn($request)
+    {
+        if (!($request instanceof FBAOutboundServiceMWS_Model_CreateFulfillmentReturnRequest)) {
+            require_once (dirname(__FILE__) . '/Model/CreateFulfillmentReturnRequest.php');
+            $request = new FBAOutboundServiceMWS_Model_CreateFulfillmentReturnRequest($request);
+        }
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'CreateFulfillmentReturn';
+        $httpResponse = $this->_invoke($parameters);
+
+        require_once (dirname(__FILE__) . '/Model/CreateFulfillmentReturnResponse.php');
+        $response = FBAOutboundServiceMWS_Model_CreateFulfillmentReturnResponse::fromXML($httpResponse['ResponseBody']);
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        return $response;
+    }
+
+
+    /**
+     * Convert CreateFulfillmentReturnRequest to name value pairs
+     */
+    private function _convertCreateFulfillmentReturn($request) {
+
+        $parameters = array();
+        $parameters['Action'] = 'CreateFulfillmentReturn';
+        if ($request->isSetSellerId()) {
+            $parameters['SellerId'] =  $request->getSellerId();
+        }
+        if ($request->isSetMWSAuthToken()) {
+            $parameters['MWSAuthToken'] =  $request->getMWSAuthToken();
+        }
+        if ($request->isSetSellerFulfillmentOrderId()) {
+            $parameters['SellerFulfillmentOrderId'] =  $request->getSellerFulfillmentOrderId();
+        }
+        if ($request->isSetItems()) {
+            $ItemsCreateFulfillmentReturnRequest = $request->getItems();
+            foreach  ($ItemsCreateFulfillmentReturnRequest->getmember() as $memberItemsIndex => $memberItems) {
+                $parameters['Items' . '.' . 'member' . '.'  . ($memberItemsIndex + 1)] =  $memberItems;
+            }
+        }
+
+        return $parameters;
+    }
+
+
+    /**
      * Get Fulfillment Order
      * Get detailed information about a FulfillmentOrder.  This includes the
      *   original fulfillment order request, the status of the order and its
@@ -338,7 +401,6 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
      */
     public function getFulfillmentPreview($request)
     {
-
         if (!($request instanceof FBAOutboundServiceMWS_Model_GetFulfillmentPreviewRequest)) {
             require_once (dirname(__FILE__) . '/Model/GetFulfillmentPreviewRequest.php');
             $request = new FBAOutboundServiceMWS_Model_GetFulfillmentPreviewRequest($request);
@@ -624,6 +686,65 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
 
 
     /**
+     * List Return Reason Codes
+     * This operation will result in a list of eligible return reasons for
+     *   a given SKU and original ordering country. The eligible return reasons 
+     *   may vary from country to country.
+     *
+     * @param mixed $request array of parameters for FBAOutboundServiceMWS_Model_ListReturnReasonCodes request or FBAOutboundServiceMWS_Model_ListReturnReasonCodes object itself
+     * @see FBAOutboundServiceMWS_Model_ListReturnReasonCodesRequest
+     * @return FBAOutboundServiceMWS_Model_ListReturnReasonCodesResponse
+     *
+     * @throws FBAOutboundServiceMWS_Exception
+     */
+    public function listReturnReasonCodes($request)
+    {
+        if (!($request instanceof FBAOutboundServiceMWS_Model_ListReturnReasonCodesRequest)) {
+            require_once (dirname(__FILE__) . '/Model/ListReturnReasonCodesRequest.php');
+            $request = new FBAOutboundServiceMWS_Model_ListReturnReasonCodesRequest($request);
+        }
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'ListReturnReasonCodes';
+        $httpResponse = $this->_invoke($parameters);
+
+        require_once (dirname(__FILE__) . '/Model/ListReturnReasonCodesResponse.php');
+        $response = FBAOutboundServiceMWS_Model_ListReturnReasonCodesResponse::fromXML($httpResponse['ResponseBody']);
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        return $response;
+    }
+
+
+    /**
+     * Convert ListReturnReasonCodesRequest to name value pairs
+     */
+    private function _convertListReturnReasonCodes($request) {
+
+        $parameters = array();
+        $parameters['Action'] = 'ListReturnReasonCodes';
+        if ($request->isSetSellerId()) {
+            $parameters['SellerId'] =  $request->getSellerId();
+        }
+        if ($request->isSetMWSAuthToken()) {
+            $parameters['MWSAuthToken'] =  $request->getMWSAuthToken();
+        }
+        if ($request->isSetMarketplaceId()) {
+            $parameters['MarketplaceId'] =  $request->getMarketplaceId();
+        }
+        if ($request->isSetSellerFulfillmentOrderId()) {
+            $parameters['SellerFulfillmentOrderId'] =  $request->getSellerFulfillmentOrderId();
+        }
+        if ($request->isSetSellerSKU()) {
+            $parameters['SellerSKU'] =  $request->getSellerSKU();
+        }
+        if ($request->isSetLanguage()) {
+            $parameters['Language'] =  $request->getLanguage();
+        }
+
+        return $parameters;
+    }
+
+
+    /**
      * Update Fulfillment Order
      * The SellerFulfillmentOrderId must be the order ID of the original
      *     order that needs to be updated.
@@ -785,9 +906,13 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
     public function __construct(
     $awsAccessKeyId, $awsSecretAccessKey, $config, $applicationName, $applicationVersion, $attributes = null)
     {
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (PHP_VERSION_ID < 50600) {
+            iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        } else {
+            ini_set('default_charset', 'UTF-8');
+        }
 
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;

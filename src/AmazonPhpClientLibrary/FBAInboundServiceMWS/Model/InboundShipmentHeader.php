@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Thu Nov 08 11:45:48 PST 2018
  */
 
 /**
@@ -36,6 +36,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>AreCasesRequired: bool</li>
  * <li>ShipmentStatus: string</li>
  * <li>LabelPrepPreference: string</li>
+ * <li>IntendedBoxContentsSource: string</li>
  *
  * </ul>
  */
@@ -51,6 +52,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'AreCasesRequired' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'ShipmentStatus' => array('FieldValue' => null, 'FieldType' => 'string'),
     'LabelPrepPreference' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'IntendedBoxContentsSource' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -338,6 +340,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withLabelPrepPreference($value)
     {
         $this->setLabelPrepPreference($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the IntendedBoxContentsSource property.
+     *
+     * @return String IntendedBoxContentsSource.
+     */
+    public function getIntendedBoxContentsSource()
+    {
+        return $this->_fields['IntendedBoxContentsSource']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IntendedBoxContentsSource property.
+     *
+     * @param string intendedBoxContentsSource
+     * @return this instance
+     */
+    public function setIntendedBoxContentsSource($value)
+    {
+        $this->_fields['IntendedBoxContentsSource']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IntendedBoxContentsSource is set.
+     *
+     * @return true if IntendedBoxContentsSource is set.
+     */
+    public function isSetIntendedBoxContentsSource()
+    {
+                return !is_null($this->_fields['IntendedBoxContentsSource']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IntendedBoxContentsSource, return this.
+     *
+     * @param intendedBoxContentsSource
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIntendedBoxContentsSource($value)
+    {
+        $this->setIntendedBoxContentsSource($value);
         return $this;
     }
 

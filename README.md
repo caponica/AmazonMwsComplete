@@ -71,6 +71,63 @@ MWS responses:
         echo $compPricing->asin;
     }
 
+MWSAuthToken
+============
+
+If you're using an MWSAuthToken then you can pass it in via the config:
+
+    $mwsClientPoolUsa->setConfig([
+        'auth_token'            => 'YOUR_MWS_AUTH_TOKEN',
+        // ... other parameters ...
+    ]);
+
+Once set on the ClientPool, the token should be passed through to each Client and used in every API request.
+
+*REQUEST: Please feed back via [github](https://github.com/caponica/AmazonMwsComplete/issues) if this is the best way to 
+set and use the MWSAuthToken, and if it all works as expected. I don't used this functionality myself so cannot test it
+properly.*
+
+NEW - Logging
+=============
+
+The scripts no longer echo messages. Instead they use a Logger which you can define when you instantiate the ClientPool.
+
+See https://github.com/php-fig/log and https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+for more details about setting up a Logger.
+
+A basic Logger (which replicates the old echo behaviour), would look like this:
+
+    # EchoLogger.php
+
+    namespace Your\Path;
+    
+    use Psr\Log\AbstractLogger;
+    
+    class EchoLogger extends AbstractLogger
+    {
+        /**
+         * Logs with an arbitrary level.
+         *
+         * @param mixed  $level
+         * @param string $message
+         * @param array  $context
+         *
+         * @return void
+         */
+        public function log($level, $message, array $context = array())
+        {
+            echo "$message\n";
+        }
+    }
+
+You then simply pass an EchoLogger instance into the MwsClientPool constructor:
+    
+    use CaponicaAmazonMwsComplete\ClientPool\MwsClientPool;
+    use Your\Path\EchoLogger;
+
+    $echoLogger = new EchoLogger();
+    $mwsClientPoolUsa = new MwsClientPool($echoLogger);
+
 
 Working with reports
 ====================
@@ -114,18 +171,23 @@ Client library versions
 
 |Library                            |API version|Library version|
 |-----------------------------------|-----------|---------------|
-|FBAInboundServiceMWS               |2010-10-01 |2016-04-06     |
-|FBAOutboundServiceMWS              |2010-10-01 |2016-02-01     |
-|MarketplaceWebService              |2009-01-01 |2015-06-18     |
-|MarketplaceWebServiceOrders        |2013-09-01 |2015-09-24     |
-|MarketplaceWebServiceProducts      |2011-10-01 |2016-06-01     |
+|FBAInboundServiceMWS               |2010-10-01 |2016-10-05     |
+|FBAInventoryServiceMWS             |2010-10-01 |2014-09-30     |
+|FBAOutboundServiceMWS              |2010-10-01 |2016-01-01 *1  |
+|MarketplaceWebService              |2009-01-01 |2016-09-21     |
+|MarketplaceWebServiceOrders        |2013-09-01 |2018-10-31     |
+|MarketplaceWebServiceProducts      |2011-10-01 |2017-03-22     |
 |MarketplaceWebServiceSellers       |2011-07-01 |2015-06-18     |
-|MWSCartService                     |2014-03-01 |2015-06-18     |
-|MWSCustomerService                 |2014-03-01 |2015-06-18     |
-|MWSFinancesService                 |2015-05-01 |2015-09-03     |
-|MWSMerchantFulfillmentService      |2015-06-01 |2016-03-30     |
-|MWSRecommendationsSectionService   |2013-04-01 |2015-06-18     |
-|MWSSubscriptionsService            |2013-07-01 |2015-06-18     |
+|MWSCartService                     |2014-03-01 |2015-06-18 ??  |
+|MWSCustomerService                 |2014-03-01 |2015-06-18 ??  |
+|MWSFinancesService                 |2015-05-01 |2018-03-22     |
+|MWSMerchantFulfillmentService      |2015-06-01 |2018-10-31     |
+|MWSRecommendationsSectionService   |2013-04-01 |2014-10-01 *1  |
+|MWSSubscriptionsService            |2013-07-01 |2013-11-01 *1  |
+
+?? Amazon has deprecated these APIs, so they may be removed from this package in future.
+
+*1 These libraries used to show later Library versions (dates) but this is what they say in the current Client.php files
 
 The [Off-Amazon Payments API](https://developer.amazonservices.co.uk/doc/offamazonpayments/offamazonpayments/v20130101/php.html)
 is not currently included, since it is not directly linked to MWS activity.

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 23:32:33 UTC 2018
  */
 
 /**
@@ -39,6 +39,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>MustArriveByDate: string</li>
  * <li>ShipDate: string</li>
  * <li>ShippingServiceOptions: MWSMerchantFulfillmentService_Model_ShippingServiceOptions</li>
+ * <li>LabelCustomization: MWSMerchantFulfillmentService_Model_LabelCustomization</li>
  *
  * </ul>
  */
@@ -57,6 +58,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'MustArriveByDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShipDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShippingServiceOptions' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShippingServiceOptions'),
+    'LabelCustomization' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_LabelCustomization'),
     );
     parent::__construct($data);
     }
@@ -490,6 +492,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withShippingServiceOptions($value)
     {
         $this->setShippingServiceOptions($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the LabelCustomization property.
+     *
+     * @return LabelCustomization LabelCustomization.
+     */
+    public function getLabelCustomization()
+    {
+        return $this->_fields['LabelCustomization']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the LabelCustomization property.
+     *
+     * @param MWSMerchantFulfillmentService_Model_LabelCustomization labelCustomization
+     * @return this instance
+     */
+    public function setLabelCustomization($value)
+    {
+        $this->_fields['LabelCustomization']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if LabelCustomization is set.
+     *
+     * @return true if LabelCustomization is set.
+     */
+    public function isSetLabelCustomization()
+    {
+                return !is_null($this->_fields['LabelCustomization']['FieldValue']);
+            }
+
+    /**
+     * Set the value of LabelCustomization, return this.
+     *
+     * @param labelCustomization
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withLabelCustomization($value)
+    {
+        $this->setLabelCustomization($value);
         return $this;
     }
 

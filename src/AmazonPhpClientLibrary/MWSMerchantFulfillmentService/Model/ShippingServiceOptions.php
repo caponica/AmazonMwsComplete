@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 23:32:33 UTC 2018
  */
 
 /**
@@ -33,6 +33,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>DeliveryExperience: string</li>
  * <li>DeclaredValue: MWSMerchantFulfillmentService_Model_CurrencyAmount</li>
  * <li>CarrierWillPickUp: bool</li>
+ * <li>LabelFormat: string</li>
  *
  * </ul>
  */
@@ -45,6 +46,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'DeliveryExperience' => array('FieldValue' => null, 'FieldType' => 'string'),
     'DeclaredValue' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_CurrencyAmount'),
     'CarrierWillPickUp' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'LabelFormat' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -194,6 +196,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withCarrierWillPickUp($value)
     {
         $this->setCarrierWillPickUp($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the LabelFormat property.
+     *
+     * @return String LabelFormat.
+     */
+    public function getLabelFormat()
+    {
+        return $this->_fields['LabelFormat']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the LabelFormat property.
+     *
+     * @param string labelFormat
+     * @return this instance
+     */
+    public function setLabelFormat($value)
+    {
+        $this->_fields['LabelFormat']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if LabelFormat is set.
+     *
+     * @return true if LabelFormat is set.
+     */
+    public function isSetLabelFormat()
+    {
+                return !is_null($this->_fields['LabelFormat']['FieldValue']);
+            }
+
+    /**
+     * Set the value of LabelFormat, return this.
+     *
+     * @param labelFormat
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withLabelFormat($value)
+    {
+        $this->setLabelFormat($value);
         return $this;
     }
 

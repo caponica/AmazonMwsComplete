@@ -21,7 +21,11 @@
                         <Amount>100</Amount>
                     </DeclaredValue>
                     <CarrierWillPickUp>true</CarrierWillPickUp>
+                    <LabelFormat>String</LabelFormat>
                 </ShippingServiceOptions>
+                <AvailableLabelFormats>
+                    <LabelFormat>String</LabelFormat>
+                </AvailableLabelFormats>
             </ShippingService>
         </ShippingServiceList>
         <TemporarilyUnavailableCarrierList>

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  FBA Inbound Service MWS
  * @version  2010-10-01
- * Library Version: 2016-04-06
- * Generated: Thu Mar 31 08:59:33 PDT 2016
+ * Library Version: 2016-10-05
+ * Generated: Thu Nov 08 11:45:48 PST 2018
  */
 
 class FBAInboundServiceMWS_Model_ResponseHeaderMetadata {
@@ -29,12 +29,12 @@ class FBAInboundServiceMWS_Model_ResponseHeaderMetadata {
   private $metadata = array();
 
   public function __construct($requestId = null, $responseContext = null, $timestamp = null,
-                              $quotaMax = null, $quotaMax = null, $quotaResetsAt = null) {
+                              $quotaMax = null, $quotaRemaining = null, $quotaResetsAt = null) {
     $this->metadata[self::REQUEST_ID] = $requestId;
     $this->metadata[self::RESPONSE_CONTEXT] = $responseContext;
     $this->metadata[self::TIMESTAMP] = $timestamp;
     $this->metadata[self::QUOTA_MAX] = $quotaMax;
-    $this->metadata[self::QUOTA_REMAINING] = $quotaMax;
+    $this->metadata[self::QUOTA_REMAINING] = $quotaRemaining;
     $this->metadata[self::QUOTA_RESETS_AT] = $quotaResetsAt;
   }
 

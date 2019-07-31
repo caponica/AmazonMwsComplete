@@ -10,6 +10,6 @@ namespace CaponicaAmazonMwsComplete\AmazonClient;
 
 require_once __DIR__.'/../../AmazonPhpClientLibrary/MWSMerchantFulfillmentService/Client.php';
 
-class MwsMerchantClient extends \MWSMerchantFulfillmentService_Client {
+class MwsMerchantFulfillmentClient extends \MWSMerchantFulfillmentService_Client {
 
 }

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 23:32:33 UTC 2018
  */
 
 /**
@@ -35,6 +35,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ShipmentRequestDetails: MWSMerchantFulfillmentService_Model_ShipmentRequestDetails</li>
  * <li>ShippingServiceId: string</li>
  * <li>ShippingServiceOfferId: string</li>
+ * <li>HazmatType: string</li>
  *
  * </ul>
  */
@@ -49,6 +50,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ShipmentRequestDetails' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShipmentRequestDetails'),
     'ShippingServiceId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShippingServiceOfferId' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'HazmatType' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
     }
@@ -280,6 +282,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withShippingServiceOfferId($value)
     {
         $this->setShippingServiceOfferId($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the HazmatType property.
+     *
+     * @return String HazmatType.
+     */
+    public function getHazmatType()
+    {
+        return $this->_fields['HazmatType']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the HazmatType property.
+     *
+     * @param string hazmatType
+     * @return this instance
+     */
+    public function setHazmatType($value)
+    {
+        $this->_fields['HazmatType']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if HazmatType is set.
+     *
+     * @return true if HazmatType is set.
+     */
+    public function isSetHazmatType()
+    {
+                return !is_null($this->_fields['HazmatType']['FieldValue']);
+            }
+
+    /**
+     * Set the value of HazmatType, return this.
+     *
+     * @param hazmatType
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withHazmatType($value)
+    {
+        $this->setHazmatType($value);
         return $this;
     }
 

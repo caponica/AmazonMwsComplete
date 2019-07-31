@@ -20,6 +20,18 @@
                 <LabelPrepType>String</LabelPrepType>
                 <AreCasesRequired>true</AreCasesRequired>
                 <ConfirmedNeedByDate>String</ConfirmedNeedByDate>
+                <BoxContentsSource>String</BoxContentsSource>
+                <EstimatedBoxContentsFee>
+                    <TotalUnits>1</TotalUnits>
+                    <FeePerUnit>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Value>100</Value>
+                    </FeePerUnit>
+                    <TotalFee>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Value>100</Value>
+                    </TotalFee>
+                </EstimatedBoxContentsFee>
             </member>
         </ShipmentData>
         <NextToken>String</NextToken>

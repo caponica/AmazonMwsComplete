@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2018 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2016-03-30
- * Generated: Tue Mar 29 19:00:01 UTC 2016
+ * Library Version: 2018-10-31
+ * Generated: Mon Oct 22 23:32:33 UTC 2018
  */
 
 /**
@@ -30,7 +30,7 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
 {
 
     const SERVICE_VERSION = '2015-06-01';
-    const MWS_CLIENT_VERSION = '2016-03-30';
+    const MWS_CLIENT_VERSION = '2018-10-31';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -154,6 +154,9 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
         if ($request->isSetShippingServiceOfferId()) {
             $parameters['ShippingServiceOfferId'] =  $request->getShippingServiceOfferId();
         }
+        if ($request->isSetHazmatType()) {
+            $parameters['HazmatType'] =  $request->getHazmatType();
+        }
 
         return $parameters;
     }
@@ -173,7 +176,6 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
      */
     public function getEligibleShippingServices($request)
     {
-
         if (!($request instanceof MWSMerchantFulfillmentService_Model_GetEligibleShippingServicesRequest)) {
             require_once (dirname(__FILE__) . '/Model/GetEligibleShippingServicesRequest.php');
             $request = new MWSMerchantFulfillmentService_Model_GetEligibleShippingServicesRequest($request);
@@ -328,14 +330,17 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (PHP_VERSION_ID < 50600) {
+            iconv_set_encoding('output_encoding', 'UTF-8');
+            iconv_set_encoding('input_encoding', 'UTF-8');
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        } else {
+            ini_set('default_charset', 'UTF-8');
+        }
 
         $this->_awsAccessKeyId = $awsAccessKeyId;
         $this->_awsSecretAccessKey = $awsSecretAccessKey;
         if (!is_null($config)) $this->_config = array_merge($this->_config, $config);
-
         $this->setUserAgentHeader($applicationName, $applicationVersion);
     }
 
@@ -466,7 +471,6 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
      */
     private function _invoke(array $parameters)
     {
-
         try {
             if (empty($this->_config['ServiceURL'])) {
                 require_once (dirname(__FILE__) . '/Exception.php');
