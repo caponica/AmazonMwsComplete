@@ -90,6 +90,27 @@ final class PotentialMatch {
                 }
             }
         }
+
+        // lets extract relationships
+        $relationships = null;
+        $relationshipsAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+        if (false!==$relationshipsAppearAfter) {
+            $relationshipsOffset = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START, $relationshipsAppearAfter);
+            if (false !== $relationshipsOffset) {
+                $relationshipsOffsetEnd = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END, $relationshipsOffset);
+                if (false !== $relationshipsOffset) {
+                    $processedXml = substr(
+                        $rawXml,
+                        $relationshipsOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
+                        $relationshipsOffsetEnd - $relationshipsOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
+                    );
+                    $processedXml = str_replace('ns2:', '', $processedXml);
+                    $relationships = new \SimpleXMLElement(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START . $processedXml . MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END);
+                    $relationshipsOffset = $relationshipsOffsetEnd;
+                }
+            }
+        }
+
         if (!empty($attributes)) {
             $this->logMessage("Trying manual string based attribute search", LoggerService::DEBUG);
 
