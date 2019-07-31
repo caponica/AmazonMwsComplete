@@ -24,8 +24,16 @@ final class PotentialMatch {
     private $publisher;
     private $rank;
     private $rankCat;
+    private $secondaryCats;
     private $title;
     private $weightPounds;
+    private $smallImage;
+    private $isAdultProduct;
+    private $isVariation;
+    private $isParent;
+    private $isChild;
+    private $parentAsin;
+    private $childrenCount;
     /** @var LoggerInterface */
     protected $logger;
 
@@ -57,10 +65,7 @@ final class PotentialMatch {
                     $this->rank = $salesRank->getRank();
                     $this->rankCat = $salesRank->getProductCategoryId();
                 } else {
-                    //$this->logMessage(
-                    //    ">>Found Secondary Rank: #".$salesRank->getRank()." in ".$salesRank->getProductCategoryId()." for asin {$this->asin}",
-                    //    LoggerService::DEBUG
-                    //);
+                    $this->secondaryCats[] = ['rank' => $salesRank->getRank(), 'rankCat' => $salesRank->getProductCategoryId()];
                 }
             }
         }
@@ -145,6 +150,12 @@ final class PotentialMatch {
             if (!empty($attributes->Title)) {
                 $this->title = $attributes->Title->__toString();
             }
+            if (!empty($attributes->SmallImage)) {
+                $this->smallImage = $this->extractSmallImageFromAttributes($attributes);
+            }
+            if (!empty($attributes->IsAdultProduct)) {
+                $this->isAdultProduct = $attributes->IsAdultProduct->__toString();
+            }
         } else {
             $this->logMessage("Trying XML based attribute search", LoggerService::DEBUG);
 
@@ -182,6 +193,17 @@ final class PotentialMatch {
             $basicFields = ['Model', 'ItemPartNumber', 'PartNumber', 'Brand', 'Label', 'Manufacturer', 'Publisher', 'Title'];
             foreach ($basicFields as $xmlKey) {
                 $this->setFieldIfBasicValueExists($elementgroups, $xmlKey);
+            }
+        }
+        if (!empty($relationships)) {
+            $this->isVariation = true;
+            if (isset($relationships->VariationChild)) {
+                $this->isParent = true;
+                $this->childrenCount = count($relationships->VariationChild);
+            }
+            if (isset($relationships->VariationParent)) {
+                $this->isChild = true;
+                $this->parentAsin = $relationships->VariationParent->Identifiers->MarketplaceASIN->ASIN->__toString();
             }
         }
         if (!empty($potentialMatch)) {
@@ -531,4 +553,60 @@ final class PotentialMatch {
     {
         return $this->weightPounds;
     }
+    /**
+     * @return String
+     */
+    public function getSmallImage()
+    {
+        return $this->smallImage;
+    }
+    /**
+     * @return mixed
+     */
+    public function getSecondaryCats()
+    {
+        return $this->secondaryCats;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsAdultProduct()
+    {
+        return $this->isAdultProduct;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsVariation()
+    {
+        return $this->isVariation;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsParent()
+    {
+        return $this->isParent;
+    }    
+    /**
+     * @return mixed
+     */
+    public function getIsChild()
+    {
+        return $this->isChild;
+    }     
+    /**
+     * @return mixed
+     */
+    public function getParentAsin()
+    {
+        return $this->parentAsin;
+    }         
+    /**
+     * @return mixed
+     */
+    public function getChildrenCount()
+    {
+        return $this->childrenCount;
+    }  
 }
