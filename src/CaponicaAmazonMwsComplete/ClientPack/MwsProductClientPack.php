@@ -24,6 +24,9 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const ATTRIBUTE_SET_MARKER_START    = '<AttributeSets>';
     const ATTRIBUTE_SET_MARKER_END      = '</AttributeSets>';
 
+    const RELATIONSHIPS_SET_MARKER_START    = '<Relationships>';
+    const RELATIONSHIPS_SET_MARKER_END      = '</Relationships>';
+
     const ID_TYPE_ASIN                          = 'ASIN';
     const ID_TYPE_GCID                          = 'GCID';
     const ID_TYPE_SELLER_SKU                    = 'SellerSKU';
@@ -424,11 +427,13 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             return null;
         }
 
+
         /** @var \MarketplaceWebServiceProducts_Model_GetMatchingProductResult[] $mwsProductResultsForAllSearchTerms */
         $mwsProductResultsForAllSearchTerms = $searchResponse->getGetMatchingProductResult();
 
         foreach ($mwsProductResultsForAllSearchTerms as $mwsProductResultsForOneSearchTerm) {
             $searchTerm = $mwsProductResultsForOneSearchTerm->getASIN();
+
             if (empty($searchTerm)) {
                 $this->logMessage("Empty ASIN in results", LoggerService::DEBUG);
                 continue;
@@ -442,7 +447,9 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             /** @var \MarketplaceWebServiceProducts_Model_Product $mwsProduct */
             $mwsProduct = $mwsProductResultsForOneSearchTerm->getProduct();
 
-            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml(), $this->logger);
+
+
+            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->toXML(), $this->logger);
         }
 
         return $productsByAsin;

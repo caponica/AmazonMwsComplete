@@ -45,6 +45,7 @@ final class PotentialMatch {
     public function __construct($product, $rawXml, LoggerInterface $logger = null) {
         $this->logger = $logger;
 
+
         /** @var \MarketplaceWebServiceProducts_Model_IdentifierType $idType */
         $idType = $product->getIdentifiers();
         if ($idType->isSetMarketplaceASIN()) {
@@ -69,10 +70,10 @@ final class PotentialMatch {
                 }
             }
         }
-
         // The parser cannot calculate attribute sets, so we need to do it manually:
         $attributes = null;
         $attributesAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+
         if (false!==$attributesAppearAfter) {
             $attributeOffset = strpos($rawXml, MwsProductClientPack::ATTRIBUTE_SET_MARKER_START, $attributesAppearAfter);
             if (false !== $attributeOffset) {
@@ -90,19 +91,20 @@ final class PotentialMatch {
                 }
             }
         }
-
         // lets extract relationships
         $relationships = null;
         $relationshipsAppearAfter = strpos($rawXml, "<ASIN>{$this->asin}</ASIN>");
+
         if (false!==$relationshipsAppearAfter) {
+
             $relationshipsOffset = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START, $relationshipsAppearAfter);
             if (false !== $relationshipsOffset) {
                 $relationshipsOffsetEnd = strpos($rawXml, MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END, $relationshipsOffset);
                 if (false !== $relationshipsOffset) {
                     $processedXml = substr(
                         $rawXml,
-                        $relationshipsOffset + strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START),
-                        $relationshipsOffsetEnd - $relationshipsOffset - strlen(MwsProductClientPack::ATTRIBUTE_SET_MARKER_START)
+                        $relationshipsOffset + strlen(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START),
+                        $relationshipsOffsetEnd - $relationshipsOffset - strlen(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START)
                     );
                     $processedXml = str_replace('ns2:', '', $processedXml);
                     $relationships = new \SimpleXMLElement(MwsProductClientPack::RELATIONSHIPS_SET_MARKER_START . $processedXml . MwsProductClientPack::RELATIONSHIPS_SET_MARKER_END);
@@ -112,6 +114,7 @@ final class PotentialMatch {
         }
 
         if (!empty($attributes)) {
+
             $this->logMessage("Trying manual string based attribute search", LoggerService::DEBUG);
 
             if (!empty($attributes->ListPrice->Amount)) {
@@ -450,7 +453,17 @@ final class PotentialMatch {
         }
         return $weight;
     }
-
+    private function extractSmallImageFromAttributes($productAttributes) {
+        $smallImage = [];
+        if (!empty($productAttributes->SmallImage)) {
+            $smallImage = [
+                'URL' => $productAttributes->SmallImage->URL->__toString(),
+                'Height' => $productAttributes->SmallImage->Height->__toString(),
+                'Width' => $productAttributes->SmallImage->Width->__toString(),
+            ];
+        }
+        return $smallImage;
+    }
     // #################
     // # Basic getters #
     // #################
