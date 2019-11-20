@@ -204,7 +204,7 @@ class MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenResult extends
      */
     public function isSetFeedSubmissionInfo()
     {
-        return count ($this->fields['FeedSubmissionInfo']['FieldValue']) > 0;
+        return is_array($this->fields['FeedSubmissionInfo']['FieldValue']) && count($this->fields['FeedSubmissionInfo']['FieldValue']) > 0;
     }
 
 

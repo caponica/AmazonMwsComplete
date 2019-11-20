@@ -107,7 +107,7 @@ class MarketplaceWebService_Model_TypeList extends MarketplaceWebService_Model
      */
     public function isSetType()
     {
-        return count ($this->fields['Type']['FieldValue']) > 0;
+        return is_array($this->fields['Type']['FieldValue']) && count($this->fields['Type']['FieldValue']) > 0;
     }
 
 

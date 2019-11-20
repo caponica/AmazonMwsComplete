@@ -134,7 +134,7 @@ class MarketplaceWebService_Model_ErrorResponse extends MarketplaceWebService_Mo
      */
     public function isSetError()
     {
-        return count ($this->fields['Error']['FieldValue']) > 0;
+        return is_array($this->fields['Error']['FieldValue']) && count($this->fields['Error']['FieldValue']) > 0;
     }
 
     /**

@@ -156,7 +156,7 @@ class MarketplaceWebService_Model_CancelReportRequestsResult extends Marketplace
      */
     public function isSetReportRequestInfo()
     {
-        return count ($this->fields['ReportRequestInfo']['FieldValue']) > 0;
+        return is_array($this->fields['ReportRequestInfo']['FieldValue']) && count($this->fields['ReportRequestInfo']['FieldValue']) > 0;
     }
 
 

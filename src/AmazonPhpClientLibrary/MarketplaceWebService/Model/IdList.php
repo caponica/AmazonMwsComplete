@@ -107,7 +107,7 @@ class MarketplaceWebService_Model_IdList extends MarketplaceWebService_Model
      */
     public function isSetId()
     {
-        return count ($this->fields['Id']['FieldValue']) > 0;
+        return is_array($this->fields['Id']['FieldValue']) && count($this->fields['Id']['FieldValue']) > 0;
     }
 
 
