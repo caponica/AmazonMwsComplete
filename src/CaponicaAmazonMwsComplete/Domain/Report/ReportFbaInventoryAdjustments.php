@@ -10,5 +10,5 @@ namespace CaponicaAmazonMwsComplete\Domain\Report;
 class ReportFbaInventoryAdjustments extends BaseMwsReport
 {
     const EXPECTED_FIELD_COUNT = 11;
-    const EXPECTED_HEADER = 'adjusted-date	transaction-item-id	fnsku	sku	product-name	fulfillment-center-id	quantity	reason	disposition reconciled  unreconciled';
+    const EXPECTED_HEADER = 'adjusted-date	transaction-item-id	fnsku	sku	product-name	fulfillment-center-id	quantity	reason	disposition	reconciled	unreconciled';
 }
