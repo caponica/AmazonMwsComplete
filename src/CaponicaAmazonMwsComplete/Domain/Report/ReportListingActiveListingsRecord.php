@@ -62,7 +62,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         if (!empty($this->asin1)) {
             return $this->asin1;
         }
-        if ($this->productIdType === self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
+        if ($this->getProductIdType() === self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
             return $this->productId;
         }
         return null;
@@ -72,7 +72,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         return self::FULFILMENT_CENTER_FBA_EUROPE == $this->fulfillmentChannel;
     }
     public function isConditionNew() {
-        return self::CONDITION_NEW == $this->itemCondition;
+        return self::CONDITION_NEW == $this->getItemCondition();
     }
 
     public function __construct($fileRow) {
@@ -87,10 +87,10 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         $this->openDate                 = $fieldArray[6];
         $this->imageUrl                 = $fieldArray[7];
         $this->itemIsMarketplace        = $fieldArray[8];
-        $this->productIdType            = (int)$fieldArray[9];
+        $this->productIdType            = $fieldArray[9];
         $this->zshopShippingFee         = $fieldArray[10];
         $this->itemNote                 = $fieldArray[11];
-        $this->itemCondition            = (int)$fieldArray[12];
+        $this->itemCondition            = $fieldArray[12];
         $this->zshopCategory1           = $fieldArray[13];
         $this->zshopBrowsePath          = $fieldArray[14];
         $this->zshopStorefrontFeature   = $fieldArray[15];
@@ -145,7 +145,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
     }
 
     public function getProductIdType() {
-        return $this->productIdType;
+        return (int) $this->productIdType;
     }
 
     public function getZshopShippingFee() {
@@ -157,7 +157,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
     }
 
     public function getItemCondition() {
-        return $this->itemCondition;
+        return (int) $this->itemCondition;
     }
 
     public function getZshopCategory1() {
