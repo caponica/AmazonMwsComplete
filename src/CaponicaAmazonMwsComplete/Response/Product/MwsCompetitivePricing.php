@@ -55,7 +55,7 @@ class MwsCompetitivePricing {
     /** @var string $error */
     public $error = null;
     /** @var float $landedPriceAmount */
-    public $landedPriceAmount;
+    public $landedPriceAmount = null;
     /** @var string $landedPriceCurrency */
     public $landedPriceCurrency = 'GBP';
     /** @var boolean $belongsToRequester */
@@ -112,14 +112,17 @@ class MwsCompetitivePricing {
             $cpPrices = $cpPriceList->getCompetitivePrice();
 
             foreach ($cpPrices as $cpPrice) {
-                $this->belongsToRequester = $cpPrice->getbelongsToRequester();
-
                 /** @var \MarketplaceWebServiceProducts_Model_PriceType $price */
                 $price = $cpPrice->getPrice();
                 /** @var \MarketplaceWebServiceProducts_Model_MoneyType $landedPrice */
                 $landedPrice = $price->getLandedPrice();
-                $this->landedPriceAmount = $landedPrice->getAmount();
-                $this->landedPriceCurrency = $landedPrice->getCurrencyCode();
+                if (empty($landedPrice)) {
+                    continue;
+                }
+
+                $this->landedPriceAmount    = $landedPrice->getAmount();
+                $this->landedPriceCurrency  = $landedPrice->getCurrencyCode();
+                $this->belongsToRequester   = $cpPrice->getbelongsToRequester();
                 break; // just want the first result
             }
 
