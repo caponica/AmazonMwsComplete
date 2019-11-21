@@ -62,7 +62,7 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         if (!empty($this->asin1)) {
             return $this->asin1;
         }
-        if ($this->productIdType===self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
+        if ($this->productIdType === self::PRODUCT_ID_TYPE_ASIN && $this->productId) {
             return $this->productId;
         }
         return null;
@@ -87,10 +87,10 @@ class ReportListingActiveListingsRecord extends BaseMwsReportRecord implements I
         $this->openDate                 = $fieldArray[6];
         $this->imageUrl                 = $fieldArray[7];
         $this->itemIsMarketplace        = $fieldArray[8];
-        $this->productIdType            = $fieldArray[9];
+        $this->productIdType            = (int)$fieldArray[9];
         $this->zshopShippingFee         = $fieldArray[10];
         $this->itemNote                 = $fieldArray[11];
-        $this->itemCondition            = $fieldArray[12];
+        $this->itemCondition            = (int)$fieldArray[12];
         $this->zshopCategory1           = $fieldArray[13];
         $this->zshopBrowsePath          = $fieldArray[14];
         $this->zshopStorefrontFeature   = $fieldArray[15];
