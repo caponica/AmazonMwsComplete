@@ -24,6 +24,7 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_ADJUSTMENTS              => 'ReportFbaInventoryAdjustments',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_EVENT_DETAIL             => 'ReportFbaInventoryEventDetail',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_RECEIVED                 => 'ReportFbaInventoryReceived',
+        MwsFeedAndReportClientPack::REPORT_SETTLEMENT_FLAT_FILE                   => 'ReportSettlementFlatFile'
     ];
 
     /**
