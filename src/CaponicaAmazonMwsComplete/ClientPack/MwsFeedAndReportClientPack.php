@@ -47,6 +47,8 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     const FEED_TYPE_BUSINESS_PRODUCT_DOCUMENTS          = '_POST_ENHANCED_CONTENT_DATA_';
     const FEED_TYPE_EASY_SHIP_DOCUMENTS                 = '_POST_EASYSHIP_DOCUMENTS_';
 
+    const FEED_TYPE_UPLOAD_VAT_INVOICE                  = '_UPLOAD_VAT_INVOICE_';
+
     // Report type enumeration, see http://docs.developer.amazonservices.com/en_UK/reports/Reports_ReportType.html
     // An effort has been made to group these by category (prefix) and make the constant names meaningful
     // Listing Reports
