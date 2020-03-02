@@ -77,6 +77,7 @@ class MarketplaceWebService_Model_SubmitFeedRequest extends MarketplaceWebServic
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MarketplaceIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
         'FeedContent' => array ('FieldValue' => null, 'FieldType' => 'string'),
+        'FeedOptions' => array('FieldValue' => null, 'FieldType' => 'string'),
         'FeedType' => array('FieldValue' => null, 'FieldType' => 'string'),
         'PurgeAndReplace' => array('FieldValue' => null, 'FieldType' => 'bool'),
         'ContentMd5' => array ('FieldValue' => null, 'FieldType' => 'string'),
@@ -346,6 +347,51 @@ class MarketplaceWebService_Model_SubmitFeedRequest extends MarketplaceWebServic
     public function isSetFeedContent()
     {
         return !is_null($this->fields['FeedContent']['FieldValue']);
+    }
+
+    /**
+     * Gets the value of the FeedOptions property.
+     *
+     * @return string FeedOptions
+     */
+    public function getFeedOptions()
+    {
+        return $this->fields['FeedOptions']['FieldValue'];
+    }
+
+    /**
+     * Sets the value of the FeedOptions property.
+     *
+     * @param string FeedOptions
+     * @return this instance
+     */
+    public function setFeedOptions($value)
+    {
+        $this->fields['FeedOptions']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Sets the value of the FeedOptions and returns this instance
+     *
+     * @param string $value FeedOptions
+     * @return MarketplaceWebService_Model_SubmitFeedRequest instance
+     */
+    public function withFeedOptions($value)
+    {
+        $this->setFeedOptions($value);
+        return $this;
+    }
+
+
+    /**
+     * Checks if FeedOptions is set
+     *
+     * @return bool true if FeedOptions  is set
+     */
+    public function isSetFeedOptions()
+    {
+        return !is_null($this->fields['FeedOptions']['FieldValue']);
     }
 
     /**

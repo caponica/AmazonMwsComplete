@@ -1435,6 +1435,9 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
           $parameters['MarketplaceIdList.Id.'.($idIndex + 1)] =  $id;
         }       
       }
+      if ($request->isSetFeedOptions()) {
+        $parameters['FeedOptions'] =  $request->getFeedOptions();
+      }
       if ($request->isSetFeedType()) {
         $parameters['FeedType'] =  $request->getFeedType();
       }
