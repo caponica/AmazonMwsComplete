@@ -22,6 +22,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
     const PARAM_ITEMS                                   = 'Items';
     const PARAM_INCLUDE_COD_PREVIEW                     = 'IncludeCODFulfillmentPreview';
     const PARAM_INCLUDE_SCHEDULED_PREVIEW               = 'IncludeDeliveryWindows';
+    const PARAM_ADDRESS                                 = 'Address';
     const PARAM_DESTINATION_ADDRESS                     = 'DestinationAddress';
     const PARAM_DISPLAYABLE_ORDER_COMMENT               = 'DisplayableOrderComment';
     const PARAM_DISPLAYABLE_ORDER_DATETIME              = 'DisplayableOrderDateTime';
@@ -140,7 +141,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
     ) {
         $requestArray = [
             self::PARAM_MARKETPLACE_ID              => $this->marketplaceId,
-            self::PARAM_DESTINATION_ADDRESS         => $destinationAddress->getArray(),
+            self::PARAM_ADDRESS         => $destinationAddress->getArray(),
         ];
 
         $itemList = [];
