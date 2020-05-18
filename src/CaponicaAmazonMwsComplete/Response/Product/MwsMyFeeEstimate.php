@@ -154,7 +154,7 @@ class MwsMyFeeEstimate {
         $totalFees = $fe->getTotalFeesEstimate();
 
         $this->currency = $totalFees->getCurrencyCode();
-        $this->feesArray[self::FEE_TOTAL] = $totalFees->getAmount();
+        $this->feesArray[self::FEE_TOTAL] = (float)$totalFees->getAmount();
 
         /** @var \MarketplaceWebServiceProducts_Model_FeeDetailList $fdList */
         $fdList = $fe->getFeeDetailList();
@@ -162,7 +162,7 @@ class MwsMyFeeEstimate {
         foreach ($fdList->getFeeDetail() as $fd) {
             /** @var \MarketplaceWebServiceProducts_Model_MoneyType $finalFee */
             $finalFee = $fd->getFinalFee();
-            $this->feesArray[$fd->getFeeType()] = $finalFee->getAmount();
+            $this->feesArray[$fd->getFeeType()] = (float)$finalFee->getAmount();
         }
     }
 
