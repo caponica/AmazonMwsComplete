@@ -247,6 +247,38 @@ class MwsClientPoolConfig {
         throw new \InvalidArgumentException('No Non-Amazon marketplace id known for site code "' . $amazonSite . '"');
     }
 
+
+    public static function getCurrencyCodes() {
+        return [
+            self::SITE_CANADA    => 'CAD',
+            self::SITE_MEXICO    => 'MXN',
+            self::SITE_USA       => 'USD',
+            self::SITE_GERMANY   => 'EUR',
+            self::SITE_SPAIN     => 'EUR',
+            self::SITE_FRANCE    => 'EUR',
+            self::SITE_ITALY     => 'EUR',
+            self::SITE_UK        => 'GBP',
+            self::SITE_BRAZIL    => 'BRL',
+            self::SITE_CHINA     => 'RMB',
+            self::SITE_INDIA     => 'INR',
+            self::SITE_JAPAN     => 'JPY',
+            self::SITE_AUSTRALIA => 'AUD',
+            self::SITE_TURKEY    => 'TRY',
+        ];
+    }
+    public function getCurrencyCode($amazonSite=null) {
+        if (empty($amazonSite)) {
+            $amazonSite = $this->amazonSite;
+        }
+
+        $currencyCodes = self::getCurrencyCodes();
+        if (!empty($currencyCodes[$amazonSite])) {
+            return $currencyCodes[$amazonSite];
+        }
+
+        throw new \InvalidArgumentException('No currency code known for site code "' . $amazonSite . '"');
+    }
+
     private function isValidAmazonSite($site) {
         if (empty($site)) {
             return false;
