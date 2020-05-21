@@ -12,6 +12,7 @@ use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestLogCollection;
 use CaponicaAmazonMwsComplete\Domain\Throttle\ThrottledRequestManager;
 use CaponicaAmazonMwsComplete\Response\Product\MwsCompetitivePricing;
 use CaponicaAmazonMwsComplete\Response\Product\MwsLowestOfferListing;
+use CaponicaAmazonMwsComplete\Response\Product\MwsMyFeeEstimate;
 use CaponicaAmazonMwsComplete\Response\Product\MwsMyPriceForAsin;
 use CaponicaAmazonMwsComplete\Service\LoggerService;
 use Psr\Log\LoggerInterface;
@@ -113,6 +114,8 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     const METHOD_GET_MATCHING_PRODUCTS_FOR_ID       = 'getMatchingProductForId';
     const METHOD_GET_MY_FEES_ESTIMATE               = 'getMyFeesEstimate';
 
+    const PLACEHOLDER_CURRENCY = 'CURRENCY';
+
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
     /** @var string $sellerId           The MWS SellerID string used in API connections */
@@ -121,11 +124,14 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
     protected $authToken = null;
     /** @var LoggerInterface */
     protected $logger;
+    /** @var string */
+    protected $currencyCode;
 
     public function __construct(MwsClientPoolConfig $poolConfig, LoggerInterface $logger = null) {
         $this->marketplaceId    = $poolConfig->getMarketplaceId();
         $this->sellerId         = $poolConfig->getSellerId();
         $this->authToken        = $poolConfig->getAuthToken();
+        $this->currencyCode     = $poolConfig->getCurrencyCode();
         $this->logger           = $logger;
 
         $this->initThrottleManager();
@@ -607,6 +613,70 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             $mpfaObjects[] = new MwsMyPriceForAsin($mpfaResult);
         }
         return $mpfaObjects;
+    }
+
+    public function retrieveFbaFeeForASINs($asins) {
+        if (empty($asins)) {
+            return [];
+        }
+        if (!is_array($asins)) {
+            $asins = explode(',', $asins);
+        }
+
+        $priceToEstimateFees = [
+            'ListingPrice'  => [
+                'Amount'        => 10,
+                'CurrencyCode'  => $this->currencyCode,
+            ],
+        ];
+
+        $fbaFees = [
+            self::PLACEHOLDER_CURRENCY => $this->currencyCode
+        ];
+        $batches = array_chunk($asins, 20);
+        foreach ($batches as $batch) {
+            $feeEstimateRequestListArray = [];
+            foreach ($batch as $asin) {
+                $ferData = [
+                    'MarketplaceId'         => $this->marketplaceId,
+                    'IdType'                => 'ASIN',
+                    'IdValue'               => $asin,
+                    'IsAmazonFulfilled'     => true,
+                    'PriceToEstimateFees'   => $priceToEstimateFees,
+                    'Identifier'            => $asin,
+                ];
+
+                $feeEstimateRequestListArray[] = $ferData;
+            }
+            try {
+                /** @var \MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResponse $mfeResponse */
+                $mfeResponse = $this->callGetMyFeesEstimate($feeEstimateRequestListArray);
+            } catch (\MarketplaceWebServiceProducts_Exception $e) {
+                if ('RequestThrottled' == $e->getErrorCode()) {
+                    $this->logMessage("The request was throttled", LoggerService::ERROR);
+                    sleep(2);
+                } else {
+                    $this->logMessage("There was a problem retrieving seller fees", LoggerService::ERROR);
+                }
+                $this->debugException($e);
+                return [];
+            }
+
+            /** @var \MarketplaceWebServiceProducts_Model_GetMyFeesEstimateResult $mfeResults */
+            $mfeResults = $mfeResponse->getGetMyFeesEstimateResult();
+            /** @var \MarketplaceWebServiceProducts_Model_FeesEstimateResultList $ferList */
+            $ferList = $mfeResults->getFeesEstimateResultList();
+            foreach ($ferList->getFeesEstimateResult() as $mfeResult) {
+                try {
+                    $mfe = new MwsMyFeeEstimate($mfeResult); // @todo - set up MwsMyFeeEstimate to parse the XML response
+                } catch (\InvalidArgumentException $e) {
+                    $this->logMessage($e->getMessage(), LoggerService::ERROR);
+                    continue;
+                }
+                $fbaFees[$mfe->getAsin()] = $mfe->getFbaFee(); // @todo calculate and load the FBA fees into an array (which will be returned)
+            }
+        }
+        return $fbaFees;
     }
 
     /**
