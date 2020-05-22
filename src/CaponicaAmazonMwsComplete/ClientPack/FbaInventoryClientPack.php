@@ -57,12 +57,13 @@ class FbaInventoryClientPack extends FbaInventoryClient implements ThrottleAware
     // ##################################################
     /**
      * @param $sellerSkus
-     * @param $showDetailed bool
+     * @param $fetchDetails bool
+     *
      * @return \FBAInventoryServiceMWS_Model_ListInventorySupplyResponse
      * @throws \Exception
      */
-    public function callListInventorySupply($sellerSkus, $showDetailed = false) {
-        $responseGroup = $showDetailed ? self::PARAM_RESPONSE_GROUP_DETAILED : self::PARAM_RESPONSE_GROUP_BASIC;
+    public function callListInventorySupply($sellerSkus, $fetchDetails = false) {
+        $responseGroup = $fetchDetails ? self::PARAM_RESPONSE_GROUP_DETAILED : self::PARAM_RESPONSE_GROUP_BASIC;
 
         $requestArray = [
             self::PARAM_SELLER_SKUS     => ['member' => $sellerSkus],
