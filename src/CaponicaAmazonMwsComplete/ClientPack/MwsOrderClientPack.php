@@ -159,6 +159,11 @@ class MwsOrderClientPack extends MwsOrderClient implements ThrottleAwareClientPa
         if (empty($marketplaceOption) || self::OPTION_MARKETPLACE_ONLY_AMAZON === $marketplaceOption) {
             return $this->marketplaceId;
         }
+        
+        if (!$this->nonAmazonMarketplaceId) {
+			throw new \InvalidArgumentException('No Non-Amazon marketplace id known for chosen marketplace');
+		}
+
         if (self::OPTION_MARKETPLACE_ONLY_NON_AMAZON === $marketplaceOption) {
             return $this->nonAmazonMarketplaceId;
         }

@@ -207,7 +207,7 @@ class MwsClientPoolConfig {
             self::SITE_CHINA     => null,
             self::SITE_INDIA     => null,
             self::SITE_JAPAN     => null,
-            self::SITE_AUSTRALIA => null,
+            self::SITE_AUSTRALIA => 'A30BMGT8JIOX0F',
             self::SITE_TURKEY    => 'A33AVAJ2PDY3EV',
         ];
     }
@@ -244,7 +244,7 @@ class MwsClientPoolConfig {
             return $marketplaces[$amazonSite];
         }
 
-        throw new \InvalidArgumentException('No Non-Amazon marketplace id known for site code "' . $amazonSite . '"');
+        return null;
     }
 
 
