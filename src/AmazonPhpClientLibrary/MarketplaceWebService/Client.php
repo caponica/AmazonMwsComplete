@@ -1447,6 +1447,9 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       if ($request->isSetContentMd5()) {
               $parameters['ContentMD5Value'] = $request->getContentMd5();
       }
+      if ($request->isSetFeedOptions()) {
+              $parameters['FeedOptions'] = $request->getFeedOptions();
+      }
 
       $headers = array();
       array_push($headers, "Content-Type: " . $request->getContentType()->toString());
