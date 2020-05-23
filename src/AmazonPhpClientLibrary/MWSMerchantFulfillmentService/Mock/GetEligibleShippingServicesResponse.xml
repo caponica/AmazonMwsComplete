@@ -21,13 +21,50 @@
                         <Amount>100</Amount>
                     </DeclaredValue>
                     <CarrierWillPickUp>true</CarrierWillPickUp>
+                    <CarrierWillPickUpOption>String</CarrierWillPickUpOption>
                     <LabelFormat>String</LabelFormat>
                 </ShippingServiceOptions>
+                <AvailableShippingServiceOptions>
+                    <AvailableCarrierWillPickUpOptions>
+                        <AvailableCarrierWillPickUpOption>
+                        <CarrierWillPickUpOption>String</CarrierWillPickUpOption>
+                        <Charge>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </Charge>
+                        </AvailableCarrierWillPickUpOption>
+                    </AvailableCarrierWillPickUpOptions>
+                    <AvailableDeliveryExperienceOptions>
+                        <AvailableDeliveryExperienceOption>
+                        <DeliveryExperienceOption>String</DeliveryExperienceOption>
+                        <Charge>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </Charge>
+                        </AvailableDeliveryExperienceOption>
+                    </AvailableDeliveryExperienceOptions>
+                </AvailableShippingServiceOptions>
                 <AvailableLabelFormats>
                     <LabelFormat>String</LabelFormat>
                 </AvailableLabelFormats>
+                <AvailableFormatOptionsForLabel>
+                    <LabelFormatOption>
+                        <IncludePackingSlipWithLabel>true</IncludePackingSlipWithLabel>
+                        <LabelFormat>String</LabelFormat>
+                    </LabelFormatOption>
+                </AvailableFormatOptionsForLabel>
+                <RequiresAdditionalSellerInputs>true</RequiresAdditionalSellerInputs>
             </ShippingService>
         </ShippingServiceList>
+        <RejectedShippingServiceList>
+            <RejectedShippingService>
+                <CarrierName>String</CarrierName>
+                <ShippingServiceName>String</ShippingServiceName>
+                <ShippingServiceId>String</ShippingServiceId>
+                <RejectionReasonCode>String</RejectionReasonCode>
+                <RejectionReasonMessage>String</RejectionReasonMessage>
+            </RejectedShippingService>
+        </RejectedShippingServiceList>
         <TemporarilyUnavailableCarrierList>
             <TemporarilyUnavailableCarrier>
                 <CarrierName>String</CarrierName>

@@ -12,6 +12,48 @@
                     <transparencyCodeList>
                         <member>String</member>
                     </transparencyCodeList>
+                    <ItemLevelSellerInputsList>
+                        <member>
+                        <AdditionalInputFieldName>String</AdditionalInputFieldName>
+                        <AdditionalSellerInput>
+                        <DataType>String</DataType>
+                        <ValueAsString>String</ValueAsString>
+                        <ValueAsBoolean>true</ValueAsBoolean>
+                        <ValueAsInteger>1</ValueAsInteger>
+                        <ValueAsTimestamp>1969-07-21T02:56:03Z</ValueAsTimestamp>
+                        <ValueAsAddress>
+                        <Name>String</Name>
+                        <AddressLine1>String</AddressLine1>
+                        <AddressLine2>String</AddressLine2>
+                        <AddressLine3>String</AddressLine3>
+                        <DistrictOrCounty>String</DistrictOrCounty>
+                        <Email>String</Email>
+                        <City>String</City>
+                        <StateOrProvinceCode>String</StateOrProvinceCode>
+                        <PostalCode>String</PostalCode>
+                        <CountryCode>String</CountryCode>
+                        <Phone>String</Phone>
+                        </ValueAsAddress>
+                        <ValueAsWeight>
+                        <Value>100</Value>
+                        <Unit>String</Unit>
+                        </ValueAsWeight>
+                        <ValueAsDimension>
+                        <value>100</value>
+                        <unit>String</unit>
+                        </ValueAsDimension>
+                        <ValueAsCurrency>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </ValueAsCurrency>
+                        </AdditionalSellerInput>
+                        </member>
+                    </ItemLevelSellerInputsList>
+                    <ItemWeight>
+                        <Value>100</Value>
+                        <Unit>String</Unit>
+                    </ItemWeight>
+                    <ItemDescription>String</ItemDescription>
                 </Item>
             </ItemList>
             <ShipFromAddress>
@@ -74,11 +116,39 @@
                         <Amount>100</Amount>
                     </DeclaredValue>
                     <CarrierWillPickUp>true</CarrierWillPickUp>
+                    <CarrierWillPickUpOption>String</CarrierWillPickUpOption>
                     <LabelFormat>String</LabelFormat>
                 </ShippingServiceOptions>
+                <AvailableShippingServiceOptions>
+                    <AvailableCarrierWillPickUpOptions>
+                        <AvailableCarrierWillPickUpOption>
+                        <CarrierWillPickUpOption>String</CarrierWillPickUpOption>
+                        <Charge>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </Charge>
+                        </AvailableCarrierWillPickUpOption>
+                    </AvailableCarrierWillPickUpOptions>
+                    <AvailableDeliveryExperienceOptions>
+                        <AvailableDeliveryExperienceOption>
+                        <DeliveryExperienceOption>String</DeliveryExperienceOption>
+                        <Charge>
+                        <CurrencyCode>String</CurrencyCode>
+                        <Amount>100</Amount>
+                        </Charge>
+                        </AvailableDeliveryExperienceOption>
+                    </AvailableDeliveryExperienceOptions>
+                </AvailableShippingServiceOptions>
                 <AvailableLabelFormats>
                     <LabelFormat>String</LabelFormat>
                 </AvailableLabelFormats>
+                <AvailableFormatOptionsForLabel>
+                    <LabelFormatOption>
+                        <IncludePackingSlipWithLabel>true</IncludePackingSlipWithLabel>
+                        <LabelFormat>String</LabelFormat>
+                    </LabelFormatOption>
+                </AvailableFormatOptionsForLabel>
+                <RequiresAdditionalSellerInputs>true</RequiresAdditionalSellerInputs>
             </ShippingService>
             <Label>
                 <CustomTextForLabel>String</CustomTextForLabel>

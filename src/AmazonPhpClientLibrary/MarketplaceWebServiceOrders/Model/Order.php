@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 22:40:38 UTC 2018
+ * Library Version: 2020-05-11
+ * Generated: Fri May 08 09:10:38 GMT 2020
  */
 
 /**
@@ -64,11 +64,15 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>IsBusinessOrder: bool</li>
  * <li>PurchaseOrderNumber: string</li>
  * <li>IsPrime: bool</li>
+ * <li>IsGlobalExpressEnabled: bool</li>
  * <li>IsPremiumOrder: bool</li>
  * <li>ReplacedOrderId: string</li>
  * <li>IsReplacementOrder: bool</li>
  * <li>PromiseResponseDueDate: string</li>
  * <li>IsEstimatedShipDateSet: bool</li>
+ * <li>TaxRegistrationDetails: array</li>
+ * <li>IsSoldByAB: bool</li>
+ * <li>BuyerIdentificationInformation: MarketplaceWebServiceOrders_Model_BuyerIdentificationInformation</li>
  *
  * </ul>
  */
@@ -112,11 +116,15 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'IsBusinessOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'PurchaseOrderNumber' => array('FieldValue' => null, 'FieldType' => 'string'),
     'IsPrime' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'IsGlobalExpressEnabled' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'IsPremiumOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'ReplacedOrderId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'IsReplacementOrder' => array('FieldValue' => null, 'FieldType' => 'bool'),
     'PromiseResponseDueDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'IsEstimatedShipDateSet' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'TaxRegistrationDetails' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebServiceOrders_Model_TaxRegistrationDetails'), 'ListMemberName' => 'member'),
+    'IsSoldByAB' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'BuyerIdentificationInformation' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebServiceOrders_Model_BuyerIdentificationInformation'),
     );
     parent::__construct($data);
     }
@@ -1752,6 +1760,62 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
+     * Check the value of IsGlobalExpressEnabled.
+     *
+     * @return true if IsGlobalExpressEnabled is set to true.
+     */
+    public function isIsGlobalExpressEnabled()
+    {
+        return !is_null($this->_fields['IsGlobalExpressEnabled']['FieldValue']) && $this->_fields['IsGlobalExpressEnabled']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsGlobalExpressEnabled property.
+     *
+     * @return Boolean IsGlobalExpressEnabled.
+     */
+    public function getIsGlobalExpressEnabled()
+    {
+        return $this->_fields['IsGlobalExpressEnabled']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsGlobalExpressEnabled property.
+     *
+     * @param bool isGlobalExpressEnabled
+     * @return this instance
+     */
+    public function setIsGlobalExpressEnabled($value)
+    {
+        $this->_fields['IsGlobalExpressEnabled']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsGlobalExpressEnabled is set.
+     *
+     * @return true if IsGlobalExpressEnabled is set.
+     */
+    public function isSetIsGlobalExpressEnabled()
+    {
+                return !is_null($this->_fields['IsGlobalExpressEnabled']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsGlobalExpressEnabled, return this.
+     *
+     * @param isGlobalExpressEnabled
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsGlobalExpressEnabled($value)
+    {
+        $this->setIsGlobalExpressEnabled($value);
+        return $this;
+    }
+
+    /**
      * Check the value of IsPremiumOrder.
      *
      * @return true if IsPremiumOrder is set to true.
@@ -2008,6 +2072,172 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withIsEstimatedShipDateSet($value)
     {
         $this->setIsEstimatedShipDateSet($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the TaxRegistrationDetails property.
+     *
+     * @return List<TaxRegistrationDetails> TaxRegistrationDetails.
+     */
+    public function getTaxRegistrationDetails()
+    {
+        if ($this->_fields['TaxRegistrationDetails']['FieldValue'] == null)
+        {
+            $this->_fields['TaxRegistrationDetails']['FieldValue'] = array();
+        }
+        return $this->_fields['TaxRegistrationDetails']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the TaxRegistrationDetails property.
+     *
+     * @param array taxRegistrationDetails
+     * @return this instance
+     */
+    public function setTaxRegistrationDetails($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['TaxRegistrationDetails']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear TaxRegistrationDetails.
+     */
+    public function unsetTaxRegistrationDetails()
+    {
+        $this->_fields['TaxRegistrationDetails']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if TaxRegistrationDetails is set.
+     *
+     * @return true if TaxRegistrationDetails is set.
+     */
+    public function isSetTaxRegistrationDetails()
+    {
+                return !empty($this->_fields['TaxRegistrationDetails']['FieldValue']);
+            }
+
+    /**
+     * Add values for TaxRegistrationDetails, return this.
+     *
+     * @param taxRegistrationDetails
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withTaxRegistrationDetails()
+    {
+        foreach (func_get_args() as $TaxRegistrationDetails)
+        {
+            $this->_fields['TaxRegistrationDetails']['FieldValue'][] = $TaxRegistrationDetails;
+        }
+        return $this;
+    }
+
+    /**
+     * Check the value of IsSoldByAB.
+     *
+     * @return true if IsSoldByAB is set to true.
+     */
+    public function isIsSoldByAB()
+    {
+        return !is_null($this->_fields['IsSoldByAB']['FieldValue']) && $this->_fields['IsSoldByAB']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the IsSoldByAB property.
+     *
+     * @return Boolean IsSoldByAB.
+     */
+    public function getIsSoldByAB()
+    {
+        return $this->_fields['IsSoldByAB']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the IsSoldByAB property.
+     *
+     * @param bool isSoldByAB
+     * @return this instance
+     */
+    public function setIsSoldByAB($value)
+    {
+        $this->_fields['IsSoldByAB']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if IsSoldByAB is set.
+     *
+     * @return true if IsSoldByAB is set.
+     */
+    public function isSetIsSoldByAB()
+    {
+                return !is_null($this->_fields['IsSoldByAB']['FieldValue']);
+            }
+
+    /**
+     * Set the value of IsSoldByAB, return this.
+     *
+     * @param isSoldByAB
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withIsSoldByAB($value)
+    {
+        $this->setIsSoldByAB($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the BuyerIdentificationInformation property.
+     *
+     * @return BuyerIdentificationInformation BuyerIdentificationInformation.
+     */
+    public function getBuyerIdentificationInformation()
+    {
+        return $this->_fields['BuyerIdentificationInformation']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the BuyerIdentificationInformation property.
+     *
+     * @param MarketplaceWebServiceOrders_Model_BuyerIdentificationInformation buyerIdentificationInformation
+     * @return this instance
+     */
+    public function setBuyerIdentificationInformation($value)
+    {
+        $this->_fields['BuyerIdentificationInformation']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if BuyerIdentificationInformation is set.
+     *
+     * @return true if BuyerIdentificationInformation is set.
+     */
+    public function isSetBuyerIdentificationInformation()
+    {
+                return !is_null($this->_fields['BuyerIdentificationInformation']['FieldValue']);
+            }
+
+    /**
+     * Set the value of BuyerIdentificationInformation, return this.
+     *
+     * @param buyerIdentificationInformation
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withBuyerIdentificationInformation($value)
+    {
+        $this->setBuyerIdentificationInformation($value);
         return $this;
     }
 

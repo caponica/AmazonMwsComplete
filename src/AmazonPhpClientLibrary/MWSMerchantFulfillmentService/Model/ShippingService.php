@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -39,7 +39,10 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>LatestEstimatedDeliveryDate: string</li>
  * <li>Rate: MWSMerchantFulfillmentService_Model_CurrencyAmount</li>
  * <li>ShippingServiceOptions: MWSMerchantFulfillmentService_Model_ShippingServiceOptions</li>
+ * <li>AvailableShippingServiceOptions: MWSMerchantFulfillmentService_Model_AvailableShippingServiceOptions</li>
  * <li>AvailableLabelFormats: array</li>
+ * <li>AvailableFormatOptionsForLabel: array</li>
+ * <li>RequiresAdditionalSellerInputs: bool</li>
  *
  * </ul>
  */
@@ -58,7 +61,10 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'LatestEstimatedDeliveryDate' => array('FieldValue' => null, 'FieldType' => 'string'),
     'Rate' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_CurrencyAmount'),
     'ShippingServiceOptions' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShippingServiceOptions'),
+    'AvailableShippingServiceOptions' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_AvailableShippingServiceOptions'),
     'AvailableLabelFormats' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'LabelFormat'),
+    'AvailableFormatOptionsForLabel' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_LabelFormatOption'), 'ListMemberName' => 'LabelFormatOption'),
+    'RequiresAdditionalSellerInputs' => array('FieldValue' => null, 'FieldType' => 'bool'),
     );
     parent::__construct($data);
     }
@@ -478,6 +484,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     }
 
     /**
+     * Get the value of the AvailableShippingServiceOptions property.
+     *
+     * @return AvailableShippingServiceOptions AvailableShippingServiceOptions.
+     */
+    public function getAvailableShippingServiceOptions()
+    {
+        return $this->_fields['AvailableShippingServiceOptions']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the AvailableShippingServiceOptions property.
+     *
+     * @param MWSMerchantFulfillmentService_Model_AvailableShippingServiceOptions availableShippingServiceOptions
+     * @return this instance
+     */
+    public function setAvailableShippingServiceOptions($value)
+    {
+        $this->_fields['AvailableShippingServiceOptions']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if AvailableShippingServiceOptions is set.
+     *
+     * @return true if AvailableShippingServiceOptions is set.
+     */
+    public function isSetAvailableShippingServiceOptions()
+    {
+                return !is_null($this->_fields['AvailableShippingServiceOptions']['FieldValue']);
+            }
+
+    /**
+     * Set the value of AvailableShippingServiceOptions, return this.
+     *
+     * @param availableShippingServiceOptions
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withAvailableShippingServiceOptions($value)
+    {
+        $this->setAvailableShippingServiceOptions($value);
+        return $this;
+    }
+
+    /**
      * Get the value of the AvailableLabelFormats property.
      *
      * @return List<String> AvailableLabelFormats.
@@ -538,6 +590,126 @@ require_once (dirname(__FILE__) . '/../Model.php');
         {
             $this->_fields['AvailableLabelFormats']['FieldValue'][] = $AvailableLabelFormats;
         }
+        return $this;
+    }
+
+    /**
+     * Get the value of the AvailableFormatOptionsForLabel property.
+     *
+     * @return List<LabelFormatOption> AvailableFormatOptionsForLabel.
+     */
+    public function getAvailableFormatOptionsForLabel()
+    {
+        if ($this->_fields['AvailableFormatOptionsForLabel']['FieldValue'] == null)
+        {
+            $this->_fields['AvailableFormatOptionsForLabel']['FieldValue'] = array();
+        }
+        return $this->_fields['AvailableFormatOptionsForLabel']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the AvailableFormatOptionsForLabel property.
+     *
+     * @param array availableFormatOptionsForLabel
+     * @return this instance
+     */
+    public function setAvailableFormatOptionsForLabel($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['AvailableFormatOptionsForLabel']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear AvailableFormatOptionsForLabel.
+     */
+    public function unsetAvailableFormatOptionsForLabel()
+    {
+        $this->_fields['AvailableFormatOptionsForLabel']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if AvailableFormatOptionsForLabel is set.
+     *
+     * @return true if AvailableFormatOptionsForLabel is set.
+     */
+    public function isSetAvailableFormatOptionsForLabel()
+    {
+                return !empty($this->_fields['AvailableFormatOptionsForLabel']['FieldValue']);
+            }
+
+    /**
+     * Add values for AvailableFormatOptionsForLabel, return this.
+     *
+     * @param availableFormatOptionsForLabel
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withAvailableFormatOptionsForLabel()
+    {
+        foreach (func_get_args() as $AvailableFormatOptionsForLabel)
+        {
+            $this->_fields['AvailableFormatOptionsForLabel']['FieldValue'][] = $AvailableFormatOptionsForLabel;
+        }
+        return $this;
+    }
+
+    /**
+     * Check the value of RequiresAdditionalSellerInputs.
+     *
+     * @return true if RequiresAdditionalSellerInputs is set to true.
+     */
+    public function isRequiresAdditionalSellerInputs()
+    {
+        return $this->_fields['RequiresAdditionalSellerInputs']['FieldValue'];
+    }
+
+    /**
+     * Get the value of the RequiresAdditionalSellerInputs property.
+     *
+     * @return boolean RequiresAdditionalSellerInputs.
+     */
+    public function getRequiresAdditionalSellerInputs()
+    {
+        return $this->_fields['RequiresAdditionalSellerInputs']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the RequiresAdditionalSellerInputs property.
+     *
+     * @param bool requiresAdditionalSellerInputs
+     * @return this instance
+     */
+    public function setRequiresAdditionalSellerInputs($value)
+    {
+        $this->_fields['RequiresAdditionalSellerInputs']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if RequiresAdditionalSellerInputs is set.
+     *
+     * @return true if RequiresAdditionalSellerInputs is set.
+     */
+    public function isSetRequiresAdditionalSellerInputs()
+    {
+                return !is_null($this->_fields['RequiresAdditionalSellerInputs']['FieldValue']);
+            }
+
+    /**
+     * Set the value of RequiresAdditionalSellerInputs, return this.
+     *
+     * @param requiresAdditionalSellerInputs
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withRequiresAdditionalSellerInputs($value)
+    {
+        $this->setRequiresAdditionalSellerInputs($value);
         return $this;
     }
 

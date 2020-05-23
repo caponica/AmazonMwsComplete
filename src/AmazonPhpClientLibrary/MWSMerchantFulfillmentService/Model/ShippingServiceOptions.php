@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -33,6 +33,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>DeliveryExperience: string</li>
  * <li>DeclaredValue: MWSMerchantFulfillmentService_Model_CurrencyAmount</li>
  * <li>CarrierWillPickUp: bool</li>
+ * <li>CarrierWillPickUpOption: string</li>
  * <li>LabelFormat: string</li>
  *
  * </ul>
@@ -46,6 +47,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'DeliveryExperience' => array('FieldValue' => null, 'FieldType' => 'string'),
     'DeclaredValue' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_CurrencyAmount'),
     'CarrierWillPickUp' => array('FieldValue' => null, 'FieldType' => 'bool'),
+    'CarrierWillPickUpOption' => array('FieldValue' => null, 'FieldType' => 'string'),
     'LabelFormat' => array('FieldValue' => null, 'FieldType' => 'string'),
     );
     parent::__construct($data);
@@ -150,13 +152,13 @@ require_once (dirname(__FILE__) . '/../Model.php');
      */
     public function isCarrierWillPickUp()
     {
-        return $this->_fields['CarrierWillPickUp']['FieldValue'];
+        return !is_null($this->_fields['CarrierWillPickUp']['FieldValue']) && $this->_fields['CarrierWillPickUp']['FieldValue'];
     }
 
     /**
      * Get the value of the CarrierWillPickUp property.
      *
-     * @return boolean CarrierWillPickUp.
+     * @return Boolean CarrierWillPickUp.
      */
     public function getCarrierWillPickUp()
     {
@@ -196,6 +198,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withCarrierWillPickUp($value)
     {
         $this->setCarrierWillPickUp($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the CarrierWillPickUpOption property.
+     *
+     * @return String CarrierWillPickUpOption.
+     */
+    public function getCarrierWillPickUpOption()
+    {
+        return $this->_fields['CarrierWillPickUpOption']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the CarrierWillPickUpOption property.
+     *
+     * @param string carrierWillPickUpOption
+     * @return this instance
+     */
+    public function setCarrierWillPickUpOption($value)
+    {
+        $this->_fields['CarrierWillPickUpOption']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if CarrierWillPickUpOption is set.
+     *
+     * @return true if CarrierWillPickUpOption is set.
+     */
+    public function isSetCarrierWillPickUpOption()
+    {
+                return !is_null($this->_fields['CarrierWillPickUpOption']['FieldValue']);
+            }
+
+    /**
+     * Set the value of CarrierWillPickUpOption, return this.
+     *
+     * @param carrierWillPickUpOption
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withCarrierWillPickUpOption($value)
+    {
+        $this->setCarrierWillPickUpOption($value);
         return $this;
     }
 

@@ -246,6 +246,10 @@
                     </ShipmentItemAdjustmentList>
                 </ShipmentEvent>
             </ShipmentEventList>
+            <ShipmentSettleEventList>
+                <ShipmentSettleEvent>
+                </ShipmentSettleEvent>
+            </ShipmentSettleEventList>
             <RefundEventList>
                 <ShipmentEvent>
                     <AmazonOrderId>String</AmazonOrderId>
@@ -1034,6 +1038,20 @@
                         <CurrencyAmount>100</CurrencyAmount>
                     </ShippingTax>
                     <MarketplaceName>String</MarketplaceName>
+                    <RetrochargeTaxWithheldList>
+                        <TaxWithheldComponent>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <TaxesWithheld>
+                        <ChargeComponent>
+                        <ChargeType>String</ChargeType>
+                        <ChargeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </ChargeAmount>
+                        </ChargeComponent>
+                        </TaxesWithheld>
+                        </TaxWithheldComponent>
+                    </RetrochargeTaxWithheldList>
                 </RetrochargeEvent>
             </RetrochargeEventList>
             <RentalTransactionEventList>
@@ -1337,6 +1355,138 @@
                     </FeeList>
                 </ImagingServicesFeeEvent>
             </ImagingServicesFeeEventList>
+            <NetworkComminglingTransactionEventList>
+                <NetworkComminglingTransactionEvent>
+                    <TransactionType>String</TransactionType>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <NetCoTransactionID>String</NetCoTransactionID>
+                    <SwapReason>String</SwapReason>
+                    <ASIN>String</ASIN>
+                    <MarketplaceId>String</MarketplaceId>
+                    <TaxExclusiveAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxExclusiveAmount>
+                    <TaxAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxAmount>
+                </NetworkComminglingTransactionEvent>
+            </NetworkComminglingTransactionEventList>
+            <AffordabilityExpenseEventList>
+                <AffordabilityExpenseEvent>
+                    <AmazonOrderId>String</AmazonOrderId>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <MarketplaceId>String</MarketplaceId>
+                    <TransactionType>String</TransactionType>
+                    <BaseExpense>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </BaseExpense>
+                    <TaxTypeCGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeCGST>
+                    <TaxTypeSGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeSGST>
+                    <TaxTypeIGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeIGST>
+                    <TotalExpense>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TotalExpense>
+                </AffordabilityExpenseEvent>
+            </AffordabilityExpenseEventList>
+            <AffordabilityExpenseReversalEventList>
+                <AffordabilityExpenseEvent>
+                    <AmazonOrderId>String</AmazonOrderId>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <MarketplaceId>String</MarketplaceId>
+                    <TransactionType>String</TransactionType>
+                    <BaseExpense>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </BaseExpense>
+                    <TaxTypeCGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeCGST>
+                    <TaxTypeSGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeSGST>
+                    <TaxTypeIGST>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TaxTypeIGST>
+                    <TotalExpense>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </TotalExpense>
+                </AffordabilityExpenseEvent>
+            </AffordabilityExpenseReversalEventList>
+            <RemovalShipmentEventList>
+                <RemovalShipmentEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <OrderId>String</OrderId>
+                    <TransactionType>String</TransactionType>
+                    <RemovalShipmentItemList>
+                        <RemovalShipmentItem>
+                        <RemovalShipmentItemId>String</RemovalShipmentItemId>
+                        <TaxCollectionModel>String</TaxCollectionModel>
+                        <FufillmentNetworkSKU>String</FufillmentNetworkSKU>
+                        <Quantity>1</Quantity>
+                        <Revenue>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </Revenue>
+                        <FeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </FeeAmount>
+                        <TaxAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </TaxAmount>
+                        <TaxWithheld>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </TaxWithheld>
+                        </RemovalShipmentItem>
+                    </RemovalShipmentItemList>
+                </RemovalShipmentEvent>
+            </RemovalShipmentEventList>
+            <TrialShipmentEventList>
+                <TrialShipmentEvent>
+                    <AmazonOrderId>String</AmazonOrderId>
+                    <FinancialEventGroupId>String</FinancialEventGroupId>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <SKU>String</SKU>
+                    <FeeList>
+                        <FeeComponent>
+                        <FeeType>String</FeeType>
+                        <FeeAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                        </FeeAmount>
+                        </FeeComponent>
+                    </FeeList>
+                </TrialShipmentEvent>
+            </TrialShipmentEventList>
+            <TDSReimbursementEventList>
+                <TDSReimbursementEvent>
+                    <PostedDate>1969-07-21T02:56:03Z</PostedDate>
+                    <TdsOrderId>String</TdsOrderId>
+                    <ReimbursedAmount>
+                        <CurrencyCode>String</CurrencyCode>
+                        <CurrencyAmount>100</CurrencyAmount>
+                    </ReimbursedAmount>
+                </TDSReimbursementEvent>
+            </TDSReimbursementEventList>
         </FinancialEvents>
     </ListFinancialEventsByNextTokenResult>
    <ResponseMetadata>

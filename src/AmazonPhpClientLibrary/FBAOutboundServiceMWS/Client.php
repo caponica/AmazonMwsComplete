@@ -150,8 +150,6 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
      *   default is Consumer.
      *   The available methods to fulfill a given order:
      *    * Consumer indicates a customer order, this is the default.
-     *    * Removal indicates that the inventory should be returned to the
-     *      specified destination address.
      *   
      *   
      *   NotificationEmailList can be used to provide a list of e-mail 

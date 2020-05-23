@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListPickupSlotsResponse xmlns="https://mws.amazonservices.com/EasyShip/2018-09-01">
+   <ListPickupSlotsResult>
+        <AmazonOrderId>String</AmazonOrderId>
+        <PickupSlotList>
+            <PickupSlot>
+                <SlotId>String</SlotId>
+                <PickupTimeStart>1969-07-21T02:56:03Z</PickupTimeStart>
+                <PickupTimeEnd>1969-07-21T02:56:03Z</PickupTimeEnd>
+            </PickupSlot>
+        </PickupSlotList>
+    </ListPickupSlotsResult>
+   <ResponseMetadata>
+        <RequestId>String</RequestId>
+    </ResponseMetadata>
+</ListPickupSlotsResponse>

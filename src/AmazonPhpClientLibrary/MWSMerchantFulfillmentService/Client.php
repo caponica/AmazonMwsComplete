@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -30,7 +30,7 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
 {
 
     const SERVICE_VERSION = '2015-06-01';
-    const MWS_CLIENT_VERSION = '2018-10-31';
+    const MWS_CLIENT_VERSION = '2020-02-06';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -157,6 +157,73 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
         if ($request->isSetHazmatType()) {
             $parameters['HazmatType'] =  $request->getHazmatType();
         }
+        if ($request->isSetLabelFormatOption()) {
+            $LabelFormatOptionCreateShipmentRequest = $request->getLabelFormatOption();
+            foreach  ($LabelFormatOptionCreateShipmentRequest->getIncludePackingSlipWithLabel() as $IncludePackingSlipWithLabelLabelFormatOptionIndex => $IncludePackingSlipWithLabelLabelFormatOption) {
+                $parameters['LabelFormatOption' . '.' . 'IncludePackingSlipWithLabel' . '.'  . ($IncludePackingSlipWithLabelLabelFormatOptionIndex + 1)] =  $IncludePackingSlipWithLabelLabelFormatOption;
+            }
+        }
+        if ($request->isSetShipmentLevelSellerInputsList()) {
+            $parameters['ShipmentLevelSellerInputsList'] =  $request->getShipmentLevelSellerInputsList();
+        }
+
+        return $parameters;
+    }
+
+
+    /**
+     * Get Additional Seller Inputs
+     * Gets the list of additional seller inputs required for a ship-method.
+     *     Also returns any saved values the seller has for these additional inputs.
+     *
+     * @param mixed $request array of parameters for MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputs request or MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputs object itself
+     * @see MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsRequest
+     * @return MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsResponse
+     *
+     * @throws MWSMerchantFulfillmentService_Exception
+     */
+    public function getAdditionalSellerInputs($request)
+    {
+        if (!($request instanceof MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsRequest)) {
+            require_once (dirname(__FILE__) . '/Model/GetAdditionalSellerInputsRequest.php');
+            $request = new MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsRequest($request);
+        }
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'GetAdditionalSellerInputs';
+        $httpResponse = $this->_invoke($parameters);
+
+        require_once (dirname(__FILE__) . '/Model/GetAdditionalSellerInputsResponse.php');
+        $response = MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsResponse::fromXML($httpResponse['ResponseBody']);
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        return $response;
+    }
+
+
+    /**
+     * Convert GetAdditionalSellerInputsRequest to name value pairs
+     */
+    private function _convertGetAdditionalSellerInputs($request) {
+
+        $parameters = array();
+        $parameters['Action'] = 'GetAdditionalSellerInputs';
+        if ($request->isSetOrderId()) {
+            $parameters['OrderId'] =  $request->getOrderId();
+        }
+        if ($request->isSetMWSAuthToken()) {
+            $parameters['MWSAuthToken'] =  $request->getMWSAuthToken();
+        }
+        if ($request->isSetSellerId()) {
+            $parameters['SellerId'] =  $request->getSellerId();
+        }
+        if ($request->isSetShippingServiceId()) {
+            $parameters['ShippingServiceId'] =  $request->getShippingServiceId();
+        }
+        if ($request->isSetShipFromAddress()) {
+            $ShipFromAddressGetAdditionalSellerInputsRequest = $request->getShipFromAddress();
+            foreach  ($ShipFromAddressGetAdditionalSellerInputsRequest->getName() as $NameShipFromAddressIndex => $NameShipFromAddress) {
+                $parameters['ShipFromAddress' . '.' . 'Name' . '.'  . ($NameShipFromAddressIndex + 1)] =  $NameShipFromAddress;
+            }
+        }
 
         return $parameters;
     }
@@ -208,6 +275,12 @@ class MWSMerchantFulfillmentService_Client implements MWSMerchantFulfillmentServ
             $ShipmentRequestDetailsGetEligibleShippingServicesRequest = $request->getShipmentRequestDetails();
             foreach  ($ShipmentRequestDetailsGetEligibleShippingServicesRequest->getAmazonOrderId() as $AmazonOrderIdShipmentRequestDetailsIndex => $AmazonOrderIdShipmentRequestDetails) {
                 $parameters['ShipmentRequestDetails' . '.' . 'AmazonOrderId' . '.'  . ($AmazonOrderIdShipmentRequestDetailsIndex + 1)] =  $AmazonOrderIdShipmentRequestDetails;
+            }
+        }
+        if ($request->isSetShippingOfferingFilter()) {
+            $ShippingOfferingFilterGetEligibleShippingServicesRequest = $request->getShippingOfferingFilter();
+            foreach  ($ShippingOfferingFilterGetEligibleShippingServicesRequest->getIncludePackingSlipWithLabel() as $IncludePackingSlipWithLabelShippingOfferingFilterIndex => $IncludePackingSlipWithLabelShippingOfferingFilter) {
+                $parameters['ShippingOfferingFilter' . '.' . 'IncludePackingSlipWithLabel' . '.'  . ($IncludePackingSlipWithLabelShippingOfferingFilterIndex + 1)] =  $IncludePackingSlipWithLabelShippingOfferingFilter;
             }
         }
 

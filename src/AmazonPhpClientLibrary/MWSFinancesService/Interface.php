@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2018-03-22
- * Generated: Thu Mar 15 07:12:28 GMT 2018
+ * Library Version: 2020-02-21
+ * Generated: Fri Feb 21 09:07:30 PST 2020
  */
 
 interface  MWSFinancesService_Interface

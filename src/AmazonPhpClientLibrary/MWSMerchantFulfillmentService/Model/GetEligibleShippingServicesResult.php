@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -31,6 +31,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <ul>
  * 
  * <li>ShippingServiceList: array</li>
+ * <li>RejectedShippingServiceList: array</li>
  * <li>TemporarilyUnavailableCarrierList: array</li>
  * <li>TermsAndConditionsNotAcceptedCarrierList: array</li>
  *
@@ -43,6 +44,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     {
     $this->_fields = array (
     'ShippingServiceList' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_ShippingService'), 'ListMemberName' => 'ShippingService'),
+    'RejectedShippingServiceList' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_RejectedShippingService'), 'ListMemberName' => 'RejectedShippingService'),
     'TemporarilyUnavailableCarrierList' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_TemporarilyUnavailableCarrier'), 'ListMemberName' => 'TemporarilyUnavailableCarrier'),
     'TermsAndConditionsNotAcceptedCarrierList' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_TermsAndConditionsNotAcceptedCarrier'), 'ListMemberName' => 'TermsAndConditionsNotAcceptedCarrier'),
     );
@@ -109,6 +111,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
         foreach (func_get_args() as $ShippingServiceList)
         {
             $this->_fields['ShippingServiceList']['FieldValue'][] = $ShippingServiceList;
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of the RejectedShippingServiceList property.
+     *
+     * @return List<RejectedShippingService> RejectedShippingServiceList.
+     */
+    public function getRejectedShippingServiceList()
+    {
+        if ($this->_fields['RejectedShippingServiceList']['FieldValue'] == null)
+        {
+            $this->_fields['RejectedShippingServiceList']['FieldValue'] = array();
+        }
+        return $this->_fields['RejectedShippingServiceList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the RejectedShippingServiceList property.
+     *
+     * @param array rejectedShippingServiceList
+     * @return this instance
+     */
+    public function setRejectedShippingServiceList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['RejectedShippingServiceList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear RejectedShippingServiceList.
+     */
+    public function unsetRejectedShippingServiceList()
+    {
+        $this->_fields['RejectedShippingServiceList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if RejectedShippingServiceList is set.
+     *
+     * @return true if RejectedShippingServiceList is set.
+     */
+    public function isSetRejectedShippingServiceList()
+    {
+                return !empty($this->_fields['RejectedShippingServiceList']['FieldValue']);
+            }
+
+    /**
+     * Add values for RejectedShippingServiceList, return this.
+     *
+     * @param rejectedShippingServiceList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withRejectedShippingServiceList()
+    {
+        foreach (func_get_args() as $RejectedShippingServiceList)
+        {
+            $this->_fields['RejectedShippingServiceList']['FieldValue'][] = $RejectedShippingServiceList;
         }
         return $this;
     }

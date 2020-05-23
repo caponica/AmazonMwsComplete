@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 22:40:38 UTC 2018
+ * Library Version: 2020-05-11
+ * Generated: Fri May 08 09:10:38 GMT 2020
  */
 
 /**
@@ -30,7 +30,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
 {
 
     const SERVICE_VERSION = '2013-09-01';
-    const MWS_CLIENT_VERSION = '2018-10-31';
+    const MWS_CLIENT_VERSION = '2020-05-11';
 
     /** @var string */
     private  $_awsAccessKeyId = null;

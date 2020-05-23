@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -33,6 +33,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>SellerId: string</li>
  * <li>MWSAuthToken: string</li>
  * <li>ShipmentRequestDetails: MWSMerchantFulfillmentService_Model_ShipmentRequestDetails</li>
+ * <li>ShippingOfferingFilter: MWSMerchantFulfillmentService_Model_ShippingOfferingFilter</li>
  *
  * </ul>
  */
@@ -45,6 +46,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'SellerId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShipmentRequestDetails' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShipmentRequestDetails'),
+    'ShippingOfferingFilter' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_ShippingOfferingFilter'),
     );
     parent::__construct($data);
     }
@@ -184,6 +186,52 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withShipmentRequestDetails($value)
     {
         $this->setShipmentRequestDetails($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ShippingOfferingFilter property.
+     *
+     * @return ShippingOfferingFilter ShippingOfferingFilter.
+     */
+    public function getShippingOfferingFilter()
+    {
+        return $this->_fields['ShippingOfferingFilter']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ShippingOfferingFilter property.
+     *
+     * @param MWSMerchantFulfillmentService_Model_ShippingOfferingFilter shippingOfferingFilter
+     * @return this instance
+     */
+    public function setShippingOfferingFilter($value)
+    {
+        $this->_fields['ShippingOfferingFilter']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if ShippingOfferingFilter is set.
+     *
+     * @return true if ShippingOfferingFilter is set.
+     */
+    public function isSetShippingOfferingFilter()
+    {
+                return !is_null($this->_fields['ShippingOfferingFilter']['FieldValue']);
+            }
+
+    /**
+     * Set the value of ShippingOfferingFilter, return this.
+     *
+     * @param shippingOfferingFilter
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withShippingOfferingFilter($value)
+    {
+        $this->setShippingOfferingFilter($value);
         return $this;
     }
 
