@@ -2,8 +2,8 @@
 
 namespace CaponicaAmazonMwsComplete\ClientPack;
 
-use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\AmazonClient\MwsFeedAndReportClient;
+use CaponicaAmazonMwsComplete\ClientPool\MwsClientPoolConfig;
 use CaponicaAmazonMwsComplete\Concerns\SignsRequestArray;
 
 class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
@@ -46,6 +46,8 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
 
     const FEED_TYPE_BUSINESS_PRODUCT_DOCUMENTS          = '_POST_ENHANCED_CONTENT_DATA_';
     const FEED_TYPE_EASY_SHIP_DOCUMENTS                 = '_POST_EASYSHIP_DOCUMENTS_';
+
+    const FEED_TYPE_UPLOAD_VAT_INVOICE                  = '_UPLOAD_VAT_INVOICE_';
 
     // Report type enumeration, see http://docs.developer.amazonservices.com/en_UK/reports/Reports_ReportType.html
     // An effort has been made to group these by category (prefix) and make the constant names meaningful
@@ -143,6 +145,7 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     const PARAM_FEED_CONTENT                            = 'FeedContent';
     const PARAM_FEED_CONTENT_MD5                        = 'ContentMd5';
     const PARAM_END_DATE                                = 'EndDate';
+    const PARAM_FEED_OPTIONS                            = 'FeedOptions';
     const PARAM_FEED_PROCESSING_STATUS_LIST             = 'FeedProcessingStatusList';
     const PARAM_FEED_SUBMISSION_ID                      = 'FeedSubmissionId';
     const PARAM_FEED_SUBMISSION_ID_LIST                 = 'FeedSubmissionIdList';
@@ -292,9 +295,10 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
     /**
      * @param string $feedType              One of the FEED_TYPE_XYZ values
      * @param resource $feedContent         A file handle (resource) pointing to the feed content
+     * @param array $feedOptions            (optional) Array with key value feed options
      * @return \MarketplaceWebService_Model_SubmitFeedResponse
      */
-    public function callSubmitFeed($feedType, $feedContent) {
+    public function callSubmitFeed($feedType, $feedContent, $feedOptions = null) {
         $contentHash = base64_encode(md5(stream_get_contents($feedContent), true));
         rewind($feedContent);
 
@@ -305,6 +309,11 @@ class MwsFeedAndReportClientPack extends MwsFeedAndReportClient {
             self::PARAM_MARKETPLACE_ID_LIST => array('Id' => $this->marketplaceId),
             // self::PARAM_PURGE_AND_REPLACE   => $purge, // This is ignored for safety (uses the MWS API default of false)
         ];
+        if (is_array($feedOptions)) {
+            $parameters[self::PARAM_FEED_OPTIONS] = implode(";", array_map(function ($k, $v) {
+                return sprintf("%s=%s", $k, $v);
+            }, array_keys($feedOptions), $feedOptions));
+        }
         $parameters = $this->signArray($parameters);
         return $this->submitFeed($parameters);
     }
