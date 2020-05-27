@@ -15,17 +15,19 @@ class FbaInventoryClientPack extends FbaInventoryClient implements ThrottleAware
 
     const SERVICE_NAME = 'FulfillmentInventory';
 
-    const PARAM_MARKETPLACE_ID                          = 'MarketplaceId';
-    const PARAM_MERCHANT                                = 'SellerId';
-    const PARAM_SELLER_ID                               = 'SellerId';   // Alias for PARAM_MERCHANT
-    const PARAM_MWS_AUTH_TOKEN                          = 'MWSAuthToken';
+    const PARAM_MARKETPLACE_ID          = 'MarketplaceId';
+    const PARAM_MERCHANT                = 'SellerId';
+    const PARAM_SELLER_ID               = 'SellerId';   // Alias for PARAM_MERCHANT
+    const PARAM_MWS_AUTH_TOKEN          = 'MWSAuthToken';
     const PARAM_NEXT_TOKEN              = 'NextToken';
     const PARAM_SELLER_SKUS             = 'SellerSkus';
     const PARAM_QUERY_START_DATE_TIME   = 'QueryStartDateTime';
     const PARAM_RESPONSE_GROUP          = 'ResponseGroup';
+    const PARAM_RESPONSE_GROUP_BASIC    = 'Basic';
+    const PARAM_RESPONSE_GROUP_DETAILED = 'Detailed';
 
-    const METHOD_LIST_INVENTORY_SUPPLY                  = 'listInventorySupply';
-    const METHOD_LIST_INVENTORY_SUPPLY_BY_NEXT_TOKEN    = 'listInventorySupplyByNextToken';
+    const METHOD_LIST_INVENTORY_SUPPLY               = 'listInventorySupply';
+    const METHOD_LIST_INVENTORY_SUPPLY_BY_NEXT_TOKEN = 'listInventorySupplyByNextToken';
 
     /** @var string $marketplaceId      The MWS MarketplaceID string used in API connections */
     protected $marketplaceId;
@@ -55,12 +57,17 @@ class FbaInventoryClientPack extends FbaInventoryClient implements ThrottleAware
     // ##################################################
     /**
      * @param $sellerSkus
+     * @param $fetchDetails bool
+     *
      * @return \FBAInventoryServiceMWS_Model_ListInventorySupplyResponse
      * @throws \Exception
      */
-    public function callListInventorySupply($sellerSkus) {
+    public function callListInventorySupply($sellerSkus, $fetchDetails = false) {
+        $responseGroup = $fetchDetails ? self::PARAM_RESPONSE_GROUP_DETAILED : self::PARAM_RESPONSE_GROUP_BASIC;
+
         $requestArray = [
             self::PARAM_SELLER_SKUS     => ['member' => $sellerSkus],
+            self::PARAM_RESPONSE_GROUP  => $responseGroup,
         ];
 
         $requestArray = $this->signArray($requestArray);

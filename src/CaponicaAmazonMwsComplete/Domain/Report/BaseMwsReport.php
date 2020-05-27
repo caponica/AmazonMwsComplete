@@ -17,6 +17,7 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_DAILY            => 'ReportFbaInventoryHistoryDaily',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_MONTHLY          => 'ReportFbaInventoryHistoryMonthly',
         MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW               => 'ReportFbaPaymentsFeePreview',
+        MwsFeedAndReportClientPack::REPORT_LISTING_ALL_LISTINGS                   => 'ReportListingAllListings',
         MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
         MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
         MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFbaSalesAllByLastUpdateFlatFile',
@@ -24,6 +25,8 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_ADJUSTMENTS              => 'ReportFbaInventoryAdjustments',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_EVENT_DETAIL             => 'ReportFbaInventoryEventDetail',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_RECEIVED                 => 'ReportFbaInventoryReceived',
+	MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_REIMBURSEMENTS            => 'ReportFbaPaymentReimbursements',
+
         MwsFeedAndReportClientPack::REPORT_SETTLEMENT_FLAT_FILE                   => 'ReportSettlementFlatFile'
     ];
 
