@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Finances Service
  * @version  2015-05-01
- * Library Version: 2018-03-22
- * Generated: Thu Mar 15 07:12:28 GMT 2018
+ * Library Version: 2020-02-21
+ * Generated: Fri Feb 21 09:07:30 PST 2020
  */
 
 /**
@@ -36,6 +36,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>BaseTax: MWSFinancesService_Model_Currency</li>
  * <li>ShippingTax: MWSFinancesService_Model_Currency</li>
  * <li>MarketplaceName: string</li>
+ * <li>RetrochargeTaxWithheldList: array</li>
  *
  * </ul>
  */
@@ -51,6 +52,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'BaseTax' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
     'ShippingTax' => array('FieldValue' => null, 'FieldType' => 'MWSFinancesService_Model_Currency'),
     'MarketplaceName' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'RetrochargeTaxWithheldList' => array('FieldValue' => array(), 'FieldType' => array('MWSFinancesService_Model_TaxWithheldComponent'), 'ListMemberName' => 'TaxWithheldComponent'),
     );
     parent::__construct($data);
     }
@@ -328,6 +330,70 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withMarketplaceName($value)
     {
         $this->setMarketplaceName($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the RetrochargeTaxWithheldList property.
+     *
+     * @return List<TaxWithheldComponent> RetrochargeTaxWithheldList.
+     */
+    public function getRetrochargeTaxWithheldList()
+    {
+        if ($this->_fields['RetrochargeTaxWithheldList']['FieldValue'] == null)
+        {
+            $this->_fields['RetrochargeTaxWithheldList']['FieldValue'] = array();
+        }
+        return $this->_fields['RetrochargeTaxWithheldList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the RetrochargeTaxWithheldList property.
+     *
+     * @param array retrochargeTaxWithheldList
+     * @return this instance
+     */
+    public function setRetrochargeTaxWithheldList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['RetrochargeTaxWithheldList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear RetrochargeTaxWithheldList.
+     */
+    public function unsetRetrochargeTaxWithheldList()
+    {
+        $this->_fields['RetrochargeTaxWithheldList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if RetrochargeTaxWithheldList is set.
+     *
+     * @return true if RetrochargeTaxWithheldList is set.
+     */
+    public function isSetRetrochargeTaxWithheldList()
+    {
+                return !empty($this->_fields['RetrochargeTaxWithheldList']['FieldValue']);
+            }
+
+    /**
+     * Add values for RetrochargeTaxWithheldList, return this.
+     *
+     * @param retrochargeTaxWithheldList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withRetrochargeTaxWithheldList()
+    {
+        foreach (func_get_args() as $RetrochargeTaxWithheldList)
+        {
+            $this->_fields['RetrochargeTaxWithheldList']['FieldValue'][] = $RetrochargeTaxWithheldList;
+        }
         return $this;
     }
 

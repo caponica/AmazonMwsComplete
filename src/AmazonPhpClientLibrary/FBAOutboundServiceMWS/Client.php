@@ -906,6 +906,7 @@ class FBAOutboundServiceMWS_Client implements FBAOutboundServiceMWS_Interface
     public function __construct(
     $awsAccessKeyId, $awsSecretAccessKey, $config, $applicationName, $applicationVersion, $attributes = null)
     {
+        // section customised to improve compatibility
         if (PHP_VERSION_ID < 50600) {
             iconv_set_encoding('output_encoding', 'UTF-8');
             iconv_set_encoding('input_encoding', 'UTF-8');

@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -36,6 +36,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
  * <li>ShippingServiceId: string</li>
  * <li>ShippingServiceOfferId: string</li>
  * <li>HazmatType: string</li>
+ * <li>LabelFormatOption: MWSMerchantFulfillmentService_Model_LabelFormatOptionRequest</li>
+ * <li>ShipmentLevelSellerInputsList: array</li>
  *
  * </ul>
  */
@@ -51,6 +53,8 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'ShippingServiceId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'ShippingServiceOfferId' => array('FieldValue' => null, 'FieldType' => 'string'),
     'HazmatType' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'LabelFormatOption' => array('FieldValue' => null, 'FieldType' => 'MWSMerchantFulfillmentService_Model_LabelFormatOptionRequest'),
+    'ShipmentLevelSellerInputsList' => array('FieldValue' => array(), 'FieldType' => array('MWSMerchantFulfillmentService_Model_AdditionalSellerInputs'), 'ListMemberName' => 'member'),
     );
     parent::__construct($data);
     }
@@ -328,6 +332,116 @@ require_once (dirname(__FILE__) . '/../Model.php');
     public function withHazmatType($value)
     {
         $this->setHazmatType($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the LabelFormatOption property.
+     *
+     * @return LabelFormatOptionRequest LabelFormatOption.
+     */
+    public function getLabelFormatOption()
+    {
+        return $this->_fields['LabelFormatOption']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the LabelFormatOption property.
+     *
+     * @param MWSMerchantFulfillmentService_Model_LabelFormatOptionRequest labelFormatOption
+     * @return this instance
+     */
+    public function setLabelFormatOption($value)
+    {
+        $this->_fields['LabelFormatOption']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Check to see if LabelFormatOption is set.
+     *
+     * @return true if LabelFormatOption is set.
+     */
+    public function isSetLabelFormatOption()
+    {
+                return !is_null($this->_fields['LabelFormatOption']['FieldValue']);
+            }
+
+    /**
+     * Set the value of LabelFormatOption, return this.
+     *
+     * @param labelFormatOption
+     *             The new value to set.
+     *
+     * @return This instance.
+     */
+    public function withLabelFormatOption($value)
+    {
+        $this->setLabelFormatOption($value);
+        return $this;
+    }
+
+    /**
+     * Get the value of the ShipmentLevelSellerInputsList property.
+     *
+     * @return List<AdditionalSellerInputs> ShipmentLevelSellerInputsList.
+     */
+    public function getShipmentLevelSellerInputsList()
+    {
+        if ($this->_fields['ShipmentLevelSellerInputsList']['FieldValue'] == null)
+        {
+            $this->_fields['ShipmentLevelSellerInputsList']['FieldValue'] = array();
+        }
+        return $this->_fields['ShipmentLevelSellerInputsList']['FieldValue'];
+    }
+
+    /**
+     * Set the value of the ShipmentLevelSellerInputsList property.
+     *
+     * @param array shipmentLevelSellerInputsList
+     * @return this instance
+     */
+    public function setShipmentLevelSellerInputsList($value)
+    {
+        if (!$this->_isNumericArray($value)) {
+            $value = array ($value);
+        }
+        $this->_fields['ShipmentLevelSellerInputsList']['FieldValue'] = $value;
+        return $this;
+    }
+
+    /**
+     * Clear ShipmentLevelSellerInputsList.
+     */
+    public function unsetShipmentLevelSellerInputsList()
+    {
+        $this->_fields['ShipmentLevelSellerInputsList']['FieldValue'] = array();
+    }
+
+    /**
+     * Check to see if ShipmentLevelSellerInputsList is set.
+     *
+     * @return true if ShipmentLevelSellerInputsList is set.
+     */
+    public function isSetShipmentLevelSellerInputsList()
+    {
+                return !empty($this->_fields['ShipmentLevelSellerInputsList']['FieldValue']);
+            }
+
+    /**
+     * Add values for ShipmentLevelSellerInputsList, return this.
+     *
+     * @param shipmentLevelSellerInputsList
+     *             New values to add.
+     *
+     * @return This instance.
+     */
+    public function withShipmentLevelSellerInputsList()
+    {
+        foreach (func_get_args() as $ShipmentLevelSellerInputsList)
+        {
+            $this->_fields['ShipmentLevelSellerInputsList']['FieldValue'][] = $ShipmentLevelSellerInputsList;
+        }
         return $this;
     }
 

@@ -29,6 +29,7 @@
                     <CountryCode>String</CountryCode>
                     <Phone>String</Phone>
                     <AddressType>String</AddressType>
+                    <isAddressSharingConfidential>true</isAddressSharingConfidential>
                 </ShippingAddress>
                 <OrderTotal>
                     <CurrencyCode>String</CurrencyCode>
@@ -76,11 +77,31 @@
                 <IsBusinessOrder>true</IsBusinessOrder>
                 <PurchaseOrderNumber>String</PurchaseOrderNumber>
                 <IsPrime>true</IsPrime>
+                <IsGlobalExpressEnabled>true</IsGlobalExpressEnabled>
                 <IsPremiumOrder>true</IsPremiumOrder>
                 <ReplacedOrderId>String</ReplacedOrderId>
                 <IsReplacementOrder>true</IsReplacementOrder>
                 <PromiseResponseDueDate>1969-07-21T02:56:03Z</PromiseResponseDueDate>
                 <IsEstimatedShipDateSet>true</IsEstimatedShipDateSet>
+                <TaxRegistrationDetails>
+                    <member>
+                        <taxRegistrationType>String</taxRegistrationType>
+                        <taxRegistrationId>String</taxRegistrationId>
+                        <taxRegistrationAuthority>
+                        <country>String</country>
+                        <state>String</state>
+                        <district>String</district>
+                        <province>String</province>
+                        <city>String</city>
+                        <warehouseId>String</warehouseId>
+                        </taxRegistrationAuthority>
+                    </member>
+                </TaxRegistrationDetails>
+                <IsSoldByAB>true</IsSoldByAB>
+                <BuyerIdentificationInformation>
+                    <BuyerCitizenId>String</BuyerCitizenId>
+                    <BuyerLegalName>String</BuyerLegalName>
+                </BuyerIdentificationInformation>
             </Order>
         </Orders>
     </ListOrdersResult>

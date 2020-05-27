@@ -217,6 +217,7 @@ class MarketplaceWebServiceSellers_Client implements MarketplaceWebServiceSeller
      */
     public function __construct($awsAccessKeyId, $awsSecretAccessKey, $applicationName, $applicationVersion, $config = null)
     {
+        // section customised to improve compatibility
         if (PHP_VERSION_ID < 50600) {
             iconv_set_encoding('output_encoding', 'UTF-8');
             iconv_set_encoding('input_encoding', 'UTF-8');

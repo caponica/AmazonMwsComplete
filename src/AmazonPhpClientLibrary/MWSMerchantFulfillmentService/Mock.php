@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2018 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2020 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  MWS Merchant Fulfillment Service
  * @version  2015-06-01
- * Library Version: 2018-10-31
- * Generated: Mon Oct 22 23:32:33 UTC 2018
+ * Library Version: 2020-02-06
+ * Generated: Mon Mar 02 20:07:25 UTC 2020
  */
 
 /**
@@ -58,6 +58,23 @@ class MWSMerchantFulfillmentService_Mock implements MWSMerchantFulfillmentServic
     {
         require_once (dirname(__FILE__) . '/Model/CreateShipmentResponse.php');
         return MWSMerchantFulfillmentService_Model_CreateShipmentResponse::fromXML($this->_invoke('CreateShipment'));
+    }
+
+    /**
+     * Get Additional Seller Inputs
+     * Gets the list of additional seller inputs required for a ship-method.
+     *     Also returns any saved values the seller has for these additional inputs.
+     *
+     * @param mixed $request array of parameters for MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputs request or MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputs object itself
+     * @see MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputs
+     * @return MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsResponse
+     *
+     * @throws MWSMerchantFulfillmentService_Exception
+     */
+    public function getAdditionalSellerInputs($request)
+    {
+        require_once (dirname(__FILE__) . '/Model/GetAdditionalSellerInputsResponse.php');
+        return MWSMerchantFulfillmentService_Model_GetAdditionalSellerInputsResponse::fromXML($this->_invoke('GetAdditionalSellerInputs'));
     }
 
     /**
