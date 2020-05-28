@@ -448,7 +448,7 @@ class MwsProductClientPack extends MwsProductClient implements ThrottleAwareClie
             /** @var \MarketplaceWebServiceProducts_Model_Product $mwsProduct */
             $mwsProduct = $mwsProductResultsForOneSearchTerm->getProduct();
 
-            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->getRawXml(), $this->logger);
+            $productsByAsin[$searchTerm] = new PotentialMatch($mwsProduct, $searchResponse->toXML(), $this->logger);
         }
 
         return $productsByAsin;
