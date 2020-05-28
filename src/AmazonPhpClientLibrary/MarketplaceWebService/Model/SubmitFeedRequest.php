@@ -80,7 +80,7 @@ class MarketplaceWebService_Model_SubmitFeedRequest extends MarketplaceWebServic
         'FeedType' => array('FieldValue' => null, 'FieldType' => 'string'),
         'PurgeAndReplace' => array('FieldValue' => null, 'FieldType' => 'bool'),
         'ContentMd5' => array ('FieldValue' => null, 'FieldType' => 'string'),
- 	'ContentType' => array ('FieldValue' => self::$DEFAULT_CONTENT_TYPE, 'FieldType' => 'MarketplaceWebService_Model_ContentType'),
+        'ContentType' => array ('FieldValue' => self::$DEFAULT_CONTENT_TYPE, 'FieldType' => 'MarketplaceWebService_Model_ContentType'),
         'FeedOptions' => array ('FieldValue' => null, 'FieldType' => 'string')
         );
         
