@@ -6,8 +6,8 @@ This is an attempt to simplify access to the full range of MWS API calls from a 
 Installation
 ============
 
-Into a symfony2 project
------------------------
+Into a Symfony project
+----------------------
 
 Add the reference into your composer.json : 
 
@@ -87,8 +87,8 @@ Once set on the ClientPool, the token should be passed through to each Client an
 set and use the MWSAuthToken, and if it all works as expected. I don't used this functionality myself so cannot test it
 properly.*
 
-NEW - Logging
-=============
+Logging
+=======
 
 The scripts no longer echo messages. Instead they use a Logger which you can define when you instantiate the ClientPool.
 
