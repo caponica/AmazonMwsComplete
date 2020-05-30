@@ -24,12 +24,16 @@ class MwsClientPoolConfig {
     const SITE_FRANCE       = 'FR';
     const SITE_ITALY        = 'IT';
     const SITE_UK           = 'UK';
+    const SITE_NETHERLANDS  = 'NL';
     const SITE_BRAZIL       = 'BR';
     const SITE_CHINA        = 'CN';
     const SITE_INDIA        = 'IN';
     const SITE_JAPAN        = 'JP';
     const SITE_AUSTRALIA    = 'AU';
     const SITE_TURKEY       = 'TR';
+    const SITE_UAE          = 'AE';
+	const SITE_SAUDI_ARABIA = 'SA';
+    const SITE_SINGAPORE    = 'SG';
 
     const CONFIG_KEY_SERVICE_URL            = 'ServiceURL';
     const CONFIG_KEY_USER_AGENT             = 'UserAgent';
@@ -70,12 +74,16 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'fr',
             self::SITE_ITALY        => 'it',
             self::SITE_UK           => 'co.uk',
+            self::SITE_NETHERLANDS  => 'nl',
             self::SITE_BRAZIL       => 'com.br',
             self::SITE_CHINA        => 'cn',
             self::SITE_INDIA        => 'in',
             self::SITE_JAPAN        => 'co.jp',
             self::SITE_AUSTRALIA    => 'com.au',
             self::SITE_TURKEY       => 'com.tr',
+            self::SITE_UAE          => 'ae',
+            self::SITE_SAUDI_ARABIA => 'sa',
+            self::SITE_SINGAPORE    => 'sg',
         ];
     }
 
@@ -137,12 +145,16 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE,
             self::SITE_ITALY,
             self::SITE_UK,
+            self::SITE_NETHERLANDS,
             self::SITE_BRAZIL,
             self::SITE_CHINA,
             self::SITE_INDIA,
             self::SITE_JAPAN,
             self::SITE_AUSTRALIA,
             self::SITE_TURKEY,
+            self::SITE_UAE,
+            self::SITE_SAUDI_ARABIA,
+            self::SITE_SINGAPORE,
         ];
     }
 
@@ -156,12 +168,16 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'https://mws-eu.amazonservices.com',
             self::SITE_ITALY        => 'https://mws-eu.amazonservices.com',
             self::SITE_UK           => 'https://mws-eu.amazonservices.com',
+            self::SITE_NETHERLANDS  => 'https://mws-eu.amazonservices.com',
             self::SITE_BRAZIL       => 'https://mws.amazonservices.com',
             self::SITE_CHINA        => 'https://mws.amazonservices.com.cn',
             self::SITE_INDIA        => 'https://mws.amazonservices.in',
             self::SITE_JAPAN        => 'https://mws.amazonservices.jp',
             self::SITE_AUSTRALIA    => 'https://mws.amazonservices.com.au',
-            self::SITE_TURKEY       => 'https://mws.services.amazon.com.tr',
+            self::SITE_TURKEY       => 'https://mws-eu.amazonservices.com',
+            self::SITE_UAE          => 'https://mws-eu.amazonservices.com',
+            self::SITE_SAUDI_ARABIA => 'https://mws-eu.amazonservices.com',
+            self::SITE_SINGAPORE    => 'https://mws-fe.amazonservices.com'
         ];
     }
     private function getMwsEndpoint($amazonSite) {
@@ -174,20 +190,24 @@ class MwsClientPoolConfig {
 
     public static function getMarketplaceIds() {
         return [
-            self::SITE_CANADA    => 'A2EUQ1WTGCTBG2',
-            self::SITE_MEXICO    => 'A1AM78C64UM0Y8',
-            self::SITE_USA       => 'ATVPDKIKX0DER',
-            self::SITE_GERMANY   => 'A1PA6795UKMFR9',
-            self::SITE_SPAIN     => 'A1RKKUPIHCS9HS',
-            self::SITE_FRANCE    => 'A13V1IB3VIYZZH',
-            self::SITE_ITALY     => 'APJ6JRA9NG5V4',
-            self::SITE_UK        => 'A1F83G8C2ARO7P',
-            self::SITE_BRAZIL    => 'A2Q3Y263D00KWC',
-            self::SITE_CHINA     => 'AAHKV2X7AFYLW',
-            self::SITE_INDIA     => 'A21TJRUUN4KGV',
-            self::SITE_JAPAN     => 'A1VC38T7YXB528',
-            self::SITE_AUSTRALIA => 'A39IBJ37TRP1C6',
-            self::SITE_TURKEY    => 'A33AVAJ2PDY3EV',
+            self::SITE_CANADA       => 'A2EUQ1WTGCTBG2',
+            self::SITE_MEXICO       => 'A1AM78C64UM0Y8',
+            self::SITE_USA          => 'ATVPDKIKX0DER',
+            self::SITE_GERMANY      => 'A1PA6795UKMFR9',
+            self::SITE_SPAIN        => 'A1RKKUPIHCS9HS',
+            self::SITE_FRANCE       => 'A13V1IB3VIYZZH',
+            self::SITE_ITALY        => 'APJ6JRA9NG5V4',
+            self::SITE_UK           => 'A1F83G8C2ARO7P',
+			self::SITE_NETHERLANDS  => 'A1805IZSGTT6HS',
+            self::SITE_BRAZIL       => 'A2Q3Y263D00KWC',
+            self::SITE_CHINA        => 'AAHKV2X7AFYLW',
+            self::SITE_INDIA        => 'A21TJRUUN4KGV',
+            self::SITE_JAPAN        => 'A1VC38T7YXB528',
+            self::SITE_AUSTRALIA    => 'A39IBJ37TRP1C6',
+            self::SITE_TURKEY       => 'A33AVAJ2PDY3EV',
+            self::SITE_UAE          => 'A2VIGQ35RCS4UG',
+			self::SITE_SAUDI_ARABIA => 'A17E79C6D8DWNP',
+            self::SITE_SINGAPORE    => 'A19VAU5U5O7RUS',
         ];
     }
     /*
@@ -195,20 +215,24 @@ class MwsClientPoolConfig {
      */
     public static function getNonAmazonMarketplaceIds() {
         return [
-            self::SITE_CANADA    => 'A1MQXOICRS2Z7M',
-            self::SITE_MEXICO    => 'A3H6HPSLHAK3XG',
-            self::SITE_USA       => 'A2ZV50J4W1RKNI',
-            self::SITE_GERMANY   => 'A38D8NSA03LJTC',
-            self::SITE_SPAIN     => 'AFQLKURYRPEL8',
-            self::SITE_FRANCE    => 'A1ZFFQZ3HTUKT9',
-            self::SITE_ITALY     => 'A62U237T8HV6N',
-            self::SITE_UK        => 'AZMDEXL2RVFNN',
-            self::SITE_BRAZIL    => null,
-            self::SITE_CHINA     => null,
-            self::SITE_INDIA     => null,
-            self::SITE_JAPAN     => null,
-            self::SITE_AUSTRALIA => 'A30BMGT8JIOX0F',
-            self::SITE_TURKEY    => 'A33AVAJ2PDY3EV',
+            self::SITE_CANADA       => 'A1MQXOICRS2Z7M',
+            self::SITE_MEXICO       => 'A3H6HPSLHAK3XG',
+            self::SITE_USA          => 'A2ZV50J4W1RKNI',
+            self::SITE_GERMANY      => 'A38D8NSA03LJTC',
+            self::SITE_SPAIN        => 'AFQLKURYRPEL8',
+            self::SITE_FRANCE       => 'A1ZFFQZ3HTUKT9',
+            self::SITE_ITALY        => 'A62U237T8HV6N',
+            self::SITE_UK           => 'AZMDEXL2RVFNN',
+			self::SITE_NETHERLANDS  => null,
+            self::SITE_BRAZIL       => null,
+            self::SITE_CHINA        => null,
+            self::SITE_INDIA        => null,
+            self::SITE_JAPAN        => null,
+            self::SITE_AUSTRALIA    => 'A30BMGT8JIOX0F',
+            self::SITE_TURKEY       => 'A33AVAJ2PDY3EV',
+            self::SITE_UAE          => null,
+			self::SITE_SAUDI_ARABIA => null,
+            self::SITE_SINGAPORE    => null,
         ];
     }
 
@@ -250,20 +274,24 @@ class MwsClientPoolConfig {
 
     public static function getCurrencyCodes() {
         return [
-            self::SITE_CANADA    => 'CAD',
-            self::SITE_MEXICO    => 'MXN',
-            self::SITE_USA       => 'USD',
-            self::SITE_GERMANY   => 'EUR',
-            self::SITE_SPAIN     => 'EUR',
-            self::SITE_FRANCE    => 'EUR',
-            self::SITE_ITALY     => 'EUR',
-            self::SITE_UK        => 'GBP',
-            self::SITE_BRAZIL    => 'BRL',
-            self::SITE_CHINA     => 'RMB',
-            self::SITE_INDIA     => 'INR',
-            self::SITE_JAPAN     => 'JPY',
-            self::SITE_AUSTRALIA => 'AUD',
-            self::SITE_TURKEY    => 'TRY',
+            self::SITE_CANADA       => 'CAD',
+            self::SITE_MEXICO       => 'MXN',
+            self::SITE_USA          => 'USD',
+            self::SITE_GERMANY      => 'EUR',
+            self::SITE_SPAIN        => 'EUR',
+            self::SITE_FRANCE       => 'EUR',
+            self::SITE_ITALY        => 'EUR',
+            self::SITE_UK           => 'GBP',
+            self::SITE_NETHERLANDS  => 'EUR',
+            self::SITE_BRAZIL       => 'BRL',
+            self::SITE_CHINA        => 'RMB',
+            self::SITE_INDIA        => 'INR',
+            self::SITE_JAPAN        => 'JPY',
+            self::SITE_AUSTRALIA    => 'AUD',
+            self::SITE_TURKEY       => 'TRY',
+            self::SITE_UAE          => 'AED',
+            self::SITE_SAUDI_ARABIA => 'SAR',
+            self::SITE_SINGAPORE    => 'SGD',
         ];
     }
     public function getCurrencyCode($amazonSite=null) {
