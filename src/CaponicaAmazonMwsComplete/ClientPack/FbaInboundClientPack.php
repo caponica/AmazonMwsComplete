@@ -68,6 +68,17 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
     const METHOD_PUT_TRANSPORT_CONTENT = 'putTransportContent';
     const METHOD_GET_TRANSPORT_CONTENT = 'getTransportContent';
 
+	const STATUS_WORKING = 'WORKING';
+	const STATUS_SHIPPED = 'SHIPPED';
+	const STATUS_IN_TRANSIT = 'IN_TRANSIT';
+	const STATUS_DELIVERED = 'DELIVERED';
+	const STATUS_CHECKED_IN = 'CHECKED_IN';
+	const STATUS_RECEIVING = 'RECEIVING';
+	const STATUS_CLOSED = 'CLOSED';
+	const STATUS_CANCELLED = 'CANCELLED';
+	const STATUS_DELETED = 'DELETED';
+    const STATUS_ERROR = 'ERROR';
+
     /**
      * The MWS MarketplaceID string used in API connections.
      *
@@ -287,9 +298,15 @@ class FbaInboundClientPack extends FbaInboundClient implements ThrottleAwareClie
             $requestArray[self::PARAM_SHIPMENT_ID_LIST] = ['member' => $shipmentIdList];
         }
 
-        if ( ! empty($shipmentStatusList)) {
-            $requestArray[self::PARAM_SHIPMENT_STATUS_LIST] = ['member' => $shipmentStatusList];
+        if (empty($shipmentStatusList)) {
+			$shipmentStatusList = [
+				self::STATUS_WORKING, self::STATUS_SHIPPED, self::STATUS_IN_TRANSIT, self::STATUS_DELIVERED,
+				self::STATUS_CHECKED_IN, self::STATUS_RECEIVING, self::STATUS_CLOSED, self::STATUS_CANCELLED,
+				self::STATUS_DELETED, self::STATUS_ERROR
+			];
         }
+
+		$requestArray[self::PARAM_SHIPMENT_STATUS_LIST] = ['member' => $shipmentStatusList];
 
         if ( ! empty($lastUpdatedAfter)) {
             $requestArray[self::PARAM_LAST_UPDATED_AFTER] = $lastUpdatedAfter;
