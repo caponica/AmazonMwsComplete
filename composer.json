@@ -1,5 +1,5 @@
 {
-    "name": "caponica/amazon-mws-complete",
+    "name": "haoxi911/amazon-mws-complete",
     "type": "library",
     "license": "Apache-2.0",
     "description": "Complete Amazon MWS PHP SDK, including all libraries",
@@ -7,8 +7,8 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Christian Morgan, Caponica",
-            "homepage": "http://www.github.com/Caponica"
+            "name": "Hao Xi",
+            "homepage": "http://www.github.com/haoxi911"
         }
     ],
 
