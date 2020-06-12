@@ -16,26 +16,27 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
 
     const SERVICE_NAME = 'FulfillmentOutboundShipment';
 
-    const PARAM_MARKETPLACE_ID                          = 'MarketplaceId';
-    const PARAM_MERCHANT                                = 'SellerId';
-    const PARAM_SELLER_ID                               = 'SellerId';   // Alias for PARAM_MERCHANT
-    const PARAM_ITEMS                                   = 'Items';
-    const PARAM_INCLUDE_COD_PREVIEW                     = 'IncludeCODFulfillmentPreview';
-    const PARAM_INCLUDE_SCHEDULED_PREVIEW               = 'IncludeDeliveryWindows';
-    const PARAM_DESTINATION_ADDRESS                     = 'DestinationAddress';
-    const PARAM_DISPLAYABLE_ORDER_COMMENT               = 'DisplayableOrderComment';
-    const PARAM_DISPLAYABLE_ORDER_DATETIME              = 'DisplayableOrderDateTime';
-    const PARAM_DISPLAYABLE_ORDER_ID                    = 'DisplayableOrderId';
-    const PARAM_MWS_AUTH_TOKEN                          = 'MWSAuthToken';
-    const PARAM_NOTIFICATION_EMAIL_LIST                 = 'NotificationEmailList';
-    const PARAM_SHIPPING_SPEED_CATEGORIES               = 'ShippingSpeedCategories';
-    const PARAM_SHIPPING_SPEED_CATEGORY                 = 'ShippingSpeedCategory';
-    const PARAM_SELLER_ORDER_ID                         = 'SellerFulfillmentOrderId';
+    const PARAM_MARKETPLACE_ID              = 'MarketplaceId';
+    const PARAM_MERCHANT                    = 'SellerId';
+    const PARAM_SELLER_ID                   = 'SellerId';   // Alias for PARAM_MERCHANT
+    const PARAM_ITEMS                       = 'Items';
+    const PARAM_INCLUDE_COD_PREVIEW         = 'IncludeCODFulfillmentPreview';
+    const PARAM_INCLUDE_SCHEDULED_PREVIEW   = 'IncludeDeliveryWindows';
+    const PARAM_ADDRESS                     = 'Address';
+    const PARAM_DESTINATION_ADDRESS         = 'DestinationAddress';
+    const PARAM_DISPLAYABLE_ORDER_COMMENT   = 'DisplayableOrderComment';
+    const PARAM_DISPLAYABLE_ORDER_DATETIME  = 'DisplayableOrderDateTime';
+    const PARAM_DISPLAYABLE_ORDER_ID        = 'DisplayableOrderId';
+    const PARAM_MWS_AUTH_TOKEN              = 'MWSAuthToken';
+    const PARAM_NOTIFICATION_EMAIL_LIST     = 'NotificationEmailList';
+    const PARAM_SHIPPING_SPEED_CATEGORIES   = 'ShippingSpeedCategories';
+    const PARAM_SHIPPING_SPEED_CATEGORY     = 'ShippingSpeedCategory';
+    const PARAM_SELLER_ORDER_ID             = 'SellerFulfillmentOrderId';
 
-    const SHIPPING_SPEED_STANDARD                       = 'Standard';
-    const SHIPPING_SPEED_EXPEDITED                      = 'Expedited';
-    const SHIPPING_SPEED_PRIORITY                       = 'Priority';
-    const SHIPPING_SPEED_SCHEDULED                      = 'ScheduledDelivery';
+    const SHIPPING_SPEED_STANDARD           = 'Standard';
+    const SHIPPING_SPEED_EXPEDITED          = 'Expedited';
+    const SHIPPING_SPEED_PRIORITY           = 'Priority';
+    const SHIPPING_SPEED_SCHEDULED          = 'ScheduledDelivery';
 
     const METHOD_CREATE_ORDER               = 'createFulfillmentOrder';
     const METHOD_GET_FULFILLMENT_ORDER      = 'getFulfillmentOrder';
@@ -86,6 +87,7 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
      * @param CreateFulfillmentOrderItem[] $items
      * @param null $notificationEmails
      * @return mixed
+     * @throws \Exception
      */
     public function callCreateFulfillmentOrder($sellerOrderId, $displayableOrderId
         , \DateTime $displayableOrderDatetime, $displayableOrderComment, $shippingSpeed
@@ -134,13 +136,14 @@ class FbaOutboundClientPack extends FbaOutboundClient implements ThrottleAwareCl
      * @param boolean $includeCOD
      * @param boolean $includeScheduledDelivery
      * @return mixed
+     * @throws \Exception
      */
     public function callGetFulfillmentPreview(Address $destinationAddress, $items
         , $shippingSpeeds=null, $includeCOD=null, $includeScheduledDelivery=null
     ) {
         $requestArray = [
-            self::PARAM_MARKETPLACE_ID              => $this->marketplaceId,
-            self::PARAM_DESTINATION_ADDRESS         => $destinationAddress->getArray(),
+            self::PARAM_MARKETPLACE_ID  => $this->marketplaceId,
+            self::PARAM_ADDRESS         => $destinationAddress->getArray(),
         ];
 
         $itemList = [];
