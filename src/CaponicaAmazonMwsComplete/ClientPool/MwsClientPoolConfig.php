@@ -268,7 +268,7 @@ class MwsClientPoolConfig {
             return $marketplaces[$amazonSite];
         }
 
-        throw new \InvalidArgumentException('No Non-Amazon marketplace id known for site code "' . $amazonSite . '"');
+        return null;
     }
 
 
