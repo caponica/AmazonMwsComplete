@@ -17,15 +17,16 @@ abstract class BaseMwsReport {
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_DAILY            => 'ReportFbaInventoryHistoryDaily',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_HISTORY_MONTHLY          => 'ReportFbaInventoryHistoryMonthly',
         MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_FEE_PREVIEW               => 'ReportFbaPaymentsFeePreview',
-        MwsFeedAndReportClientPack::REPORT_LISTING_ALL_LISTINGS                   => 'ReportListingAllListings',
         MwsFeedAndReportClientPack::REPORT_LISTING_ACTIVE_LISTINGS                => 'ReportListingActiveListings',
+        MwsFeedAndReportClientPack::REPORT_LISTING_ALL_LISTINGS                   => 'ReportListingAllListings',
+        MwsFeedAndReportClientPack::REPORT_LISTING_PAN_EU_OFFER_STATUS            => 'ReportListingPanEuOfferStatus',
         MwsFeedAndReportClientPack::REPORT_TRACKING_BY_ORDER_DATE_FLAT_FILE       => 'ReportTrackingByOrderDateFlatFile',
         MwsFeedAndReportClientPack::REPORT_FBA_SALES_ALL_BY_LAST_UPDATE_FLAT_FILE => 'ReportFbaSalesAllByLastUpdateFlatFile',
         MwsFeedAndReportClientPack::REPORT_FBA_CONCESSION_RETURNS                 => 'ReportFbaReturns',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_ADJUSTMENTS              => 'ReportFbaInventoryAdjustments',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_EVENT_DETAIL             => 'ReportFbaInventoryEventDetail',
         MwsFeedAndReportClientPack::REPORT_FBA_INVENTORY_RECEIVED                 => 'ReportFbaInventoryReceived',
-	MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_REIMBURSEMENTS            => 'ReportFbaPaymentReimbursements',
+	    MwsFeedAndReportClientPack::REPORT_FBA_PAYMENTS_REIMBURSEMENTS            => 'ReportFbaPaymentReimbursements',
 
         MwsFeedAndReportClientPack::REPORT_SETTLEMENT_FLAT_FILE                   => 'ReportSettlementFlatFile'
     ];
@@ -42,9 +43,14 @@ abstract class BaseMwsReport {
         $headerString = trim($headerString,"\n\r ");
         if ($headerString == static::EXPECTED_HEADER) {
             return true;
-        } else {
-            throw new InvalidReportHeaderException("Unexpected file header. Got:\n#{$headerString}#\nExpected:\n#".static::EXPECTED_HEADER."#\n");
         }
+
+        $utfBom = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
+        if (substr($headerString,0,3) === $utfBom) {
+            return self::validateHeaderRow(substr($headerString, 3));
+        }
+
+        throw new InvalidReportHeaderException("Unexpected file header. Got:\n#{$headerString}#\nExpected:\n#".static::EXPECTED_HEADER."#\n");
     }
 
     /**

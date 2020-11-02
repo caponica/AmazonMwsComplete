@@ -156,4 +156,7 @@ class MwsClientPool {
     public function getSellerId() {
         return $this->config->getSellerId();
     }
+    public function formatPrice($price, $amazonSite=null) {
+        return number_format($price, $this->config->getCurrencyDecimalDigitCount($amazonSite), $this->config->getCurrencyDecimalSeparator($amazonSite), '');
+    }
 }

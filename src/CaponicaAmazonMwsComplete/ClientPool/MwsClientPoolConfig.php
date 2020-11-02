@@ -24,6 +24,7 @@ class MwsClientPoolConfig {
     const SITE_FRANCE       = 'FR';
     const SITE_ITALY        = 'IT';
     const SITE_NETHERLANDS  = 'NL';
+    const SITE_SWEDEN       = 'SE';
     const SITE_UK           = 'UK';
     const SITE_BRAZIL       = 'BR';
     const SITE_CHINA        = 'CN';
@@ -74,6 +75,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'fr',
             self::SITE_ITALY        => 'it',
             self::SITE_NETHERLANDS  => 'nl',
+            self::SITE_SWEDEN       => 'se',
             self::SITE_UK           => 'co.uk',
             self::SITE_BRAZIL       => 'com.br',
             self::SITE_CHINA        => 'cn',
@@ -145,6 +147,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE,
             self::SITE_ITALY,
             self::SITE_NETHERLANDS,
+            self::SITE_SWEDEN,
             self::SITE_UK,
             self::SITE_BRAZIL,
             self::SITE_CHINA,
@@ -168,6 +171,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'https://mws-eu.amazonservices.com',
             self::SITE_ITALY        => 'https://mws-eu.amazonservices.com',
             self::SITE_NETHERLANDS  => 'https://mws-eu.amazonservices.com',
+            self::SITE_SWEDEN       => 'https://mws-eu.amazonservices.com',
             self::SITE_UK           => 'https://mws-eu.amazonservices.com',
             self::SITE_BRAZIL       => 'https://mws.amazonservices.com',
             self::SITE_CHINA        => 'https://mws.amazonservices.com.cn',
@@ -198,6 +202,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'A13V1IB3VIYZZH',
             self::SITE_ITALY        => 'APJ6JRA9NG5V4',
             self::SITE_NETHERLANDS  => 'A1805IZSGTT6HS',
+            self::SITE_SWEDEN       => 'A2NODRKZP88ZB9',
             self::SITE_UK           => 'A1F83G8C2ARO7P',
             self::SITE_BRAZIL       => 'A2Q3Y263D00KWC',
             self::SITE_CHINA        => 'AAHKV2X7AFYLW',
@@ -223,6 +228,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'A1ZFFQZ3HTUKT9',
             self::SITE_ITALY        => 'A62U237T8HV6N',
             self::SITE_NETHERLANDS  => null,
+            self::SITE_SWEDEN       => null,
             self::SITE_UK           => 'AZMDEXL2RVFNN',
             self::SITE_BRAZIL       => null,
             self::SITE_CHINA        => null,
@@ -268,10 +274,50 @@ class MwsClientPoolConfig {
             return $marketplaces[$amazonSite];
         }
 
-        return null;
+        throw new \InvalidArgumentException('No Non-Amazon marketplace id known for site code "' . $amazonSite . '"');
     }
 
 
+    public static function getCurrencyDecimalSeparators() {
+        return [
+            self::SITE_CANADA       => '.',
+            self::SITE_MEXICO       => '.',
+            self::SITE_USA          => '.',
+            self::SITE_GERMANY      => ',',
+            self::SITE_SPAIN        => ',',
+            self::SITE_FRANCE       => ',',
+            self::SITE_ITALY        => ',',
+            self::SITE_NETHERLANDS  => ',',
+            self::SITE_SWEDEN       => ',',
+            self::SITE_UK           => '.',
+            self::SITE_BRAZIL       => ',',
+            self::SITE_CHINA        => '.',
+            self::SITE_INDIA        => '.',
+            self::SITE_JAPAN        => '',  // Unknown, doesn't use decimal prices
+            self::SITE_AUSTRALIA    => '.',
+            self::SITE_TURKEY       => ',',
+        ];
+    }
+    public static function getCurrencyDecimalDigitCounts() {
+        return [
+            self::SITE_CANADA       => 2,
+            self::SITE_MEXICO       => 2,
+            self::SITE_USA          => 2,
+            self::SITE_GERMANY      => 2,
+            self::SITE_SPAIN        => 2,
+            self::SITE_FRANCE       => 2,
+            self::SITE_ITALY        => 2,
+            self::SITE_NETHERLANDS  => 2,
+            self::SITE_SWEDEN       => 2,
+            self::SITE_UK           => 2,
+            self::SITE_BRAZIL       => 2,
+            self::SITE_CHINA        => 2,
+            self::SITE_INDIA        => 2,
+            self::SITE_JAPAN        => 0,  // Doesn't use decimal prices
+            self::SITE_AUSTRALIA    => 2,
+            self::SITE_TURKEY       => 2,
+        ];
+    }
     public static function getCurrencyCodes() {
         return [
             self::SITE_CANADA       => 'CAD',
@@ -282,6 +328,7 @@ class MwsClientPoolConfig {
             self::SITE_FRANCE       => 'EUR',
             self::SITE_ITALY        => 'EUR',
             self::SITE_NETHERLANDS  => 'EUR',
+            self::SITE_SWEDEN       => 'SEK',
             self::SITE_UK           => 'GBP',
             self::SITE_BRAZIL       => 'BRL',
             self::SITE_CHINA        => 'RMB',
@@ -293,6 +340,33 @@ class MwsClientPoolConfig {
             self::SITE_UAE          => 'AED',
             self::SITE_SINGAPORE    => 'SGD',
         ];
+    }
+    public function formatPrice($price, $amazonSite=null) {
+        return number_format($price, $this->getCurrencyDecimalDigitCount($amazonSite), $this->getCurrencyDecimalSeparator($amazonSite), '');
+    }
+    public function getCurrencyDecimalDigitCount($amazonSite=null) {
+        if (empty($amazonSite)) {
+            $amazonSite = $this->amazonSite;
+        }
+
+        $values = self::getCurrencyDecimalDigitCounts();
+        if (!empty($values[$amazonSite])) {
+            return $values[$amazonSite];
+        }
+
+        throw new \InvalidArgumentException('No currency decimal digit count known for site code "' . $amazonSite . '"');
+    }
+    public function getCurrencyDecimalSeparator($amazonSite=null) {
+        if (empty($amazonSite)) {
+            $amazonSite = $this->amazonSite;
+        }
+
+        $values = self::getCurrencyDecimalSeparators();
+        if (!empty($values[$amazonSite])) {
+            return $values[$amazonSite];
+        }
+
+        throw new \InvalidArgumentException('No currency decimal separator known for site code "' . $amazonSite . '"');
     }
     public function getCurrencyCode($amazonSite=null) {
         if (empty($amazonSite)) {
