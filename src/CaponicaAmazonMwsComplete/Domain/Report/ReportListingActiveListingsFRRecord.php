@@ -22,7 +22,8 @@ class ReportListingActiveListingsFRRecord extends ReportListingActiveListingsRec
         $this->productId                = $fieldArray[11];
         $this->pendingQuantity          = $fieldArray[12];
         $this->fulfillmentChannel       = $fieldArray[13];
-        $this->merchantShippingGroup    = $fieldArray[14];
+        // Other fields not mapped yet (quantity based pricing)
+        $this->merchantShippingGroup    = $fieldArray[26];
     }
 
     public function getItemDescription() {
